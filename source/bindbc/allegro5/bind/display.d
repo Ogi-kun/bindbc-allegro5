@@ -24,7 +24,7 @@ enum {
 	ALLEGRO_OPENGL_ES_PROFILE           = 1 << 14,
 }
 version (ALLEGRO_UNSTABLE) {
-	static if (allegro5Support >= AllegroSupport.v5_2_7) {
+	static if (allegroSupport >= AllegroSupport.v5_2_7) {
 		enum ALLEGRO_OPENGL_CORE_PROFILE    = 1 << 15;
 	}
 }
@@ -67,7 +67,7 @@ mixin(`
 		ALLEGRO_OPENGL_MAJOR_VERSION = 33,
 		ALLEGRO_OPENGL_MINOR_VERSION = 34,
 	`~() {
-		static if (allegro5Support >= AllegroSupport.v5_2_8) return `ALLEGRO_DEFAULT_SHADER_PLATFORM = 35, `;
+		static if (allegroSupport >= AllegroSupport.v5_2_8) return `ALLEGRO_DEFAULT_SHADER_PLATFORM = 35, `;
 		else return "";
 	}() ~ `ALLEGRO_DISPLAY_OPTIONS_COUNT }`);
 
@@ -164,7 +164,7 @@ static if (staticBinding) {
 	void al_acknowledge_drawing_halt(ALLEGRO_DISPLAY* display);
 	void al_acknowledge_drawing_resume(ALLEGRO_DISPLAY* display);
 	version (ALLEGRO_UNSTABLE) {
-		static if (allegro5Support >= AllegroSupport.v5_2_1) {
+		static if (allegroSupport >= AllegroSupport.v5_2_1) {
 			void al_backup_dirty_bitmaps(ALLEGRO_DISPLAY* display);
 		}
 	}
@@ -297,7 +297,7 @@ else {
 	}
 		
 	version (ALLEGRO_UNSTABLE) {
-		static if (allegro5Support >= AllegroSupport.v5_2_1) {
+		static if (allegroSupport >= AllegroSupport.v5_2_1) {
 			extern(C) @nogc nothrow {
 				alias pal_backup_dirty_bitmaps = void function(ALLEGRO_DISPLAY* display);
 			}

@@ -753,7 +753,7 @@ AllegroSupport loadAllegro(const(char)* libName) {
 	}
 	loadedVersion = AllegroSupport.v5_2_0;
 
-	static if (allegro5Support >= AllegroSupport.v5_2_1) {
+	static if (allegroSupport >= AllegroSupport.v5_2_1) {
 		version (ALLEGRO_UNSTABLE) {
 			lib.bindSymbol(cast(void**)&al_get_new_bitmap_depth, "al_get_new_bitmap_depth");
 			lib.bindSymbol(cast(void**)&al_set_new_bitmap_depth, "al_set_new_bitmap_depth");
@@ -771,7 +771,7 @@ AllegroSupport loadAllegro(const(char)* libName) {
 		loadedVersion = AllegroSupport.v5_2_1;
 	}
 		
-	static if (allegro5Support >= AllegroSupport.v5_2_2) {
+	static if (allegroSupport >= AllegroSupport.v5_2_2) {
 		version (ALLEGRO_UNSTABLE) {
 			version (Android) {
 				lib.bindSymbol(cast(void**)&al_android_get_jni_env, "al_android_get_jni_env");
@@ -785,7 +785,7 @@ AllegroSupport loadAllegro(const(char)* libName) {
 		loadedVersion = AllegroSupport.v5_2_2;
 	}
 
-	static if (allegro5Support >= AllegroSupport.v5_2_3) {
+	static if (allegroSupport >= AllegroSupport.v5_2_3) {
 		version (ALLEGRO_UNSTABLE) {
 			version (ALLEGRO_X11) {
 				lib.bindSymbol(cast(void**)&al_x_set_initial_icon, "al_x_set_initial_icon");
@@ -801,7 +801,7 @@ AllegroSupport loadAllegro(const(char)* libName) {
 		loadedVersion = AllegroSupport.v5_2_3;
 	}
 
-	static if (allegro5Support >= AllegroSupport.v5_2_4) {
+	static if (allegroSupport >= AllegroSupport.v5_2_4) {
 		lib.bindSymbol(cast(void**)&al_transform_coordinates_4d, "al_transform_coordinates_4d");
 		lib.bindSymbol(cast(void**)&al_transform_coordinates_3d_projective, "al_transform_coordinates_3d_projective");
 
@@ -811,7 +811,7 @@ AllegroSupport loadAllegro(const(char)* libName) {
 		loadedVersion = AllegroSupport.v5_2_4;
 	}
 
-	static if (allegro5Support >= AllegroSupport.v5_2_5) {
+	static if (allegroSupport >= AllegroSupport.v5_2_5) {
 		version (ALLEGRO_UNSTABLE) {
 			lib.bindSymbol(cast(void**)&al_get_bitmap_blend_color, "al_get_bitmap_blend_color");
 			lib.bindSymbol(cast(void**)&al_get_bitmap_blender, "al_get_bitmap_blender");
@@ -835,7 +835,7 @@ AllegroSupport loadAllegro(const(char)* libName) {
 		loadedVersion = AllegroSupport.v5_2_5;
 	}
 
-	static if (allegro5Support >= AllegroSupport.v5_2_6) {
+	static if (allegroSupport >= AllegroSupport.v5_2_6) {
 		version (ALLEGRO_UNSTABLE) {
 			lib.bindSymbol(cast(void**)&al_get_monitor_refresh_rate, "al_get_monitor_refresh_rate");
 		}
@@ -846,14 +846,14 @@ AllegroSupport loadAllegro(const(char)* libName) {
 		loadedVersion = AllegroSupport.v5_2_6;
 	}
 
-	static if (allegro5Support >= AllegroSupport.v5_2_7) {
+	static if (allegroSupport >= AllegroSupport.v5_2_7) {
 		if (errorCount() != lastErrorCount) {
 			return AllegroSupport.badLibrary;
 		}
 		loadedVersion = AllegroSupport.v5_2_7;
 	}
 
-	static if (allegro5Support >= AllegroSupport.v5_2_8) {
+	static if (allegroSupport >= AllegroSupport.v5_2_8) {
 		version (ALLEGRO_UNSTABLE) {
 			lib.bindSymbol(cast(void**)&al_get_new_bitmap_wrap, "al_get_new_bitmap_wrap");
 			lib.bindSymbol(cast(void**)&al_set_new_bitmap_wrap, "al_set_new_bitmap_wrap");

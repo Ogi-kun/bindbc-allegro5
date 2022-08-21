@@ -26,31 +26,31 @@ else {
 }
 
 version (Allegro_5_2_8) {
-	enum allegro5Support = AllegroSupport.v5_2_8;
+	enum allegroSupport = AllegroSupport.v5_2_8;
 }
 else version (Allegro_5_2_7) {
-	enum allegro5Support = AllegroSupport.v5_2_7;
+	enum allegroSupport = AllegroSupport.v5_2_7;
 }
 else version (Allegro_5_2_6) {
-	enum allegro5Support = AllegroSupport.v5_2_6;
+	enum allegroSupport = AllegroSupport.v5_2_6;
 }
 else version (Allegro_5_2_5) {
-	enum allegro5Support = AllegroSupport.v5_2_5;
+	enum allegroSupport = AllegroSupport.v5_2_5;
 }
 else version (Allegro_5_2_4) {
-	enum allegro5Support = AllegroSupport.v5_2_4;
+	enum allegroSupport = AllegroSupport.v5_2_4;
 }
 else version (Allegro_5_2_3) {
-	enum allegro5Support = AllegroSupport.v5_2_3;
+	enum allegroSupport = AllegroSupport.v5_2_3;
 }
 else version (Allegro_5_2_2) {
-	enum allegro5Support = AllegroSupport.v5_2_2;
+	enum allegroSupport = AllegroSupport.v5_2_2;
 }
 else version (Allegro_5_2_1) {
-	enum allegro5Support = AllegroSupport.v5_2_1;
+	enum allegroSupport = AllegroSupport.v5_2_1;
 }
 else {
-	enum allegro5Support = AllegroSupport.v5_2_0;
+	enum allegroSupport = AllegroSupport.v5_2_0;
 }
 
 deprecated("use AllegroSupport instead")
@@ -59,3 +59,6 @@ alias Allegro5Support = AllegroSupport;
 version (BindAllegro5_Static) {
 	static assert(0, "use BindAllegro_Static instead");
 }
+
+deprecated("use allegroSupport instead")
+enum allegro5Support = allegroSupport;

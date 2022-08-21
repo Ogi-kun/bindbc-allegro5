@@ -36,11 +36,11 @@ static if (staticBinding) {
 	void al_horizontal_shear_transform(ALLEGRO_TRANSFORM* trans, float theta);
 	void al_vertical_shear_transform(ALLEGRO_TRANSFORM* trans, float theta);
 
-	static if (allegro5Support >= AllegroSupport.v5_2_4) {
+	static if (allegroSupport >= AllegroSupport.v5_2_4) {
 		void al_transform_coordinates_4d(const(ALLEGRO_TRANSFORM)* trans, float* x, float* y, float* z, float* w);
 		void al_transform_coordinates_3d_projective(const(ALLEGRO_TRANSFORM)* trans, float* x, float* y, float* z);
 	}
-	static if (allegro5Support >= AllegroSupport.v5_2_5) {
+	static if (allegroSupport >= AllegroSupport.v5_2_5) {
 		void al_transpose_transform(ALLEGRO_TRANSFORM* trans);
 	}
 }
@@ -72,11 +72,11 @@ else {
 		alias pal_horizontal_shear_transform = void function(ALLEGRO_TRANSFORM* trans, float theta);
 		alias pal_vertical_shear_transform = void function(ALLEGRO_TRANSFORM* trans, float theta);
 
-		static if (allegro5Support >= AllegroSupport.v5_2_5) {
+		static if (allegroSupport >= AllegroSupport.v5_2_5) {
 			alias pal_transform_coordinates_4d = void function(const(ALLEGRO_TRANSFORM)* trans, float* x, float* y, float* z, float* w);
 			alias pal_transform_coordinates_3d_projective = void function(const(ALLEGRO_TRANSFORM)* trans, float* x, float* y, float* z);
 		}
-		static if (allegro5Support >= AllegroSupport.v5_2_5) {
+		static if (allegroSupport >= AllegroSupport.v5_2_5) {
 			alias pal_transpose_transform = void function(ALLEGRO_TRANSFORM* trans);
 		}
 	}
@@ -106,11 +106,11 @@ else {
 		pal_horizontal_shear_transform al_horizontal_shear_transform;
 		pal_vertical_shear_transform al_vertical_shear_transform;
 
-		static if (allegro5Support >= AllegroSupport.v5_2_5) {
+		static if (allegroSupport >= AllegroSupport.v5_2_5) {
 			pal_transform_coordinates_4d al_transform_coordinates_4d;
 			pal_transform_coordinates_3d_projective al_transform_coordinates_3d_projective;
 		}
-		static if (allegro5Support >= AllegroSupport.v5_2_5) {
+		static if (allegroSupport >= AllegroSupport.v5_2_5) {
 			pal_transpose_transform al_transpose_transform;
 		}
 	}

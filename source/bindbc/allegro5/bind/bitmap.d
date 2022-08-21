@@ -5,7 +5,7 @@ import bindbc.allegro5.bind.color : ALLEGRO_COLOR;
 
 struct ALLEGRO_BITMAP;
 
-version (ALLEGRO_UNSTABLE) static if (allegro5Support >= AllegroSupport.v5_2_8) {
+version (ALLEGRO_UNSTABLE) static if (allegroSupport >= AllegroSupport.v5_2_8) {
 	enum ALLEGRO_BITMAP_WRAP {
 		ALLEGRO_BITMAP_WRAP_DEFAULT = 0,
 		ALLEGRO_BITMAP_WRAP_REPEAT = 1,
@@ -68,7 +68,7 @@ static if (staticBinding) {
 	void al_convert_memory_bitmaps();
 
 	version (ALLEGRO_UNSTABLE) {
-		static if (allegro5Support >= AllegroSupport.v5_2_1) {
+		static if (allegroSupport >= AllegroSupport.v5_2_1) {
 			int al_get_new_bitmap_depth();
 			void al_set_new_bitmap_depth(int depth);
 			int al_get_new_bitmap_samples();
@@ -78,7 +78,7 @@ static if (staticBinding) {
 			void al_backup_dirty_bitmap(ALLEGRO_BITMAP* bitmap);
 		}
 
-		static if (allegro5Support >= AllegroSupport.v5_2_5) {
+		static if (allegroSupport >= AllegroSupport.v5_2_5) {
 			ALLEGRO_COLOR al_get_bitmap_blend_color();
 			void al_get_bitmap_blender(int* op, int* src, int* dst);
 			void al_get_separate_bitmap_blender(int* op, int* src, int* dst, int* alpha_op, int* alpha_src, int* alpha_dst);
@@ -88,7 +88,7 @@ static if (staticBinding) {
 			void al_reset_bitmap_blender();
 		}
 
-		static if (allegro5Support >= AllegroSupport.v5_2_8) {
+		static if (allegroSupport >= AllegroSupport.v5_2_8) {
 			void al_get_new_bitmap_wrap(ALLEGRO_BITMAP_WRAP* u, ALLEGRO_BITMAP_WRAP* v);
 			void al_set_new_bitmap_wrap(ALLEGRO_BITMAP_WRAP u, ALLEGRO_BITMAP_WRAP v);
 		}
@@ -171,7 +171,7 @@ else {
 	}
 	
 	version (ALLEGRO_UNSTABLE) {
-		static if (allegro5Support >= AllegroSupport.v5_2_1) {
+		static if (allegroSupport >= AllegroSupport.v5_2_1) {
 			extern(C) @nogc nothrow {
 				alias pal_get_new_bitmap_depth = int function();
 				alias pal_set_new_bitmap_depth = void function(int depth);
@@ -192,7 +192,7 @@ else {
 			}
 		}
 			
-		static if (allegro5Support >= AllegroSupport.v5_2_5) {
+		static if (allegroSupport >= AllegroSupport.v5_2_5) {
 			extern(C) @nogc nothrow {
 				alias pal_get_bitmap_blend_color = ALLEGRO_COLOR function();
 				alias pal_get_bitmap_blender = void function(int* op, int* src, int* dst);
@@ -213,7 +213,7 @@ else {
 			}
 		}
 			
-		static if (allegro5Support >= AllegroSupport.v5_2_8) {
+		static if (allegroSupport >= AllegroSupport.v5_2_8) {
 			extern(C) @nogc nothrow {
 				alias pal_get_new_bitmap_wrap = void function(ALLEGRO_BITMAP_WRAP* u, ALLEGRO_BITMAP_WRAP* v);
 				alias pal_set_new_bitmap_wrap = void function(ALLEGRO_BITMAP_WRAP u, ALLEGRO_BITMAP_WRAP v);
