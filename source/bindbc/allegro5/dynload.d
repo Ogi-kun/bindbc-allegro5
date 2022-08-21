@@ -1,6 +1,6 @@
 module bindbc.allegro5.dynload;
 
-version (BindAllegro5_Static) { }
+version (BindAllegro_Static) { }
 else:
 
 import bindbc.loader;

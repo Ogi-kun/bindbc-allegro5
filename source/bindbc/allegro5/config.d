@@ -14,14 +14,11 @@ enum AllegroSupport {
 	v5_2_8 = 5_02_08,
 }
 
-deprecated("use AllegroSupport instead")
-alias Allegro5Support = AllegroSupport;
-
 version (BindBC_Static) {
-	version = BindAllegro5_Static;
+	version = BindAllegro_Static;
 }
 
-version (BindAllegro5_Static) {
+version (BindAllegro_Static) {
 	enum staticBinding = true;
 }
 else {
@@ -54,4 +51,11 @@ else version (Allegro_5_2_1) {
 }
 else {
 	enum allegro5Support = AllegroSupport.v5_2_0;
+}
+
+deprecated("use AllegroSupport instead")
+alias Allegro5Support = AllegroSupport;
+
+version (BindAllegro5_Static) {
+	static assert(0, "use BindAllegro_Static instead");
 }

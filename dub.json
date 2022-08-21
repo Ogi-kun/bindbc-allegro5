@@ -31,11 +31,11 @@
 		},
 		{
 			"name" : "static",
-			"versions" : ["BindAllegro5_Static"]
+			"versions" : ["BindAllegro_Static"]
 		},
 		{
 			"name" : "staticBC",
-			"versions" : ["BindAllegro5_Static"],
+			"versions" : ["BindAllegro_Static"],
 			"subConfigurations" : {
 				"bindbc-loader" : "yesBC"
 			}
