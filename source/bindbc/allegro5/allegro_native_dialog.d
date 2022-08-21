@@ -247,7 +247,7 @@ else {
 
 	@nogc nothrow:
 
-	void unloadDialogFont() {
+	void unloadAllegroDialog() {
 		if (lib != invalidHandle) {
 			lib.unload();
 		}
