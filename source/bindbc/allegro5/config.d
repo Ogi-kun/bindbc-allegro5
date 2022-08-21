@@ -108,3 +108,10 @@ version (Allegro_Dialog) {
 else {
 	enum allegroDialog = false;
 }
+
+version (Allegro_PhysFS) {
+	enum allegroPhysFS = true;
+}
+else {
+	enum allegroPhysFS = false;
+}
