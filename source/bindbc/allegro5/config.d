@@ -66,3 +66,10 @@ version (Allegro_ACodec) {
 else {
 	enum allegroACodec = false;
 }
+
+version (Allegro_Color) {
+	enum allegroColor = true;
+}
+else {
+	enum allegroColor = false;
+}
