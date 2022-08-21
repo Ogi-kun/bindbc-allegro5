@@ -273,8 +273,8 @@ static if (staticBinding) {
 	}
 
 	static if (allegroSupport >= AllegroSupport.v5_2_8) {
-		const (char)* al_identify_sample_f(ALLEGRO_FILE* fp);
-		const (char)* al_identify_sample(const(char)* filename);
+		const(char)* al_identify_sample_f(ALLEGRO_FILE* fp);
+		const(char)* al_identify_sample(const(char)* filename);
 		int al_get_num_audio_output_devices();
 		const(ALLEGRO_AUDIO_DEVICE)* al_get_audio_output_device(int index);
 		const(char)* al_get_audio_device_name(const(ALLEGRO_AUDIO_DEVICE)* device);
@@ -657,8 +657,8 @@ else {
 		}
 
 		static if (allegroSupport >= AllegroSupport.v5_2_8) {
-			const (char)* al_identify_sample_f(ALLEGRO_FILE* fp);
-			const (char)* al_identify_sample(const(char)* filename);
+			pal_identify_sample_f al_identify_sample_f;
+			pal_identify_sample al_identify_sample;
 			pal_get_num_audio_output_devices al_get_num_audio_output_devices;
 			pal_get_audio_output_device al_get_audio_output_device;
 			pal_get_audio_device_name al_get_audio_device_name;
@@ -918,8 +918,8 @@ else {
 		}
 
 		static if (allegroSupport >= AllegroSupport.v5_2_8) {
-			const (char)* al_identify_sample_f(ALLEGRO_FILE* fp);
-			const (char)* al_identify_sample(const(char)* filename);
+			lib.bindSymbol(cast(void**)&al_identify_sample_f, "al_identify_sample_f");
+			lib.bindSymbol(cast(void**)&al_identify_sample, "al_identify_sample");
 			lib.bindSymbol(cast(void**)&al_get_num_audio_output_devices, "al_get_num_audio_output_devices");
 			lib.bindSymbol(cast(void**)&al_get_audio_output_device, "al_get_audio_output_device");
 			lib.bindSymbol(cast(void**)&al_get_audio_device_name, "al_get_audio_device_name");
