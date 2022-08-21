@@ -115,3 +115,10 @@ version (Allegro_PhysFS) {
 else {
 	enum allegroPhysFS = false;
 }
+
+version (Allegro_Primitives) {
+	enum allegroPrimitives = true;
+}
+else {
+	enum allegroPrimitives = false;
+}
