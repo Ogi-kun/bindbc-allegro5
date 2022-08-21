@@ -1,12 +1,15 @@
 module bindbc.allegro5.allegro_video;
 
 import bindbc.allegro5.config;
+
+static if (allegroVideo):
+static assert (allegroAudio, "`allegro_video` depends on `allegro_audio`");
+
 import bindbc.allegro5.allegro_audio : ALLEGRO_VOICE, ALLEGRO_MIXER;
 import bindbc.allegro5.bind.events : ALLEGRO_EVENT_SOURCE;
 import bindbc.allegro5.bind.bitmap : ALLEGRO_BITMAP;
 import bindbc.allegro5.bind.file : ALLEGRO_FILE;
 
-static if (allegroVideo):
 
 enum ALLEGRO_VIDEO_EVENT_TYPE {
 	ALLEGRO_EVENT_VIDEO_FRAME_SHOW   = 550,

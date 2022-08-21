@@ -1,10 +1,13 @@
 module bindbc.allegro5.allegro_ttf;
 
 import bindbc.allegro5.config;
+
+static if (allegroTTF):
+static assert (allegroFont, "`allegro_ttf` depends on `allegro_font`");
+
 import bindbc.allegro5.allegro_font : ALLEGRO_FONT;
 import bindbc.allegro5.bind.file : ALLEGRO_FILE;
 
-static if (allegroTTF):
 
 enum ALLEGRO_TTF_NO_KERNING  = 1;
 enum ALLEGRO_TTF_MONOCHROME  = 2;

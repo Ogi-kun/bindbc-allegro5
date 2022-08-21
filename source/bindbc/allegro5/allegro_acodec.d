@@ -3,6 +3,7 @@ module bindbc.allegro5.allegro_acodec;
 import bindbc.allegro5.config;
 
 static if (allegroACodec):
+static assert (allegroAudio, "`allegro_acodec` depends on `allegro_audio`");
 
 static if (staticBinding) {
 	extern(C) @nogc nothrow:
