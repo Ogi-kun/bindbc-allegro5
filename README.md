@@ -3,15 +3,11 @@ __Note__ This is not an official BindBC package.
 
 This project provides both static and dynamic bindings to the [Allegro libraries](https://liballeg.org). They are compatible with `@nogc` and `nothrow` and can be compiled with `-betterC` compatibility. 
 
-
-
-## State of Development
-
-This is a WIP version. Only tested on Windows, addon support coming soon.
+Currently in beta. Only tested on Windows and Linux.
 
 ## General BindBC Usage
 
-BindBC is a cross-platform API for creating D bindings for C libraries. This entire section was adapted from bindbc-sdl’s README. You may skip to [Package Definitions section](#package-definitions) if you are already familiar with BindBC conventions.
+BindBC is a cross-platform API for creating D bindings for C libraries. This entire section was adapted from bindbc-sdl’s README. You may skip to [Package Declarations section](#package-declarations) if you are already familiar with BindBC conventions.
 
 By default, bindbc-allegro5 is configured to compile as dynamic bindings that are not BetterC-compatible. The dynamic bindings have no link-time dependency on the Allegro libraries, so the SDL shared libraries must be manually loaded at runtime. When configured as static bindings, there is a link-time dependency on the Allegro libraries—either the static libraries or the appropriate files for linking with shared libraries on your system (see below).
 
@@ -189,14 +185,14 @@ if (ret != allegroSupport) {
 
 For most use cases, it’s probably not necessary to check for `AllegroSupport.badLibrary` or `AllegroSupport.noLibrary`. The bindbc-loader package provides [a means to fetch error information](https://github.com/BindBC/bindbc-loader#error-handling) regarding load failures. This information can be written to a log file before aborting the program.
 
-See next section for the supported versions of each Allegro library and the corresponding version IDs to pass to the compiler.
+See [Package Declarations section](#package-declarations) for the supported versions of each Allegro library and the corresponding version IDs to pass to the compiler.
 
 
 ### The Static Bindings
 
 First things first: static _bindings_ do not require static _linking_. The static bindings have a link-time dependency on either the shared _or_ static Allegro libraries and any satellite Allegro libraries the program uses. On Windows, you can link with the static libraries or, to use the DLLs, the import libraries. On other systems, you can link with either the static libraries or directly with the shared libraries.
 
-Static bindings requires the Allegro development packages be installed on your system. [Allegro releases on GitHub](https://github.com/liballeg/allegro5/releases) provide precompiled Windows binaries. On OS X, you can use (Homebrew)[https://formulae.brew.sh/formula/allegro]. On Unix-like systems, you can install them via your system package manager. See [Allegro downloads page](https://liballeg.org/download.html) for details and additional options.
+Static bindings requires the Allegro development packages be installed on your system. [Allegro releases on GitHub](https://github.com/liballeg/allegro5/releases) provide precompiled Windows binaries. On OS X, you can use [Homebrew](https://formulae.brew.sh/formula/allegro). On Unix-like systems, you can install them via your system package manager. See [Allegro downloads page](https://liballeg.org/download.html) for details and additional options.
 
 When linking with the shared (or import) libraries, there is a runtime dependency on the shared library just as there is when using the dynamic bindings. The difference is that the shared libraries are no longer loaded manually–loading is handled automatically by the system when the program is launched. Attempting to call `loadAllegro` with the static binding enabled will result in a compilation error.
 
@@ -209,7 +205,7 @@ Pass the `BindAllegro_Static` version to the compiler and link with the appropri
 
 When using the compiler command line or a build system that doesn’t support DUB, this is the only option. The `-version=BindAllegro_Static` option should be passed to the compiler when building your program. All of the required C libraries, as well as the bindbc-allegro5 static libraries, must also be passed to the compiler on the command line or via your build system’s configuration.
 
-__NOTE__: Though bindbc5-allegro is not an official BindBC package, it supports `BindBC_Static` version identifier.
+__Note__: Though bindbc5-allegro is not an official BindBC package, it supports `BindBC_Static` version identifier.
 
 For example, when using the static bindings for Allegro and Allegro_image with DUB:
 
@@ -219,7 +215,7 @@ __dub.json__
     "bindbc-allegro5": "~>1.0.0"
 },
 "versions": ["BindAllegro_Static", "Allegro_Image"],
-"libs": ["liballegro", "liballegro_image"]
+"libs-windows": ["liballegro", "liballegro_image"]
 ```
 
 __dub.sdl__
@@ -285,14 +281,17 @@ Replace `staticBC` with `dynamicBC` to enable BetterC support with the dynamic b
 
 When not using DUB to manage your project, first use DUB to compile the BindBC libraries with the `dynamicBC` or `staticBC` configuration, then pass `-betterC` to the compiler when building your project (and `-version=BindAllegro_Static` if you used the `staticBC` configuration).
 
-## Package Definitions
+## Package Declarations
 
 To bind statically, define `BindAllegro_Static` version. If you use bindbc-allegro5 in conjunction with other BindBC packages, you can define `BindBC_Static` version to bind them all statically (some third-party BindBC packages may not support this). 
 
-To bind dynamically, call:
+Functions:
 ```d
-AllegroSupport loadAllegro()
-AllegroSupport loadAllegro(const(char)* libName)
+AllegroSupport loadAllegro();
+AllegroSupport loadAllegro(const(char)* libName);
+void unloadAllegro();
+bool isAllegroLoaded();
+AllegroSupport loadedAllegroVersion();
 ```
 
 ### Supported Allegro versions:
@@ -314,82 +313,112 @@ __Note__: To use Allegro debugging capabilities, define `ALLEGRO_DEBUG` version 
 
 __Note__: Parts of Allegro API, including most of the new functions introduced in 5.2.x releases, are marked as unstable. To use them, define `ALLEGRO_UNSTABLE` version. This will make compatibility checks more strict: this particular WIP version must be found on user’s system. For example, if `ALLEGRO_UNSTABLE` and `Allegro_5_2_3` are defined, and the user has Allegro 5.2.4 installed, Allegro will fail to initialize.
 
+__Note__: To access X-specific functions, define `ALLEGRO_X11` version.
+
 ### Addons
 
-Official addons are part of Allegro, so they don’t have they own versioning.
+Official addons are part of Allegro, so they don’t have their own versioning. 
 
-#### `Allegro_Main` (coming soon)
+Allegro can be build as a monolith library with all addons included. To link with such a library, define `Allegro_Monolith` version. With dynamic bindings, `loadAllegro` will also load all addon function. Attempts to call addon loading functions (like `loadAllegroImage`) will fail at compile time.
+
+#### `Allegro_Image`
 ```d
-AllegroSupport loadAllegroMain()
-AllegroSupport loadAllegroMain(const(char)* libName)
+AllegroSupport loadAllegroImage();
+AllegroSupport loadAllegroImage(const(char)* libName);
+void unloadAllegroImage();
+bool isAllegroImageLoaded();
+AllegroSupport loadedAllegroImageVersion();
 ```
 
-#### `Allegro_Image` (coming soon)
+#### `Allegro_Primitives`
 ```d
-AllegroSupport loadAllegroImage()
-AllegroSupport loadAllegroImage(const(char)* libName)
+AllegroSupport loadAllegroPrimitives();
+AllegroSupport loadAllegroPrimitives(const(char)* libName);
+void unloadAllegroPrimitives();
+bool isAllegroPrimitivesLoaded();
+AllegroSupport loadedAllegroPrimitivesVersion();
 ```
 
-#### `Allegro_Primitives` (coming soon)
+#### `Allegro_Color`
 ```d
-AllegroSupport loadAllegroPrimitives()
-AllegroSupport loadAllegroPrimitives(const(char)* libName)
+AllegroSupport loadAllegroColor();
+AllegroSupport loadAllegroColor(const(char)* libName);
+void unloadAllegroColor();
+bool isAllegroColorLoaded();
+AllegroSupport loadedAllegroColorVersion();
 ```
 
-#### `Allegro_Color` (coming soon)
+#### `Allegro_Font`
 ```d
-AllegroSupport loadAllegroColor()
-AllegroSupport loadAllegroColor(const(char)* libName)
+AllegroSupport loadAllegroFont();
+AllegroSupport loadAllegroFont(const(char)* libName);
+void unloadAllegroFont();
+bool isAllegroFontLoaded();
+AllegroSupport loadedAllegroFontVersion();
 ```
 
-#### `Allegro_Font` (coming soon)
-```d
-AllegroSupport loadAllegroFont()
-AllegroSupport loadAllegroFont(const(char)* libName)
-```
-
-#### `Allegro_TTF` (coming soon)
+#### `Allegro_TTF`
 **Note**: Requires `Allegro_Font`
 ```d
-AllegroSupport loadAllegroTTF()
-AllegroSupport loadAllegroTTF(const(char)* libName)
+AllegroSupport loadAllegroTTF();
+AllegroSupport loadAllegroTTF(const(char)* libName);
+void unloadAllegroTTF();
+bool isAllegroTTFLoaded();
+AllegroSupport loadedAllegroTTFVersion();
 ```
 
-#### `Allegro_Audio` (coming soon)
+#### `Allegro_Audio`
 ```d
-AllegroSupport loadAllegroAudio()
-AllegroSupport loadAllegroAudio(const(char)* libName)
+AllegroSupport loadAllegroAudio();
+AllegroSupport loadAllegroAudio(const(char)* libName);
+void unloadAllegroAudio();
+bool isAllegroAudioLoaded();
+AllegroSupport loadedAllegroAudioVersion();
 ```
 
-#### `Allegro_ACodec` (coming soon)
+#### `Allegro_ACodec`
 **Note**: Requires `Allegro_Audio`
 ```d
-AllegroSupport loadAllegroACodec()
-AllegroSupport loadAllegroACodec(const(char)* libName)
+AllegroSupport loadAllegroACodec();
+AllegroSupport loadAllegroACodec(const(char)* libName);
+void unloadAllegroACodec();
+bool isAllegroACodecLoaded();
+AllegroSupport loadedAllegroACodecVersion();
 ```
 
-#### `Allegro_Video` (coming soon)
+#### `Allegro_Video`
 **Note**: Requires `Allegro_Audio`
 ```d
-AllegroSupport loadAllegroVideo()
-AllegroSupport loadAllegroVideo(const(char)* libName)
+AllegroSupport loadAllegroVideo();
+AllegroSupport loadAllegroVideo(const(char)* libName);
+void unloadVideoAllegro();
+bool isAllegroVideoLoaded();
+AllegroSupport loadedAllegroVideoVersion();
 ```
 
-#### `Allegro_Memfile` (coming soon)
+#### `Allegro_Memfile`
 ```d
-AllegroSupport loadAllegroMemfile()
-AllegroSupport loadAllegroMemfile(const(char)* libName)
+AllegroSupport loadAllegroMemfile();
+AllegroSupport loadAllegroMemfile(const(char)* libName);
+void unloadAllegroMemfile();
+bool isAllegroMemfileLoaded();
+AllegroSupport loadedAllegroMemfileVersion();
 ```
 
-#### `Allegro_PhysFS` (coming soon)
+#### `Allegro_PhysFS`
 ```d
-AllegroSupport loadAllegroAllegroPhysFS()
-AllegroSupport loadAllegroAllegroPhysFS(const(char)* libName)
+AllegroSupport loadAllegroAllegroPhysFS();
+AllegroSupport loadAllegroAllegroPhysFS(const(char)* libName);
+void unloadAllegroPhysFS();
+bool isAllegroPhysFSLoaded();
+AllegroSupport loadedAllegroPhysFSVersion();
 ```
 
-#### `Allegro_NativeDialog` (coming soon)
+#### `Allegro_NativeDialog`
 ```d
-AllegroSupport loadAllegroAllegroNativeDialog()
-AllegroSupport loadAllegroAllegroNativeDialog(const(char)* libName)
+AllegroSupport loadAllegroAllegroDialog();
+AllegroSupport loadAllegroAllegroDialog(const(char)* libName);
+void unloadAllegroDialog();
+bool isAllegroDialogLoaded();
+AllegroSupport loadedAllegroDialogVersion();
 ```
-
