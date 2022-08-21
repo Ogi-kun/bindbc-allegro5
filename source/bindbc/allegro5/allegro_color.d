@@ -1,9 +1,10 @@
 module bindbc.allegro5.allegro_color;
 
 import bindbc.allegro5.config;
-import bindbc.allegro5.bind.color : ALLEGRO_COLOR;
 
 static if (allegroColor):
+
+import bindbc.allegro5.bind.color : ALLEGRO_COLOR;
 
 static if (staticBinding) {
 	extern(C) @nogc nothrow:

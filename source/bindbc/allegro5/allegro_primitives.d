@@ -1,12 +1,13 @@
 module bindbc.allegro5.allegro_primitives;
 
 import bindbc.allegro5.config;
+
+static if (allegroPrimitives):
+
 import bindbc.allegro5.bind.color : ALLEGRO_COLOR;
 import bindbc.allegro5.bind.bitmap : ALLEGRO_BITMAP;
 import bindbc.allegro5.bind.display : _ALLEGRO_PRIM_MAX_USER_ATTR;
 import core.stdc.stdint : uintptr_t;
-
-static if (allegroPrimitives):
 
 enum ALLEGRO_PRIM_TYPE {
 	ALLEGRO_PRIM_LINE_LIST,

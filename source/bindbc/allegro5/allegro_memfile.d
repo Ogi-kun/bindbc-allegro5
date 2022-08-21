@@ -1,9 +1,10 @@
 module bindbc.allegro5.allegro_memfile;
 
 import bindbc.allegro5.config;
-import bindbc.allegro5.bind.file : ALLEGRO_FILE;
 
 static if (allegroMemfile):
+
+import bindbc.allegro5.bind.file : ALLEGRO_FILE;
 
 static if (staticBinding) {
 	extern(C) @nogc nothrow:

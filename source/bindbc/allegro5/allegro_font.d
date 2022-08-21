@@ -1,11 +1,12 @@
 module bindbc.allegro5.allegro_font;
 
 import bindbc.allegro5.config;
+
+static if (allegroFont):
+
 import bindbc.allegro5.bind.color : ALLEGRO_COLOR;
 import bindbc.allegro5.bind.bitmap : ALLEGRO_BITMAP;
 import bindbc.allegro5.bind.utf8 : ALLEGRO_USTR;
-
-static if (allegroFont):
 
 struct ALLEGRO_FONT;
 

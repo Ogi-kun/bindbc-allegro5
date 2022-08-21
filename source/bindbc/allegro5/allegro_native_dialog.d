@@ -1,11 +1,12 @@
 module bindbc.allegro5.allegro_native_dialog;
 
 import bindbc.allegro5.config;
+
+static if (allegroDialog):
+
 import bindbc.allegro5.bind.display : ALLEGRO_DISPLAY;
 import bindbc.allegro5.bind.bitmap : ALLEGRO_BITMAP;
 import bindbc.allegro5.bind.events : ALLEGRO_EVENT_SOURCE;
-
-static if (allegroDialog):
 
 version (ALLEGRO_X11) {
 	import bindbc.allegro5.bind.display : ALLEGRO_GTK_TOPLEVEL_INTERNAL;
