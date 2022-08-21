@@ -29,42 +29,24 @@ bool isAllegroLoaded() {
 }
 
 AllegroSupport loadAllegro() {
-	version (Allegro_Monolith) {
-		enum monolith = true;
-	}
-	else {
-		enum monolith = false;
-	}
-
-	version (ALLEGRO_DEBUG) {
-		enum dbg = true;
-	}
-	else {
-		enum dbg = false;
-	}
-
-	// FIXME: add OSX & POSIX
 	version (Windows) {
-		enum libName(bool monolith, bool dbg, string suffix) = 
-				"allegro" ~
-				(monolith ? "_monolith" : "") ~
-				(dbg ? "-debug" : "") ~
-				suffix ~ 
-				".dll";
-
 		version (Allegro_Monolith) {
 			const(char)[][1] libNames = [
-				libName!(true, dbg, "-5.2"),
+				libName!"monolith",
 			];
 		}
 		else {
 			const(char)[][2] libNames = [
-				libName!(false, dbg, "-5.2"),
-				libName!(true, dbg, "-5.2"),
+				libName!"",
+				libName!"monolith",
 			];
 		}
 	}
-	else static assert(0, "bindbc-allegro5 is not yet supported on this platform.");
+	else {
+		const(char)[][1] libNames = [
+			libName!"",
+		];
+	}
 
 	typeof(return) result;
 	foreach (i; 0..libNames.length) {

@@ -331,20 +331,9 @@ else {
 	}
 
 	AllegroSupport loadAllegroPrimitives() {
-		// FIXME: add OSX & POSIX
-		version (Windows) {
-			version (ALLEGRO_DEBUG) {
-				const(char)[][1] libNames = [
-					"allegro_primitives-debug-5.2.dll",
-				];
-			}
-			else {
-				const(char)[][1] libNames = [
-					"allegro_primitives-5.2.dll",
-				];
-			}
-		}
-		else static assert(0, "bindbc-allegro5 is not yet supported on this platform.");
+		const(char)[][1] libNames = [
+			libName!"primitives",
+		];
 
 		typeof(return) result;
 		foreach (i; 0..libNames.length) {

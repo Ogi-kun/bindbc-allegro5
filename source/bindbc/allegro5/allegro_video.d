@@ -142,20 +142,9 @@ else {
 	}
 
 	AllegroSupport loadAllegroVideo() {
-		// FIXME: add OSX & POSIX
-		version (Windows) {
-			version (ALLEGRO_DEBUG) {
-				const(char)[][1] libNames = [
-					"allegro_video-debug-5.2.dll",
-				];
-			}
-			else {
-				const(char)[][1] libNames = [
-					"allegro_video-5.2.dll",
-				];
-			}
-		}
-		else static assert(0, "bindbc-allegro5 is not yet supported on this platform.");
+		const(char)[][1] libNames = [
+			libName!"video",
+		];
 
 		typeof(return) result;
 		foreach (i; 0..libNames.length) {

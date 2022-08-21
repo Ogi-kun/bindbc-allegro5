@@ -228,20 +228,9 @@ else {
 	}
 
 	AllegroSupport loadAllegroFont() {
-		// FIXME: add OSX & POSIX
-		version (Windows) {
-			version (ALLEGRO_DEBUG) {
-				const(char)[][1] libNames = [
-					"allegro_font-debug-5.2.dll",
-				];
-			}
-			else {
-				const(char)[][1] libNames = [
-					"allegro_font-5.2.dll",
-				];
-			}
-		}
-		else static assert(0, "bindbc-allegro5 is not yet supported on this platform.");
+		const(char)[][1] libNames = [
+			libName!"font",
+		];
 
 		typeof(return) result;
 		foreach (i; 0..libNames.length) {
