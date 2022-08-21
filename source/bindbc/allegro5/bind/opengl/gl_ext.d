@@ -2,6 +2,12 @@ module bindbc.allegro5.bind.opengl.gl_ext;
 
 import bindbc.allegro5.config;
 
+/*
+* This was stable in v5.2.0. Then v5.2.1 introduced breaking changes
+* without marking `ALLEGRO_OGL_EXT_LIST` as unstable. In result,
+* v5.2.2 unmade the problematic changes and declared this API unstable.
+* We retroactively consider it unstable no matter the version.
+*/
 version (ALLEGRO_UNSTABLE) {
 
 	static if (allegro5Support > Allegro5Support.v5_2_8) {
