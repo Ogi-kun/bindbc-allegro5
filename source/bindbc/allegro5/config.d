@@ -73,3 +73,17 @@ version (Allegro_Color) {
 else {
 	enum allegroColor = false;
 }
+
+version (Allegro_Font) {
+	enum allegroFont = true;
+}
+else {
+	enum allegroFont = false;
+}
+
+version (Allegro_TTF) {
+	enum allegroTTF = true;
+}
+else {
+	enum allegroTTF = false;
+}
