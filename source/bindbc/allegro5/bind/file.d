@@ -5,7 +5,8 @@ import bindbc.allegro5.config;
 import bindbc.allegro5.bind.utf8 : ALLEGRO_USTR;
 import bindbc.allegro5.bind.path : ALLEGRO_PATH;
 version (Posix) {
-	import core.sys.posix.sys.types : off_t;
+	import core.sys.posix.sys.types : posix_off_t = off_t;
+	alias off_t = posix_off_t;
 }
 else {
 	alias off_t = uint;
