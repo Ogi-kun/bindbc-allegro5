@@ -31,7 +31,7 @@ static if (staticBinding) {
 	bool al_join_paths(ALLEGRO_PATH* path, const(ALLEGRO_PATH)* tail);
 	bool al_rebase_path(const(ALLEGRO_PATH)* head, ALLEGRO_PATH* tail);
 	const(char)* al_path_cstr(const(ALLEGRO_PATH)* path, char delim);
-	const(ALLEGRO_USTR)* al_path_ustr(const(ALLEGRO_PATH)* path, char delim);
+	
 	void al_destroy_path(ALLEGRO_PATH* path);
 
 	void al_set_path_drive(ALLEGRO_PATH* path, const(char)* drive);
@@ -45,6 +45,10 @@ static if (staticBinding) {
 	const(char)* al_get_path_basename(const(ALLEGRO_PATH)* path);
 
 	bool al_make_path_canonical(ALLEGRO_PATH* path);
+
+	static if (allegro5Support >= Allegro5Support.v5_2_3) {
+		const(ALLEGRO_USTR)* al_path_ustr(const(ALLEGRO_PATH)* path, char delim);
+	}
 }
 else {
 	extern(C) @nogc nothrow {
@@ -63,7 +67,6 @@ else {
 		alias pal_join_paths = bool function(ALLEGRO_PATH* path, const(ALLEGRO_PATH)* tail);
 		alias pal_rebase_path = bool function(const(ALLEGRO_PATH)* head, ALLEGRO_PATH* tail);
 		alias pal_path_cstr = const(char)* function(const(ALLEGRO_PATH)* path, char delim);
-		alias pal_path_ustr = const(ALLEGRO_USTR)* function(const(ALLEGRO_PATH)* path, char delim);
 		alias pal_destroy_path = void function(ALLEGRO_PATH* path);
 
 		alias pal_set_path_drive = void function(ALLEGRO_PATH* path, const(char)* drive);
@@ -77,6 +80,10 @@ else {
 		alias pal_get_path_basename = const(char)* function(const(ALLEGRO_PATH)* path);
 
 		alias pal_make_path_canonical = bool function(ALLEGRO_PATH* path);
+
+		static if (allegro5Support >= Allegro5Support.v5_2_3) {
+			alias pal_path_ustr = const(ALLEGRO_USTR)* function(const(ALLEGRO_PATH)* path, char delim);
+		}
 	}
 	__gshared {
 		pal_create_path al_create_path;
@@ -94,7 +101,6 @@ else {
 		pal_join_paths al_join_paths;
 		pal_rebase_path al_rebase_path;
 		pal_path_cstr al_path_cstr;
-		pal_path_ustr al_path_ustr;
 		pal_destroy_path al_destroy_path;
 
 		pal_set_path_drive al_set_path_drive;
@@ -108,5 +114,9 @@ else {
 		pal_get_path_basename al_get_path_basename;
 
 		pal_make_path_canonical al_make_path_canonical;
+
+		static if (allegro5Support >= Allegro5Support.v5_2_3) {
+			pal_path_ustr al_path_ustr;
+		}
 	}
 }

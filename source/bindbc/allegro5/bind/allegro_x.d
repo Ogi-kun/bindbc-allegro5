@@ -11,21 +11,21 @@ alias XID = c_ulong;
 static if (staticBinding) {
 	extern(C) @nogc nothrow:
 	XID al_get_x_window_id(ALLEGRO_DISPLAY* display);
-	version (ALLEGRO_UNSTABLE) {
+	version (ALLEGRO_UNSTABLE) static if (allegro5Support >= Allegro5Support.v5_2_3) {
 		bool al_x_set_initial_icon(ALLEGRO_BITMAP* bitmap);
 	}
 }
 else {
 	extern(C) @nogc nothrow {
 		alias pal_get_x_window_id = XID function(ALLEGRO_DISPLAY* display);
-		version (ALLEGRO_UNSTABLE) {
+		version (ALLEGRO_UNSTABLE) static if (allegro5Support >= Allegro5Support.v5_2_3) {
 			alias pal_x_set_initial_icon = bool function(ALLEGRO_BITMAP* bitmap);
 		}
 	}
 	
 	__gshared {
 		pal_get_x_window_id al_get_x_window_id;
-		version (ALLEGRO_UNSTABLE) {
+		version (ALLEGRO_UNSTABLE) static if (allegro5Support >= Allegro5Support.v5_2_3) {
 			pal_x_set_initial_icon al_x_set_initial_icon;
 		}
 	}

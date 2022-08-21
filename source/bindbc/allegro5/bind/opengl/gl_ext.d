@@ -4,7 +4,7 @@ import bindbc.allegro5.config;
 
 version (ALLEGRO_UNSTABLE) {
 
-	static if (allegro5Support != Allegro5Support.v5_2_8) {
+	static if (allegro5Support > Allegro5Support.v5_2_8) {
 		static assert(0, "Unstable OpenGL API is not defined for this version");
 	}
 
@@ -291,9 +291,19 @@ version (ALLEGRO_UNSTABLE) {
 		int ALLEGRO_GL_OES_query_matrix;
 		int ALLEGRO_GL_OES_framebuffer_object;
 		int ALLEGRO_GL_OES_texture_npot; /* added in 5.1.2 */
+
+		static if (allegro5Support >= Allegro5Support.v5_2_1 && allegro5Support < Allegro5Support.v5_2_2) {
+			int ALLEGRO_GL_OES_depth24;
+		}
+
 		int ALLEGRO_GL_EXT_depth_bounds_test;
 		int ALLEGRO_GL_EXT_texture_mirror_clamp;
 		int ALLEGRO_GL_EXT_blend_equation_separate;
+
+		static if (allegro5Support >= Allegro5Support.v5_2_1 && allegro5Support < Allegro5Support.v5_2_2) {
+			int ALLEGRO_GL_EXT_multisampled_render_to_texture;
+		}
+
 		int ALLEGRO_GL_MESA_pack_invert;
 		int ALLEGRO_GL_MESA_ycbcr_texture;
 		int ALLEGRO_GL_EXT_pixel_buffer_object;
@@ -454,7 +464,7 @@ version (ALLEGRO_UNSTABLE) {
 			int ALLEGRO_GLX_EXT_swap_control;
 			int ALLEGRO_GLX_NV_copy_image;
 			int ALLEGRO_GLX_INTEL_swap_event;
-			int ALLEGRO_GLX_EXT_create_context_es_profile;
+			int ALLEGRO_GLX_EXT_create_context_es_profile; /* added in 5.1.13.0 */
 		}
 	}
 }

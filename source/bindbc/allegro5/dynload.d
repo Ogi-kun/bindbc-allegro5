@@ -9,7 +9,7 @@ import bindbc.allegro5.bind;
 
 private {
 	__gshared SharedLib lib;
-	__gshared Allegro5Support allegro5LoadedVersion;
+	__gshared Allegro5Support loadedVersion;
 }
 
 void unloadAllegro5() {
@@ -19,7 +19,7 @@ void unloadAllegro5() {
 }
 
 Allegro5Support loadedAllegro5Version() { 
-	return allegro5LoadedVersion; 
+	return loadedVersion; 
 }
 
 bool isAllegro5Loaded() {
@@ -60,17 +60,13 @@ Allegro5Support loadAllegro5(const(char)* libName) {
 	}
 
 	auto lastErrorCount = errorCount();
-	allegro5LoadedVersion = Allegro5Support.badLibrary;
+	loadedVersion = Allegro5Support.badLibrary;
 	
 	version (Android) {
 		lib.bindSymbol(cast(void**)&al_android_set_apk_file_interface, "al_android_set_apk_file_interface");
 		lib.bindSymbol(cast(void**)&al_android_get_os_version, "al_android_get_os_version");
 		lib.bindSymbol(cast(void**)&al_android_set_apk_fs_interface, "al_android_set_apk_fs_interface");
 		lib.bindSymbol(cast(void**)&_al_android_set_capture_volume_keys, "_al_android_set_capture_volume_keys");
-
-		version (ALLEGRO_UNSTABLE) {
-			lib.bindSymbol(cast(void**)&al_android_get_jni_env, "al_android_get_jni_env");
-		}
 	}
 
 	version (Windows) {
@@ -120,10 +116,6 @@ Allegro5Support loadAllegro5(const(char)* libName) {
 
 	version (ALLEGRO_X11) {
 		lib.bindSymbol(cast(void**)&al_get_x_window_id, "al_get_x_window_id");
-
-		version (ALLEGRO_UNSTABLE) {
-			lib.bindSymbol(cast(void**)&al_x_set_initial_icon, "al_x_set_initial_icon");
-		}
 	}
 
 	lib.bindSymbol(cast(void**)&al_get_time, "al_get_time");
@@ -139,24 +131,10 @@ Allegro5Support loadAllegro5(const(char)* libName) {
 	lib.bindSymbol(cast(void**)&al_get_new_bitmap_flags, "al_get_new_bitmap_flags");
 	lib.bindSymbol(cast(void**)&al_add_new_bitmap_flag, "al_add_new_bitmap_flag");
 
-	version (ALLEGRO_UNSTABLE) {
-		lib.bindSymbol(cast(void**)&al_get_new_bitmap_depth, "al_get_new_bitmap_depth");
-		lib.bindSymbol(cast(void**)&al_set_new_bitmap_depth, "al_set_new_bitmap_depth");
-		lib.bindSymbol(cast(void**)&al_get_new_bitmap_samples, "al_get_new_bitmap_samples");
-		lib.bindSymbol(cast(void**)&al_set_new_bitmap_samples, "al_set_new_bitmap_samples");
-		lib.bindSymbol(cast(void**)&al_get_new_bitmap_wrap, "al_get_new_bitmap_wrap");
-		lib.bindSymbol(cast(void**)&al_set_new_bitmap_wrap, "al_set_new_bitmap_wrap");
-	}
-
 	lib.bindSymbol(cast(void**)&al_get_bitmap_width, "al_get_bitmap_width");
 	lib.bindSymbol(cast(void**)&al_get_bitmap_height, "al_get_bitmap_height");
 	lib.bindSymbol(cast(void**)&al_get_bitmap_format, "al_get_bitmap_format");
 	lib.bindSymbol(cast(void**)&al_get_bitmap_flags, "al_get_bitmap_flags");
-
-	version (ALLEGRO_UNSTABLE) {
-		lib.bindSymbol(cast(void**)&al_get_bitmap_depth, "al_get_bitmap_depth");
-		lib.bindSymbol(cast(void**)&al_get_bitmap_samples, "al_get_bitmap_samples");
-	}
 
 	lib.bindSymbol(cast(void**)&al_create_bitmap, "al_create_bitmap");
 	lib.bindSymbol(cast(void**)&al_destroy_bitmap, "al_destroy_bitmap");
@@ -166,16 +144,6 @@ Allegro5Support loadAllegro5(const(char)* libName) {
 	lib.bindSymbol(cast(void**)&al_get_pixel, "al_get_pixel");
 
 	lib.bindSymbol(cast(void**)&al_convert_mask_to_alpha, "al_convert_mask_to_alpha");
-
-	version (ALLEGRO_UNSTABLE) {
-		lib.bindSymbol(cast(void**)&al_get_bitmap_blend_color, "al_get_bitmap_blend_color");
-		lib.bindSymbol(cast(void**)&al_get_bitmap_blender, "al_get_bitmap_blender");
-		lib.bindSymbol(cast(void**)&al_get_separate_bitmap_blender, "al_get_separate_bitmap_blender");
-		lib.bindSymbol(cast(void**)&al_set_bitmap_blend_color, "al_set_bitmap_blend_color");
-		lib.bindSymbol(cast(void**)&al_set_bitmap_blender, "al_set_bitmap_blender");
-		lib.bindSymbol(cast(void**)&al_set_separate_bitmap_blender, "al_set_separate_bitmap_blender");
-		lib.bindSymbol(cast(void**)&al_reset_bitmap_blender, "al_reset_bitmap_blender");
-	}
 
 	lib.bindSymbol(cast(void**)&al_set_clipping_rectangle, "al_set_clipping_rectangle");
 	lib.bindSymbol(cast(void**)&al_reset_clipping_rectangle, "al_reset_clipping_rectangle");
@@ -191,9 +159,6 @@ Allegro5Support loadAllegro5(const(char)* libName) {
 	lib.bindSymbol(cast(void**)&al_clone_bitmap, "al_clone_bitmap");
 	lib.bindSymbol(cast(void**)&al_convert_bitmap, "al_convert_bitmap");
 	lib.bindSymbol(cast(void**)&al_convert_memory_bitmaps, "al_convert_memory_bitmaps");
-	version (ALLEGRO_UNSTABLE) {
-		lib.bindSymbol(cast(void**)&al_backup_dirty_bitmap, "al_backup_dirty_bitmap");
-	}
 
 	lib.bindSymbol(cast(void**)&al_draw_bitmap, "al_draw_bitmap");
 	lib.bindSymbol(cast(void**)&al_draw_bitmap_region, "al_draw_bitmap_region");
@@ -346,9 +311,6 @@ Allegro5Support loadAllegro5(const(char)* libName) {
 
 	lib.bindSymbol(cast(void**)&al_acknowledge_drawing_halt, "al_acknowledge_drawing_halt");
 	lib.bindSymbol(cast(void**)&al_acknowledge_drawing_resume, "al_acknowledge_drawing_resume");
-	version (ALLEGRO_UNSTABLE) {
-		lib.bindSymbol(cast(void**)&al_backup_dirty_bitmaps, "al_backup_dirty_bitmaps");
-	}
 
 	lib.bindSymbol(cast(void**)&al_clear_to_color, "al_clear_to_color");
 	lib.bindSymbol(cast(void**)&al_clear_depth_buffer, "al_clear_depth_buffer");
@@ -456,47 +418,6 @@ Allegro5Support loadAllegro5(const(char)* libName) {
 	lib.bindSymbol(cast(void**)&al_get_num_display_modes, "al_get_num_display_modes");
 	lib.bindSymbol(cast(void**)&al_get_display_mode, "al_get_display_mode");
 
-	version (ALLEGRO_UNSTABLE) {
-		lib.bindSymbol(cast(void**)&al_install_haptic, "al_install_haptic");
-		lib.bindSymbol(cast(void**)&al_uninstall_haptic, "al_uninstall_haptic");
-		lib.bindSymbol(cast(void**)&al_is_haptic_installed, "al_is_haptic_installed");
-
-		lib.bindSymbol(cast(void**)&al_is_mouse_haptic, "al_is_mouse_haptic");
-		lib.bindSymbol(cast(void**)&al_is_joystick_haptic, "al_is_joystick_haptic");
-		lib.bindSymbol(cast(void**)&al_is_keyboard_haptic, "al_is_keyboard_haptic");
-		lib.bindSymbol(cast(void**)&al_is_display_haptic, "al_is_display_haptic");
-		lib.bindSymbol(cast(void**)&al_is_touch_input_haptic, "al_is_touch_input_haptic");
-
-		lib.bindSymbol(cast(void**)&al_get_haptic_from_mouse, "al_get_haptic_from_mouse");
-		lib.bindSymbol(cast(void**)&al_get_haptic_from_joystick, "al_get_haptic_from_joystick");
-		lib.bindSymbol(cast(void**)&al_get_haptic_from_keyboard, "al_get_haptic_from_keyboard");
-		lib.bindSymbol(cast(void**)&al_get_haptic_from_display, "al_get_haptic_from_display");
-		lib.bindSymbol(cast(void**)&al_get_haptic_from_touch_input, "al_get_haptic_from_touch_input");
-
-		lib.bindSymbol(cast(void**)&al_release_haptic, "al_release_haptic");
-
-		lib.bindSymbol(cast(void**)&al_is_haptic_active, "al_is_haptic_active");
-		lib.bindSymbol(cast(void**)&al_get_haptic_capabilities, "al_get_haptic_capabilities");
-		lib.bindSymbol(cast(void**)&al_is_haptic_capable, "al_is_haptic_capable");
-
-		lib.bindSymbol(cast(void**)&al_set_haptic_gain, "al_set_haptic_gain");
-		lib.bindSymbol(cast(void**)&al_get_haptic_gain, "al_get_haptic_gain");
-
-		lib.bindSymbol(cast(void**)&al_set_haptic_autocenter, "al_set_haptic_autocenter");
-		lib.bindSymbol(cast(void**)&al_get_haptic_autocenter, "al_get_haptic_autocenter");
-
-		lib.bindSymbol(cast(void**)&al_get_max_haptic_effects, "al_get_max_haptic_effects");
-		lib.bindSymbol(cast(void**)&al_is_haptic_effect_ok, "al_is_haptic_effect_ok");
-		lib.bindSymbol(cast(void**)&al_upload_haptic_effect, "al_upload_haptic_effect");
-		lib.bindSymbol(cast(void**)&al_play_haptic_effect, "al_play_haptic_effect");
-		lib.bindSymbol(cast(void**)&al_upload_and_play_haptic_effect, "al_upload_and_play_haptic_effect");
-		lib.bindSymbol(cast(void**)&al_stop_haptic_effect, "al_stop_haptic_effect");
-		lib.bindSymbol(cast(void**)&al_is_haptic_effect_playing, "al_is_haptic_effect_playing");
-		lib.bindSymbol(cast(void**)&al_release_haptic_effect, "al_release_haptic_effect");
-		lib.bindSymbol(cast(void**)&al_get_haptic_effect_duration, "al_get_haptic_effect_duration");
-		lib.bindSymbol(cast(void**)&al_rumble_haptic, "al_rumble_haptic");
-	}
-
 	lib.bindSymbol(cast(void**)&al_install_joystick, "al_install_joystick");
 	lib.bindSymbol(cast(void**)&al_uninstall_joystick, "al_uninstall_joystick");
 	lib.bindSymbol(cast(void**)&al_is_joystick_installed, "al_is_joystick_installed");
@@ -531,10 +452,6 @@ Allegro5Support loadAllegro5(const(char)* libName) {
 	lib.bindSymbol(cast(void**)&al_key_down, "al_key_down");
 	lib.bindSymbol(cast(void**)&al_get_keyboard_event_source, "al_get_keyboard_event_source");
 
-	version (ALLEGRO_UNSTABLE) {
-		lib.bindSymbol(cast(void**)&al_clear_keyboard_state, "al_clear_keyboard_state");
-	}
-
 	lib.bindSymbol(cast(void**)&al_set_memory_interface, "al_set_memory_interface");
 	lib.bindSymbol(cast(void**)&al_malloc_with_context, "al_malloc_with_context");
 	lib.bindSymbol(cast(void**)&al_free_with_context, "al_free_with_context");
@@ -543,11 +460,6 @@ Allegro5Support loadAllegro5(const(char)* libName) {
 
 	lib.bindSymbol(cast(void**)&al_get_num_video_adapters, "al_get_num_video_adapters");
 	lib.bindSymbol(cast(void**)&al_get_monitor_info, "al_get_monitor_info");
-	lib.bindSymbol(cast(void**)&al_get_monitor_dpi, "al_get_monitor_dpi");
-
-	version (ALLEGRO_UNSTABLE) {
-		lib.bindSymbol(cast(void**)&al_get_monitor_refresh_rate, "al_get_monitor_refresh_rate");
-	}
 
 	lib.bindSymbol(cast(void**)&al_is_mouse_installed, "al_is_mouse_installed");
 	lib.bindSymbol(cast(void**)&al_install_mouse, "al_install_mouse");
@@ -590,7 +502,6 @@ Allegro5Support loadAllegro5(const(char)* libName) {
 	lib.bindSymbol(cast(void**)&al_join_paths, "al_join_paths");
 	lib.bindSymbol(cast(void**)&al_rebase_path, "al_rebase_path");
 	lib.bindSymbol(cast(void**)&al_path_cstr, "al_path_cstr");
-	lib.bindSymbol(cast(void**)&al_path_ustr, "al_path_ustr");
 	lib.bindSymbol(cast(void**)&al_destroy_path, "al_destroy_path");
 
 	lib.bindSymbol(cast(void**)&al_set_path_drive, "al_set_path_drive");
@@ -631,7 +542,6 @@ Allegro5Support loadAllegro5(const(char)* libName) {
 	lib.bindSymbol(cast(void**)&al_is_system_installed, "al_is_system_installed");
 	lib.bindSymbol(cast(void**)&al_get_system_driver, "al_get_system_driver");
 	lib.bindSymbol(cast(void**)&al_get_system_config, "al_get_system_config");
-	lib.bindSymbol(cast(void**)&al_get_system_id, "al_get_system_id");
 
 	lib.bindSymbol(cast(void**)&al_get_standard_path, "al_get_standard_path");
 	lib.bindSymbol(cast(void**)&al_set_exe_name, "al_set_exe_name");
@@ -644,9 +554,7 @@ Allegro5Support loadAllegro5(const(char)* libName) {
 	lib.bindSymbol(cast(void**)&al_inhibit_screensaver, "al_inhibit_screensaver");
 
 	lib.bindSymbol(cast(void**)&al_create_thread, "al_create_thread");
-	version (ALLEGRO_UNSTABLE) {
-		lib.bindSymbol(cast(void**)&al_create_thread_with_stacksize, "al_create_thread_with_stacksize");
-	}
+
 	lib.bindSymbol(cast(void**)&al_start_thread, "al_start_thread");
 	lib.bindSymbol(cast(void**)&al_join_thread, "al_join_thread");
 	lib.bindSymbol(cast(void**)&al_set_thread_should_stop, "al_set_thread_should_stop");
@@ -689,12 +597,6 @@ Allegro5Support loadAllegro5(const(char)* libName) {
 	lib.bindSymbol(cast(void**)&al_get_touch_input_state, "al_get_touch_input_state");
 	lib.bindSymbol(cast(void**)&al_get_touch_input_event_source, "al_get_touch_input_event_source");
 
-	version (ALLEGRO_UNSTABLE) {
-		lib.bindSymbol(cast(void**)&al_set_mouse_emulation_mode, "al_set_mouse_emulation_mode");
-		lib.bindSymbol(cast(void**)&al_get_mouse_emulation_mode, "al_get_mouse_emulation_mode");
-		lib.bindSymbol(cast(void**)&al_get_touch_input_mouse_emulation_event_source, "al_get_touch_input_mouse_emulation_event_source");
-	}
-
 	lib.bindSymbol(cast(void**)&al_use_transform, "al_use_transform");
 	lib.bindSymbol(cast(void**)&al_use_projection_transform, "al_use_projection_transform");
 	lib.bindSymbol(cast(void**)&al_copy_transform, "al_copy_transform");
@@ -709,14 +611,11 @@ Allegro5Support loadAllegro5(const(char)* libName) {
 	lib.bindSymbol(cast(void**)&al_scale_transform_3d, "al_scale_transform_3d");
 	lib.bindSymbol(cast(void**)&al_transform_coordinates, "al_transform_coordinates");
 	lib.bindSymbol(cast(void**)&al_transform_coordinates_3d, "al_transform_coordinates_3d");
-	lib.bindSymbol(cast(void**)&al_transform_coordinates_4d, "al_transform_coordinates_4d");
-	lib.bindSymbol(cast(void**)&al_transform_coordinates_3d_projective, "al_transform_coordinates_3d_projective");
 	lib.bindSymbol(cast(void**)&al_compose_transform, "al_compose_transform");
 	lib.bindSymbol(cast(void**)&al_get_current_transform, "al_get_current_transform");
 	lib.bindSymbol(cast(void**)&al_get_current_inverse_transform, "al_get_current_inverse_transform");
 	lib.bindSymbol(cast(void**)&al_get_current_projection_transform, "al_get_current_projection_transform");
 	lib.bindSymbol(cast(void**)&al_invert_transform, "al_invert_transform");
-	lib.bindSymbol(cast(void**)&al_transpose_transform, "al_transpose_transform");
 	lib.bindSymbol(cast(void**)&al_check_inverse, "al_check_inverse");
 	lib.bindSymbol(cast(void**)&al_orthographic_transform, "al_orthographic_transform");
 	lib.bindSymbol(cast(void**)&al_perspective_transform, "al_perspective_transform");
@@ -802,12 +701,169 @@ Allegro5Support loadAllegro5(const(char)* libName) {
 	lib.bindSymbol(cast(void**)&al_ustr_encode_utf16, "al_ustr_encode_utf16");
 	lib.bindSymbol(cast(void**)&al_utf16_width, "al_utf16_width");
 	lib.bindSymbol(cast(void**)&al_utf16_encode, "al_utf16_encode");
-	
+
+	version (ALLEGRO_UNSTABLE) {
+
+		lib.bindSymbol(cast(void**)&al_install_haptic, "al_install_haptic");
+		lib.bindSymbol(cast(void**)&al_uninstall_haptic, "al_uninstall_haptic");
+		lib.bindSymbol(cast(void**)&al_is_haptic_installed, "al_is_haptic_installed");
+
+		lib.bindSymbol(cast(void**)&al_is_mouse_haptic, "al_is_mouse_haptic");
+		lib.bindSymbol(cast(void**)&al_is_joystick_haptic, "al_is_joystick_haptic");
+		lib.bindSymbol(cast(void**)&al_is_keyboard_haptic, "al_is_keyboard_haptic");
+		lib.bindSymbol(cast(void**)&al_is_display_haptic, "al_is_display_haptic");
+		lib.bindSymbol(cast(void**)&al_is_touch_input_haptic, "al_is_touch_input_haptic");
+
+		lib.bindSymbol(cast(void**)&al_get_haptic_from_mouse, "al_get_haptic_from_mouse");
+		lib.bindSymbol(cast(void**)&al_get_haptic_from_joystick, "al_get_haptic_from_joystick");
+		lib.bindSymbol(cast(void**)&al_get_haptic_from_keyboard, "al_get_haptic_from_keyboard");
+		lib.bindSymbol(cast(void**)&al_get_haptic_from_display, "al_get_haptic_from_display");
+		lib.bindSymbol(cast(void**)&al_get_haptic_from_touch_input, "al_get_haptic_from_touch_input");
+
+		lib.bindSymbol(cast(void**)&al_release_haptic, "al_release_haptic");
+
+		lib.bindSymbol(cast(void**)&al_is_haptic_active, "al_is_haptic_active");
+		lib.bindSymbol(cast(void**)&al_get_haptic_capabilities, "al_get_haptic_capabilities");
+		lib.bindSymbol(cast(void**)&al_is_haptic_capable, "al_is_haptic_capable");
+
+		lib.bindSymbol(cast(void**)&al_set_haptic_gain, "al_set_haptic_gain");
+		lib.bindSymbol(cast(void**)&al_get_haptic_gain, "al_get_haptic_gain");
+
+		lib.bindSymbol(cast(void**)&al_set_haptic_autocenter, "al_set_haptic_autocenter");
+		lib.bindSymbol(cast(void**)&al_get_haptic_autocenter, "al_get_haptic_autocenter");
+
+		lib.bindSymbol(cast(void**)&al_get_max_haptic_effects, "al_get_max_haptic_effects");
+		lib.bindSymbol(cast(void**)&al_is_haptic_effect_ok, "al_is_haptic_effect_ok");
+		lib.bindSymbol(cast(void**)&al_upload_haptic_effect, "al_upload_haptic_effect");
+		lib.bindSymbol(cast(void**)&al_play_haptic_effect, "al_play_haptic_effect");
+		lib.bindSymbol(cast(void**)&al_upload_and_play_haptic_effect, "al_upload_and_play_haptic_effect");
+		lib.bindSymbol(cast(void**)&al_stop_haptic_effect, "al_stop_haptic_effect");
+		lib.bindSymbol(cast(void**)&al_is_haptic_effect_playing, "al_is_haptic_effect_playing");
+		lib.bindSymbol(cast(void**)&al_release_haptic_effect, "al_release_haptic_effect");
+		lib.bindSymbol(cast(void**)&al_get_haptic_effect_duration, "al_get_haptic_effect_duration");
+		lib.bindSymbol(cast(void**)&al_rumble_haptic, "al_rumble_haptic");
+
+		lib.bindSymbol(cast(void**)&al_set_mouse_emulation_mode, "al_set_mouse_emulation_mode");
+		lib.bindSymbol(cast(void**)&al_get_mouse_emulation_mode, "al_get_mouse_emulation_mode");
+		lib.bindSymbol(cast(void**)&al_get_touch_input_mouse_emulation_event_source, "al_get_touch_input_mouse_emulation_event_source");
+	}
+
+	static if (allegro5Support >= Allegro5Support.v5_2_1) {
+		version (ALLEGRO_UNSTABLE) {
+			lib.bindSymbol(cast(void**)&al_get_new_bitmap_depth, "al_get_new_bitmap_depth");
+			lib.bindSymbol(cast(void**)&al_set_new_bitmap_depth, "al_set_new_bitmap_depth");
+			lib.bindSymbol(cast(void**)&al_get_new_bitmap_samples, "al_get_new_bitmap_samples");
+			lib.bindSymbol(cast(void**)&al_set_new_bitmap_samples, "al_set_new_bitmap_samples");
+			lib.bindSymbol(cast(void**)&al_get_bitmap_depth, "al_get_bitmap_depth");
+			lib.bindSymbol(cast(void**)&al_get_bitmap_samples, "al_get_bitmap_samples");
+
+			lib.bindSymbol(cast(void**)&al_backup_dirty_bitmap, "al_backup_dirty_bitmap");
+			lib.bindSymbol(cast(void**)&al_backup_dirty_bitmaps, "al_backup_dirty_bitmaps");
+		}
+		if (errorCount() != errCount) {
+			return Allegro5Support.badLibrary;
+		}
+		loadedVersion = Allegro5Support.v5_2_1;
+	}
+		
+	static if (allegro5Support >= Allegro5Support.v5_2_2) {
+		version (ALLEGRO_UNSTABLE) {
+			version (Android) {
+				lib.bindSymbol(cast(void**)&al_android_get_jni_env, "al_android_get_jni_env");
+				lib.bindSymbol(cast(void**)&pal_android_get_activity, "pal_android_get_activity");
+			}
+		}
+
+		if (errorCount() != errCount) {
+			return Allegro5Support.badLibrary;
+		}
+		loadedVersion = Allegro5Support.v5_2_2;
+	}
+
+	static if (allegro5Support >= Allegro5Support.v5_2_3) {
+		version (ALLEGRO_UNSTABLE) {
+			version (ALLEGRO_X11) {
+				lib.bindSymbol(cast(void**)&al_x_set_initial_icon, "al_x_set_initial_icon");
+			}
+			lib.bindSymbol(cast(void**)&al_clear_keyboard_state, "al_clear_keyboard_state");
+		}
+		// Considered stable
+		lib.bindSymbol(cast(void**)&al_path_ustr, "al_path_ustr");
+
+		if (errorCount() != errCount) {
+			return Allegro5Support.badLibrary;
+		}
+		loadedVersion = Allegro5Support.v5_2_3;
+	}
+
+	static if (allegro5Support >= Allegro5Support.v5_2_4) {
+		if (errorCount() != errCount) {
+			return Allegro5Support.badLibrary;
+		}
+		loadedVersion = Allegro5Support.v5_2_4;
+	}
+
+	static if (allegro5Support >= Allegro5Support.v5_2_5) {
+		version (ALLEGRO_UNSTABLE) {
+			lib.bindSymbol(cast(void**)&al_get_bitmap_blend_color, "al_get_bitmap_blend_color");
+			lib.bindSymbol(cast(void**)&al_get_bitmap_blender, "al_get_bitmap_blender");
+			lib.bindSymbol(cast(void**)&al_get_separate_bitmap_blender, "al_get_separate_bitmap_blender");
+			lib.bindSymbol(cast(void**)&al_set_bitmap_blend_color, "al_set_bitmap_blend_color");
+			lib.bindSymbol(cast(void**)&al_set_bitmap_blender, "al_set_bitmap_blender");
+			lib.bindSymbol(cast(void**)&al_set_separate_bitmap_blender, "al_set_separate_bitmap_blender");
+			lib.bindSymbol(cast(void**)&al_reset_bitmap_blender, "al_reset_bitmap_blender");
+
+			lib.bindSymbol(cast(void**)&al_create_thread_with_stacksize, "al_create_thread_with_stacksize");
+		}
+
+		// Considered stable
+		lib.bindSymbol(cast(void**)&al_get_monitor_dpi, "al_get_monitor_dpi");
+		lib.bindSymbol(cast(void**)&al_get_system_id, "al_get_system_id");
+		lib.bindSymbol(cast(void**)&al_transpose_transform, "al_transpose_transform");
+		lib.bindSymbol(cast(void**)&al_transform_coordinates_4d, "al_transform_coordinates_4d");
+		lib.bindSymbol(cast(void**)&al_transform_coordinates_3d_projective, "al_transform_coordinates_3d_projective");
+
+		if (errorCount() != errCount) {
+			return Allegro5Support.badLibrary;
+		}
+		loadedVersion = Allegro5Support.v5_2_5;
+	}
+
+	static if (allegro5Support >= Allegro5Support.v5_2_6) {
+		version (ALLEGRO_UNSTABLE) {
+			lib.bindSymbol(cast(void**)&al_get_monitor_refresh_rate, "al_get_monitor_refresh_rate");
+		}
+
+		if (errorCount() != errCount) {
+			return Allegro5Support.badLibrary;
+		}
+		loadedVersion = Allegro5Support.v5_2_6;
+	}
+
+	static if (allegro5Support >= Allegro5Support.v5_2_7) {
+		if (errorCount() != errCount) {
+			return Allegro5Support.badLibrary;
+		}
+		loadedVersion = Allegro5Support.v5_2_7;
+	}
+
+	static if (allegro5Support >= Allegro5Support.v5_2_8) {
+		version (ALLEGRO_UNSTABLE) {
+			lib.bindSymbol(cast(void**)&al_get_new_bitmap_wrap, "al_get_new_bitmap_wrap");
+			lib.bindSymbol(cast(void**)&al_set_new_bitmap_wrap, "al_set_new_bitmap_wrap");
+		}
+
+		if (errorCount() != errCount) {
+			return Allegro5Support.badLibrary;
+		}
+		loadedVersion = Allegro5Support.v5_2_8;
+	}
+		
 	if (errorCount() != lastErrorCount) {
 		return Allegro5Support.badLibrary;
 	}
 	else {
-		return Allegro5Support.v5_2_8;
+		return loadedVersion;
 	}
-	
+
 }

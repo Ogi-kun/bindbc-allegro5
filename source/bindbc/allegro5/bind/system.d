@@ -7,16 +7,18 @@ import bindbc.allegro5.bind.path : ALLEGRO_PATH;
 
 struct ALLEGRO_SYSTEM;
 
-enum ALLEGRO_SYSTEM_ID {
-	ALLEGRO_SYSTEM_ID_UNKNOWN = 0,
-	ALLEGRO_SYSTEM_ID_XGLX = AL_ID('X', 'G', 'L', 'X'),
-	ALLEGRO_SYSTEM_ID_WINDOWS = AL_ID('W', 'I', 'N', 'D'),
-	ALLEGRO_SYSTEM_ID_MACOSX = AL_ID('O', 'S', 'X', ' '),
-	ALLEGRO_SYSTEM_ID_ANDROID = AL_ID('A', 'N', 'D', 'R'),
-	ALLEGRO_SYSTEM_ID_IPHONE = AL_ID('I', 'P', 'H', 'O'),
-	ALLEGRO_SYSTEM_ID_GP2XWIZ = AL_ID('W', 'I', 'Z', ' '),
-	ALLEGRO_SYSTEM_ID_RASPBERRYPI = AL_ID('R', 'A', 'S', 'P'),
-	ALLEGRO_SYSTEM_ID_SDL = AL_ID('S', 'D', 'L', '2')
+static if (allegro5Support >= Allegro5Support.v5_2_5) {
+	enum ALLEGRO_SYSTEM_ID {
+		ALLEGRO_SYSTEM_ID_UNKNOWN = 0,
+		ALLEGRO_SYSTEM_ID_XGLX = AL_ID('X', 'G', 'L', 'X'),
+		ALLEGRO_SYSTEM_ID_WINDOWS = AL_ID('W', 'I', 'N', 'D'),
+		ALLEGRO_SYSTEM_ID_MACOSX = AL_ID('O', 'S', 'X', ' '),
+		ALLEGRO_SYSTEM_ID_ANDROID = AL_ID('A', 'N', 'D', 'R'),
+		ALLEGRO_SYSTEM_ID_IPHONE = AL_ID('I', 'P', 'H', 'O'),
+		ALLEGRO_SYSTEM_ID_GP2XWIZ = AL_ID('W', 'I', 'Z', ' '),
+		ALLEGRO_SYSTEM_ID_RASPBERRYPI = AL_ID('R', 'A', 'S', 'P'),
+		ALLEGRO_SYSTEM_ID_SDL = AL_ID('S', 'D', 'L', '2')
+	}
 }
 
 enum {
@@ -45,7 +47,6 @@ static if (staticBinding) {
 	bool al_is_system_installed();
 	ALLEGRO_SYSTEM* al_get_system_driver();
 	ALLEGRO_CONFIG* al_get_system_config();
-	ALLEGRO_SYSTEM_ID al_get_system_id();
 
 	ALLEGRO_PATH* al_get_standard_path(int id);
 	void al_set_exe_name(const(char)* path);
@@ -56,6 +57,11 @@ static if (staticBinding) {
 	const(char)* al_get_app_name();
 
 	bool al_inhibit_screensaver(bool inhibit);
+
+	static if (allegro5Support >= Allegro5Support.v5_2_5) {
+		ALLEGRO_SYSTEM_ID al_get_system_id();
+	}
+
 }
 else {
 	extern(C) @nogc nothrow {
@@ -64,7 +70,6 @@ else {
 		alias pal_is_system_installed = bool function();
 		alias pal_get_system_driver = ALLEGRO_SYSTEM* function();
 		alias pal_get_system_config = ALLEGRO_CONFIG* function();
-		alias pal_get_system_id = ALLEGRO_SYSTEM_ID function();
 
 		alias pal_get_standard_path = ALLEGRO_PATH* function(int id);
 		alias pal_set_exe_name = void function(const(char)* path);
@@ -75,6 +80,10 @@ else {
 		alias pal_get_app_name = const(char)* function();
 
 		alias pal_inhibit_screensaver = bool function(bool inhibit);
+
+		static if (allegro5Support >= Allegro5Support.v5_2_5) {
+			alias pal_get_system_id = ALLEGRO_SYSTEM_ID function();
+		}
 	}
 	__gshared {
 		pal_install_system al_install_system;
@@ -82,7 +91,7 @@ else {
 		pal_is_system_installed al_is_system_installed;
 		pal_get_system_driver al_get_system_driver;
 		pal_get_system_config al_get_system_config;
-		pal_get_system_id al_get_system_id;
+		
 
 		pal_get_standard_path al_get_standard_path;
 		pal_set_exe_name al_set_exe_name;
@@ -93,5 +102,9 @@ else {
 		pal_get_app_name al_get_app_name;
 
 		pal_inhibit_screensaver al_inhibit_screensaver;
+
+		static if (allegro5Support >= Allegro5Support.v5_2_5) {
+			pal_get_system_id al_get_system_id;
+		}
 	}
 }

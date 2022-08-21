@@ -5,12 +5,12 @@ import bindbc.allegro5.bind.color : ALLEGRO_COLOR;
 
 struct ALLEGRO_BITMAP;
 
-version (ALLEGRO_UNSTABLE) {
+version (ALLEGRO_UNSTABLE) static if (allegro5Support >= Allegro5Support.v5_2_8) {
 	enum ALLEGRO_BITMAP_WRAP {
-	   ALLEGRO_BITMAP_WRAP_DEFAULT = 0,
-	   ALLEGRO_BITMAP_WRAP_REPEAT = 1,
-	   ALLEGRO_BITMAP_WRAP_CLAMP = 2,
-	   ALLEGRO_BITMAP_WRAP_MIRROR = 3,
+		ALLEGRO_BITMAP_WRAP_DEFAULT = 0,
+		ALLEGRO_BITMAP_WRAP_REPEAT = 1,
+		ALLEGRO_BITMAP_WRAP_CLAMP = 2,
+		ALLEGRO_BITMAP_WRAP_MIRROR = 3,
 	}
 }
 
@@ -38,24 +38,10 @@ static if (staticBinding) {
 	int al_get_new_bitmap_flags();
 	void al_add_new_bitmap_flag(int flag);
 
-	version (ALLEGRO_UNSTABLE) {
-		int al_get_new_bitmap_depth();
-		void al_set_new_bitmap_depth(int depth);
-		int al_get_new_bitmap_samples();
-		void al_set_new_bitmap_samples(int samples);
-		void al_get_new_bitmap_wrap(ALLEGRO_BITMAP_WRAP* u, ALLEGRO_BITMAP_WRAP* v);
-		void al_set_new_bitmap_wrap(ALLEGRO_BITMAP_WRAP u, ALLEGRO_BITMAP_WRAP v);
-	}
-
 	int al_get_bitmap_width(ALLEGRO_BITMAP* bitmap);
 	int al_get_bitmap_height(ALLEGRO_BITMAP* bitmap);
 	int al_get_bitmap_format(ALLEGRO_BITMAP* bitmap);
 	int al_get_bitmap_flags(ALLEGRO_BITMAP* bitmap);
-
-	version (ALLEGRO_UNSTABLE) {
-		int al_get_bitmap_depth(ALLEGRO_BITMAP* bitmap);
-		int al_get_bitmap_samples(ALLEGRO_BITMAP* bitmap);
-	}
 
 	ALLEGRO_BITMAP* al_create_bitmap(int w, int h);
 	void al_destroy_bitmap(ALLEGRO_BITMAP* bitmap);
@@ -65,16 +51,6 @@ static if (staticBinding) {
 	ALLEGRO_COLOR al_get_pixel(ALLEGRO_BITMAP* bitmap, int x, int y);
 
 	void al_convert_mask_to_alpha(ALLEGRO_BITMAP* bitmap, ALLEGRO_COLOR mask_color);
-
-	version (ALLEGRO_UNSTABLE) {
-		ALLEGRO_COLOR al_get_bitmap_blend_color();
-		void al_get_bitmap_blender(int* op, int* src, int* dst);
-		void al_get_separate_bitmap_blender(int* op, int* src, int* dst, int* alpha_op, int* alpha_src, int* alpha_dst);
-		void al_set_bitmap_blend_color(ALLEGRO_COLOR color);
-		void al_set_bitmap_blender(int op, int src, int dst);
-		void al_set_separate_bitmap_blender(int op, int src, int dst, int alpha_op, int alpha_src, int alpha_dst);
-		void al_reset_bitmap_blender();
-	}
 
 	void al_set_clipping_rectangle(int x, int y, int width, int height);
 	void al_reset_clipping_rectangle();
@@ -90,8 +66,32 @@ static if (staticBinding) {
 	ALLEGRO_BITMAP* al_clone_bitmap(ALLEGRO_BITMAP* bitmap);
 	void al_convert_bitmap(ALLEGRO_BITMAP* bitmap);
 	void al_convert_memory_bitmaps();
+
 	version (ALLEGRO_UNSTABLE) {
-		void al_backup_dirty_bitmap(ALLEGRO_BITMAP* bitmap);
+		static if (allegro5Support >= Allegro5Support.v5_2_1) {
+			int al_get_new_bitmap_depth();
+			void al_set_new_bitmap_depth(int depth);
+			int al_get_new_bitmap_samples();
+			void al_set_new_bitmap_samples(int samples);
+			int al_get_bitmap_depth(ALLEGRO_BITMAP* bitmap);
+			int al_get_bitmap_samples(ALLEGRO_BITMAP* bitmap);
+			void al_backup_dirty_bitmap(ALLEGRO_BITMAP* bitmap);
+		}
+
+		static if (allegro5Support >= Allegro5Support.v5_2_5) {
+			ALLEGRO_COLOR al_get_bitmap_blend_color();
+			void al_get_bitmap_blender(int* op, int* src, int* dst);
+			void al_get_separate_bitmap_blender(int* op, int* src, int* dst, int* alpha_op, int* alpha_src, int* alpha_dst);
+			void al_set_bitmap_blend_color(ALLEGRO_COLOR color);
+			void al_set_bitmap_blender(int op, int src, int dst);
+			void al_set_separate_bitmap_blender(int op, int src, int dst, int alpha_op, int alpha_src, int alpha_dst);
+			void al_reset_bitmap_blender();
+		}
+
+		static if (allegro5Support >= Allegro5Support.v5_2_8) {
+			void al_get_new_bitmap_wrap(ALLEGRO_BITMAP_WRAP* u, ALLEGRO_BITMAP_WRAP* v);
+			void al_set_new_bitmap_wrap(ALLEGRO_BITMAP_WRAP u, ALLEGRO_BITMAP_WRAP v);
+		}
 	}
 }
 else {
@@ -171,51 +171,59 @@ else {
 	}
 	
 	version (ALLEGRO_UNSTABLE) {
-	
-		extern(C) @nogc nothrow {
-			alias pal_get_new_bitmap_depth = int function();
-			alias pal_set_new_bitmap_depth = void function(int depth);
-			alias pal_get_new_bitmap_samples = int function();
-			alias pal_set_new_bitmap_samples = void function(int samples);
-			alias pal_get_new_bitmap_wrap = void function(ALLEGRO_BITMAP_WRAP* u, ALLEGRO_BITMAP_WRAP* v);
-			alias pal_set_new_bitmap_wrap = void function(ALLEGRO_BITMAP_WRAP u, ALLEGRO_BITMAP_WRAP v);
+		static if (allegro5Support >= Allegro5Support.v5_2_1) {
+			extern(C) @nogc nothrow {
+				alias pal_get_new_bitmap_depth = int function();
+				alias pal_set_new_bitmap_depth = void function(int depth);
+				alias pal_get_new_bitmap_samples = int function();
+				alias pal_set_new_bitmap_samples = void function(int samples);
+				alias pal_get_bitmap_depth = int function(ALLEGRO_BITMAP* bitmap);
+				alias pal_get_bitmap_samples = int function(ALLEGRO_BITMAP* bitmap);
+				alias pal_backup_dirty_bitmap = void function(ALLEGRO_BITMAP* bitmap);
+			}
+			__gshared {
+				pal_get_new_bitmap_depth al_get_new_bitmap_depth;
+				pal_set_new_bitmap_depth al_set_new_bitmap_depth;
+				pal_get_new_bitmap_samples al_get_new_bitmap_samples;
+				pal_set_new_bitmap_samples al_set_new_bitmap_samples;
+				pal_get_bitmap_depth al_get_bitmap_depth;
+				pal_get_bitmap_samples al_get_bitmap_samples;
+				pal_backup_dirty_bitmap al_backup_dirty_bitmap;
+			}
+		}
 			
-			alias pal_get_bitmap_depth = int function(ALLEGRO_BITMAP* bitmap);
-			alias pal_get_bitmap_samples = int function(ALLEGRO_BITMAP* bitmap);
+		static if (allegro5Support >= Allegro5Support.v5_2_5) {
+			extern(C) @nogc nothrow {
+				alias pal_get_bitmap_blend_color = ALLEGRO_COLOR function();
+				alias pal_get_bitmap_blender = void function(int* op, int* src, int* dst);
+				alias pal_get_separate_bitmap_blender = void function(int* op, int* src, int* dst, int* alpha_op, int* alpha_src, int* alpha_dst);
+				alias pal_set_bitmap_blend_color = void function(ALLEGRO_COLOR color);
+				alias pal_set_bitmap_blender = void function(int op, int src, int dst);
+				alias pal_set_separate_bitmap_blender = void function(int op, int src, int dst, int alpha_op, int alpha_src, int alpha_dst);
+				alias pal_reset_bitmap_blender = void function();
+			}
+			__gshared {
+				pal_get_bitmap_blend_color al_get_bitmap_blend_color;
+				pal_get_bitmap_blender al_get_bitmap_blender;
+				pal_get_separate_bitmap_blender al_get_separate_bitmap_blender;
+				pal_set_bitmap_blend_color al_set_bitmap_blend_color;
+				pal_set_bitmap_blender al_set_bitmap_blender;
+				pal_set_separate_bitmap_blender al_set_separate_bitmap_blender;
+				pal_reset_bitmap_blender al_reset_bitmap_blender;
+			}
+		}
 			
-			alias pal_get_bitmap_blend_color = ALLEGRO_COLOR function();
-			alias pal_get_bitmap_blender = void function(int* op, int* src, int* dst);
-			alias pal_get_separate_bitmap_blender = void function(int* op, int* src, int* dst, int* alpha_op, int* alpha_src, int* alpha_dst);
-			alias pal_set_bitmap_blend_color = void function(ALLEGRO_COLOR color);
-			alias pal_set_bitmap_blender = void function(int op, int src, int dst);
-			alias pal_set_separate_bitmap_blender = void function(int op, int src, int dst, int alpha_op, int alpha_src, int alpha_dst);
-			alias pal_reset_bitmap_blender = void function();
+		static if (allegro5Support >= Allegro5Support.v5_2_8) {
+			extern(C) @nogc nothrow {
+				alias pal_get_new_bitmap_wrap = void function(ALLEGRO_BITMAP_WRAP* u, ALLEGRO_BITMAP_WRAP* v);
+				alias pal_set_new_bitmap_wrap = void function(ALLEGRO_BITMAP_WRAP u, ALLEGRO_BITMAP_WRAP v);
+			}
+			__gshared {
+				pal_get_new_bitmap_wrap al_get_new_bitmap_wrap;
+				pal_set_new_bitmap_wrap al_set_new_bitmap_wrap;
+			}
+		}
 
-			alias pal_backup_dirty_bitmap = void function(ALLEGRO_BITMAP* bitmap);
-		}
-		
-		__gshared {
-			pal_get_new_bitmap_depth al_get_new_bitmap_depth;
-			pal_set_new_bitmap_depth al_set_new_bitmap_depth;
-			pal_get_new_bitmap_samples al_get_new_bitmap_samples;
-			pal_set_new_bitmap_samples al_set_new_bitmap_samples;
-			pal_get_new_bitmap_wrap al_get_new_bitmap_wrap;
-			pal_set_new_bitmap_wrap al_set_new_bitmap_wrap;
-			
-			pal_get_bitmap_depth al_get_bitmap_depth;
-			pal_get_bitmap_samples al_get_bitmap_samples;
-			
-			pal_get_bitmap_blend_color al_get_bitmap_blend_color;
-			pal_get_bitmap_blender al_get_bitmap_blender;
-			pal_get_separate_bitmap_blender al_get_separate_bitmap_blender;
-			pal_set_bitmap_blend_color al_set_bitmap_blend_color;
-			pal_set_bitmap_blender al_set_bitmap_blender;
-			pal_set_separate_bitmap_blender al_set_separate_bitmap_blender;
-			pal_reset_bitmap_blender al_reset_bitmap_blender;
-			
-			pal_backup_dirty_bitmap al_backup_dirty_bitmap;
-		}
-	
 	}
 	
 }

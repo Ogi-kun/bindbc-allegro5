@@ -10,7 +10,42 @@ enum ALLEGRO_SUB_VERSION = 2;
 *  The workaround is to define everything as strings and mixin when you need integers
 */ 
 
-private enum _ALLEGRO_WIP_VERSION_STR = "8";
+version (Allegro_5_2_8) {
+	private enum _ALLEGRO_WIP_VERSION_STR = "8";
+	private enum _ALLEGRO_DATE_STR = "20220605";
+}
+version (Allegro_5_2_7) {
+	private enum _ALLEGRO_WIP_VERSION_STR = "7";
+	private enum _ALLEGRO_DATE_STR = "20210307";
+}
+version (Allegro_5_2_6) {
+	private enum _ALLEGRO_WIP_VERSION_STR = "6";
+	private enum _ALLEGRO_DATE_STR = "20200207";
+}
+version (Allegro_5_2_5) {
+	private enum _ALLEGRO_WIP_VERSION_STR = "5";
+	private enum _ALLEGRO_DATE_STR = "20190224";
+}
+version (Allegro_5_2_4) {
+	private enum _ALLEGRO_WIP_VERSION_STR = "4";
+	private enum _ALLEGRO_DATE_STR = "20180224";
+}
+version (Allegro_5_2_3) {
+	private enum _ALLEGRO_WIP_VERSION_STR = "3";
+	private enum _ALLEGRO_DATE_STR = "20171008";
+}
+version (Allegro_5_2_2) {
+	private enum _ALLEGRO_WIP_VERSION_STR = "2";
+	private enum _ALLEGRO_DATE_STR = "20161211";
+}
+version (Allegro_5_2_1) {
+	private enum _ALLEGRO_WIP_VERSION_STR = "1";
+	private enum _ALLEGRO_DATE_STR = "20160813";
+}
+else {
+	private enum _ALLEGRO_WIP_VERSION_STR = "0";
+	private enum _ALLEGRO_DATE_STR = "20160401";
+}
 
 enum ALLEGRO_WIP_VERSION = mixin(_ALLEGRO_WIP_VERSION_STR);
 
@@ -24,8 +59,6 @@ else {
 enum ALLEGRO_RELEASE_NUMBER = 1;
 
 enum ALLEGRO_VERSION_STR = "5.2."~_ALLEGRO_WIP_VERSION_STR;
-
-private enum _ALLEGRO_DATE_STR = "20220605";
 
 enum ALLEGRO_DATE = mixin(_ALLEGRO_DATE_STR);
 
