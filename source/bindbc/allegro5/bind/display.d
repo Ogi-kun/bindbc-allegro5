@@ -29,8 +29,8 @@ version (ALLEGRO_UNSTABLE) {
 	}
 }
 
-mixin(`
-	enum ALLEGRO_DISPLAY_OPTIONS {
+mixin(
+	q{enum ALLEGRO_DISPLAY_OPTIONS } ~ `{` ~ q{
 		ALLEGRO_RED_SIZE = 0,
 		ALLEGRO_GREEN_SIZE = 1,
 		ALLEGRO_BLUE_SIZE = 2,
@@ -66,10 +66,11 @@ mixin(`
 		ALLEGRO_SUPPORTED_ORIENTATIONS = 32,
 		ALLEGRO_OPENGL_MAJOR_VERSION = 33,
 		ALLEGRO_OPENGL_MINOR_VERSION = 34,
-	`~() {
-		static if (allegroSupport >= AllegroSupport.v5_2_8) return `ALLEGRO_DEFAULT_SHADER_PLATFORM = 35, `;
-		else return "";
-	}() ~ `ALLEGRO_DISPLAY_OPTIONS_COUNT }`);
+	} ~ (allegroSupport >= AllegroSupport.v5_2_8
+				? q{ALLEGRO_DEFAULT_SHADER_PLATFORM = 35, }
+				: q{ }) ~
+		q{ALLEGRO_DISPLAY_OPTIONS_COUNT, } ~
+`}`);
 
 enum {
 	ALLEGRO_DONTCARE,
