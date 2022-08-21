@@ -52,3 +52,17 @@ else version (Allegro_5_2_1) {
 else {
 	enum allegroSupport = AllegroSupport.v5_2_0;
 }
+
+version (Allegro_Audio) {
+	enum allegroAudio = true;
+}
+else {
+	enum allegroAudio = false;
+}
+
+version (Allegro_ACodec) {
+	enum allegroACodec = true;
+}
+else {
+	enum allegroACodec = false;
+}
