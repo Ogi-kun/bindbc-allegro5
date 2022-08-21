@@ -2,7 +2,6 @@ module bindbc.allegro5.bind.fixed;
 
 alias al_fixed = int;
 
-extern extern(C) {
-	const(al_fixed) al_fixtorad_r;
-	const(al_fixed) al_radtofix_r;
-}
+// From allegro5/src/math.c:
+immutable al_fixed al_fixtorad_r = 1608;
+immutable al_fixed al_radtofix_r = 2670177;
