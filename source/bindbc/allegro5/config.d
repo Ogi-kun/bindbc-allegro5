@@ -101,3 +101,10 @@ version (Allegro_Memfile) {
 else {
 	enum allegroMemfile = false;
 }
+
+version (Allegro_Dialog) {
+	enum allegroDialog = true;
+}
+else {
+	enum allegroDialog = false;
+}
