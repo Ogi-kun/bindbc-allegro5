@@ -802,6 +802,9 @@ Allegro5Support loadAllegro5(const(char)* libName) {
 	}
 
 	static if (allegro5Support >= Allegro5Support.v5_2_4) {
+		lib.bindSymbol(cast(void**)&al_transform_coordinates_4d, "al_transform_coordinates_4d");
+		lib.bindSymbol(cast(void**)&al_transform_coordinates_3d_projective, "al_transform_coordinates_3d_projective");
+
 		if (errorCount() != lastErrorCount) {
 			return Allegro5Support.badLibrary;
 		}
@@ -825,8 +828,6 @@ Allegro5Support loadAllegro5(const(char)* libName) {
 		lib.bindSymbol(cast(void**)&al_get_monitor_dpi, "al_get_monitor_dpi");
 		lib.bindSymbol(cast(void**)&al_get_system_id, "al_get_system_id");
 		lib.bindSymbol(cast(void**)&al_transpose_transform, "al_transpose_transform");
-		lib.bindSymbol(cast(void**)&al_transform_coordinates_4d, "al_transform_coordinates_4d");
-		lib.bindSymbol(cast(void**)&al_transform_coordinates_3d_projective, "al_transform_coordinates_3d_projective");
 
 		if (errorCount() != lastErrorCount) {
 			return Allegro5Support.badLibrary;
