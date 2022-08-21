@@ -9,7 +9,7 @@ extern(C) @nogc nothrow {
 	void ALLEGRO_TRACE_CHANNEL_LEVEL(
 			const(char)* file = __FILE__.ptr, int line = __LINE__, const(char)* fun = __FUNCTION__.ptr, T...
 			)(const(char)* channel, int level, const(char)* msg, T args) {
-		debug {
+		version (ALLEGRO_DEBUG) {
 			if (_al_trace_prefix(channel, level, file, line, fun)) {
 				_al_trace_suffix(msg, args);
 			}
@@ -47,7 +47,7 @@ extern(C) @nogc nothrow {
 	}	
 }
 
-debug {
+version (ALLEGRO_DEBUG) {
 	extern(C) void ALLEGRO_DEBUG_CHANNEL(const(char)* x) @nogc nothrow {
 		__al_debug_channel = x;
 	}

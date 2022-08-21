@@ -30,7 +30,7 @@ Allegro5Support loadAllegro5() {
 
 	// FIXME: add OSX & POSIX
 	version (Windows) {
-		debug {
+		version (ALLEGRO_DEBUG) {
 			const(char)[][1] libNames = [
 				"allegro-debug-5.2.dll",
 			];
