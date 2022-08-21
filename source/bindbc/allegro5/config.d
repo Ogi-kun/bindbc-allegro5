@@ -94,3 +94,10 @@ version (Allegro_Image) {
 else {
 	enum allegroImage = false;
 }
+
+version (Allegro_Memfile) {
+	enum allegroMemfile = true;
+}
+else {
+	enum allegroMemfile = false;
+}
