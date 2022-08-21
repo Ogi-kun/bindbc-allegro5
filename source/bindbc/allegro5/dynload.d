@@ -12,7 +12,7 @@ private {
 	__gshared AllegroSupport loadedVersion;
 }
 
-void unloadAllegro5() {
+void unloadAllegro() {
 	if (lib != invalidHandle) {
 		lib.unload();
 	}
@@ -26,7 +26,7 @@ bool isAllegro5Loaded() {
 	return lib != invalidHandle;
 }
 
-AllegroSupport loadAllegro5() {
+AllegroSupport loadAllegro() {
 
 	// FIXME: add OSX & POSIX
 	version (Windows) {
@@ -45,7 +45,7 @@ AllegroSupport loadAllegro5() {
 
 	typeof(return) result;
 	foreach (i; 0..libNames.length) {
-		result = loadAllegro5(libNames[i].ptr);
+		result = loadAllegro(libNames[i].ptr);
 		if (result != AllegroSupport.noLibrary) {
 			break;
 		}
@@ -53,7 +53,7 @@ AllegroSupport loadAllegro5() {
 	return result;
 }
 
-AllegroSupport loadAllegro5(const(char)* libName) {
+AllegroSupport loadAllegro(const(char)* libName) {
 	lib = load(libName);
 	if (lib == invalidHandle) {
 		return AllegroSupport.noLibrary;
@@ -873,3 +873,9 @@ AllegroSupport loadAllegro5(const(char)* libName) {
 	}
 
 }
+
+deprecated("use loadAllegro instead")
+alias loadAllegro5 = loadAllegro;
+
+deprecated("use loadAllegro instead")
+alias unloadAllegro5 = unloadAllegro;
