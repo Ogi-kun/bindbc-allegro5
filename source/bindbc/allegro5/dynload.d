@@ -12,6 +12,8 @@ private {
 	__gshared AllegroSupport loadedVersion;
 }
 
+@nogc nothrow:
+
 void unloadAllegro() {
 	if (lib != invalidHandle) {
 		lib.unload();
@@ -802,6 +804,7 @@ AllegroSupport loadAllegro(const(char)* libName) {
 	}
 
 	static if (allegroSupport >= AllegroSupport.v5_2_4) {
+		// Considered stable
 		lib.bindSymbol(cast(void**)&al_transform_coordinates_4d, "al_transform_coordinates_4d");
 		lib.bindSymbol(cast(void**)&al_transform_coordinates_3d_projective, "al_transform_coordinates_3d_projective");
 
