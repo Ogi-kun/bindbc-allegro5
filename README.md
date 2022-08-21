@@ -39,11 +39,11 @@ versions "Allegro_Font" "Allegro_TTF"
 #### The Dynamic Bindings
 The dynamic bindings require no special configuration when using DUB to manage your project. There is no link-time dependency. At runtime, the Allegro shared libraries are required to be on the shared library search path of the user’s system. On Windows, this is typically handled by distributing the Allegro DLLs with your program. On other systems, it usually means installing the Allegro runtime libraries through a package manager.
 
-To load the shared libraries, you need to call the appropriate load function. This returns a member of the `Allegro5Support` enumeration:
+To load the shared libraries, you need to call the appropriate load function. This returns a member of the `AllegroSupport` enumeration:
 
-* `Allegro5Support.noLibrary` indicating that the library failed to load (it couldn’t be found)
-* `Allegro5Support.badLibrary` indicating that one or more symbols in the library failed to load
-* a member of `Allegro5Support` indicating a version number that matches the version of Allegro that bindbc-allegro5 was configured at compile-time to load. By default, that is `Allegro5Support.v5_2_0`, but can be configured via a version identifier (see below). This value will match the global manifest constant, `allegro5Support`.
+* `AllegroSupport.noLibrary` indicating that the library failed to load (it couldn’t be found)
+* `AllegroSupport.badLibrary` indicating that one or more symbols in the library failed to load
+* a member of `AllegroSupport` indicating a version number that matches the version of Allegro that bindbc-allegro5 was configured at compile-time to load. By default, that is `AllegroSupport.v5_2_0`, but can be configured via a version identifier (see below). This value will match the global manifest constant, `allegroSupport`.
 
 ```d
 import bindbc.allegro;
@@ -52,8 +52,8 @@ import bindbc.allegro;
  This version attempts to load the Allegro shared library using well-known 
  variations of the library name for the host system.
 */
-Allegro5Support ret = loadAllegro5();
-if (ret != allegro5Support) {
+AllegroSupport ret = loadAllegro();
+if (ret != allegroSupport) {
 
     /*
      Handle error. For most use cases, it’s reasonable to use the the error 
@@ -62,10 +62,10 @@ if (ret != allegro5Support) {
      the return value:
     */
 
-    if (ret == Allegro5Support.noLibrary) {
+    if (ret == AllegroSupport.noLibrary) {
         // The Allegro shared library failed to load
     }
-    else if (Allegro5Support.badLibrary) {
+    else if (AllegroSupport.badLibrary) {
         /*
          One or more symbols failed to load. The likely cause is that the shared
          library is for a lower version than bindbc-allegro5 was configured 
@@ -79,7 +79,7 @@ if (ret != allegro5Support) {
  example which attempts to load `allegro-5.2.dll` from the `libs` subdirectory,
  relative to the executable, only on Windows.
 */
-version (Windows) loadAllegro5("libs/allegro-5.2.dll");
+version (Windows) loadAllegro("libs/allegro-5.2.dll");
 ```
 
 [The error reporting API](https://github.com/BindBC/bindbc-loader#error-handling) in bindbc-loader can be used to log error messages.
@@ -98,12 +98,12 @@ import loader = bindbc.loader.sharedlib;
 
 bool loadLib() {
     /*
-     Compare the return value of loadAllegro5 with the global `allegro5Support` 
+     Compare the return value of loadAllegro with the global `allegroSupport` 
      constant to determine if the version of Allegro configured at compile time 
      is the version that was loaded.
     */
-    auto ret = loadAllegro5();
-    if (ret != allegro5Support) {
+    auto ret = loadAllegro();
+    if (ret != allegroSupport) {
         // Log the error info
         foreach (info; loader.errors) {
             /*
@@ -116,7 +116,7 @@ bool loadLib() {
 
         // Optionally construct a user-friendly error message for the user
         string msg;
-        if (ret == Allegro5Support.noLibrary) {
+        if (ret == AllegroSupport.noLibrary) {
             msg = "This application requires the Allegro library.";
         }
         else {
@@ -146,22 +146,22 @@ dependency "bindbc-allegro5" version="~>1.0.0"
 versions "Allegro_5_2_2"
 ```
 
-With this example configuration, `allegro5Support` is configured at compile time as `Allegro5Support.v5_2_2`. If Allegro 5.2.2 or later is installed on the system, `loadAllegro5` will return `Allegro5Support.v5_2_2`. If a lower version of Allegro is installed, `loadAllegro5` will return `Allegro5Support.badLibrary`. In this scenario, calling `loadedAllegroVersion()` will return an `Allegro5Support` member indicating which version of Allegro, if any, actually loaded.
+With this example configuration, `allegroSupport` is configured at compile time as `AllegroSupport.v5_2_2`. If Allegro 5.2.2 or later is installed on the system, `loadAllegro` will return `AllegroSupport.v5_2_2`. If a lower version of Allegro is installed, `loadAllegro` will return `AllegroSupport.badLibrary`. In this scenario, calling `loadedAllegroVersion()` will return an `AllegroSupport` member indicating which version of Allegro, if any, actually loaded.
 
-If a lower version is loaded, it’s still possible to call functions from that version of Allegro, but any calls to functions from versions between that version and the one you configured will result in a null pointer access. For example, if you configured `Allegro 2.0.4` and loaded `Allegro 2.0.2`, then function pointers from both 2.0.3 and 2.0.4 will be `null`. For this reason, it’s recommended to always specify your required version of the Allegro library at compile time and abort when you receive an `Allegro5Support.badLibrary` return value from `loadAllegro5`.
+If a lower version is loaded, it’s still possible to call functions from that version of Allegro, but any calls to functions from versions between that version and the one you configured will result in a null pointer access. For example, if you configured `Allegro 2.0.4` and loaded `Allegro 2.0.2`, then function pointers from both 2.0.3 and 2.0.4 will be `null`. For this reason, it’s recommended to always specify your required version of the Allegro library at compile time and abort when you receive an `AllegroSupport.badLibrary` return value from `loadAllegro`.
 
 No matter which version was configured, the successfully loaded version can be obtained via a call to `loadedAllegroVersion`. It returns one of the following:
 
-* `Allegro5Support.noLibrary` if `loadAllegro5` returned `Allegro5Support.noLibrary`
-* `Allegro5Support.badLibrary` if `loadAllegro5` returned `Allegro5Support.badLibrary` and no version of Allegro successfully loaded
-* a member of `Allegro5Support` indicating the version of Allegro that successfully loaded. When `loadAllegro5` returns `Allegro5Support.badLibrary`, this will be a version number lower than the one configured at compile time. Otherwise, it will be the same as the manifest constant `allegro5Support`.
+* `AllegroSupport.noLibrary` if `loadAllegro` returned `AllegroSupport.noLibrary`
+* `AllegroSupport.badLibrary` if `loadAllegro` returned `AllegroSupport.badLibrary` and no version of Allegro successfully loaded
+* a member of `AllegroSupport` indicating the version of Allegro that successfully loaded. When `loadAllegro` returns `AllegroSupport.badLibrary`, this will be a version number lower than the one configured at compile time. Otherwise, it will be the same as the manifest constant `allegroSupport`.
 
 The function `isAllegro5Loaded` returns `true` if any version of the shared library has been loaded and `false` if not.
 
 ```d
-Allegro5Support ret = loadAllegro5();
-if (ret != allegro5Support) {
-    if (Allegro5Support.badLibrary) {
+AllegroSupport ret = loadAllegro();
+if (ret != allegroSupport) {
+    if (AllegroSupport.badLibrary) {
         /*
          Let’s say we’ve configured support for Allegro 5.2.5 for some of the functions 
          added to the Allegro API in that version and don’t use them if they 
@@ -169,16 +169,16 @@ if (ret != allegro5Support) {
          of Allegro we require is 5.2.2, because we rely on some of the functions 
          that version added to the Allegro API.
 
-         In this scenario, `Allegro5Support.badLibrary` indicates that we have 
+         In this scenario, `AllegroSupport.badLibrary` indicates that we have 
          loaded a version of Allegro that is less than 5.2.5. Maybe it’s 5.2.4, 
          or 5.2.1. We require at least 5.2.2, so we can check.
         */
-        if (loadedAllegroVersion < Allegro5Support.5_2_2) {
+        if (loadedAllegroVersion < AllegroSupport.5_2_2) {
             // Version too low. Handle the error.
         }
     }
     /*
-     The only other possible return value is `Allegro5Support.noLibrary`, 
+     The only other possible return value is `AllegroSupport.noLibrary`, 
      indicating the Allegro library or one of its dependencies could not be found.
     */
     else {
@@ -187,7 +187,7 @@ if (ret != allegro5Support) {
 }
 ```
 
-For most use cases, it’s probably not necessary to check for `Allegro5Support.badLibrary` or `Allegro5Support.noLibrary`. The bindbc-loader package provides [a means to fetch error information](https://github.com/BindBC/bindbc-loader#error-handling) regarding load failures. This information can be written to a log file before aborting the program.
+For most use cases, it’s probably not necessary to check for `AllegroSupport.badLibrary` or `AllegroSupport.noLibrary`. The bindbc-loader package provides [a means to fetch error information](https://github.com/BindBC/bindbc-loader#error-handling) regarding load failures. This information can be written to a log file before aborting the program.
 
 See next section for the supported versions of each Allegro library and the corresponding version IDs to pass to the compiler.
 
@@ -198,16 +198,16 @@ First things first: static _bindings_ do not require static _linking_. The stati
 
 Static bindings requires the Allegro development packages be installed on your system. [Allegro releases on GitHub](https://github.com/liballeg/allegro5/releases) provide precompiled Windows binaries. On OS X, you can use (Homebrew)[https://formulae.brew.sh/formula/allegro]. On Unix-like systems, you can install them via your system package manager. See [Allegro downloads page](https://liballeg.org/download.html) for details and additional options.
 
-When linking with the shared (or import) libraries, there is a runtime dependency on the shared library just as there is when using the dynamic bindings. The difference is that the shared libraries are no longer loaded manually–loading is handled automatically by the system when the program is launched. Attempting to call `loadAllegro5` with the static binding enabled will result in a compilation error.
+When linking with the shared (or import) libraries, there is a runtime dependency on the shared library just as there is when using the dynamic bindings. The difference is that the shared libraries are no longer loaded manually–loading is handled automatically by the system when the program is launched. Attempting to call `loadAllegro` with the static binding enabled will result in a compilation error.
 
 When linking with the static libraries, there is no runtime dependency on Allegro. Besides static Allegro libraries, you also need to acquire all its dependencies and link with them. This is a lot of work with questionable benefits. 
 
 Enabling the static bindings can be done in two ways.
 
 #### Via the Compiler’s `-version` Switch or DUB’s `versions` Directive
-Pass the `BindAllegro5_Static` version to the compiler and link with the appropriate libraries. Note that `BindAllegro5_Static` will also enable the static bindings for any addons used.
+Pass the `BindAllegro_Static` version to the compiler and link with the appropriate libraries. Note that `BindAllegro_Static` will also enable the static bindings for any addons used.
 
-When using the compiler command line or a build system that doesn’t support DUB, this is the only option. The `-version=BindAllegro5_Static` option should be passed to the compiler when building your program. All of the required C libraries, as well as the bindbc-allegro5 static libraries, must also be passed to the compiler on the command line or via your build system’s configuration.
+When using the compiler command line or a build system that doesn’t support DUB, this is the only option. The `-version=BindAllegro_Static` option should be passed to the compiler when building your program. All of the required C libraries, as well as the bindbc-allegro5 static libraries, must also be passed to the compiler on the command line or via your build system’s configuration.
 
 __NOTE__: Though bindbc5-allegro is not an official BindBC package, it supports `BindBC_Static` version identifier.
 
@@ -218,14 +218,14 @@ __dub.json__
 "dependencies": {
     "bindbc-allegro5": "~>1.0.0"
 },
-"versions": ["BindAllegro5_Static", "Allegro_Image"],
+"versions": ["BindAllegro_Static", "Allegro_Image"],
 "libs": ["liballegro", "liballegro_image"]
 ```
 
 __dub.sdl__
 ```
 dependency "bindbc-allegro5" version="~>1.0.0"
-versions "BindAllegro5_Static" "Allegro_Image"
+versions "BindAllegro_Static" "Allegro_Image"
 libs "liballegro" "liballegro_image"
 ```
 
@@ -283,21 +283,21 @@ libs "liballegro" "liballegro_image"
 
 Replace `staticBC` with `dynamicBC` to enable BetterC support with the dynamic bindings.
 
-When not using DUB to manage your project, first use DUB to compile the BindBC libraries with the `dynamicBC` or `staticBC` configuration, then pass `-betterC` to the compiler when building your project (and `-version=BindAllegro5_Static` if you used the `staticBC` configuration).
+When not using DUB to manage your project, first use DUB to compile the BindBC libraries with the `dynamicBC` or `staticBC` configuration, then pass `-betterC` to the compiler when building your project (and `-version=BindAllegro_Static` if you used the `staticBC` configuration).
 
 ## Package Definitions
 
-To bind statically, define `BindAllegro5_Static` version. If you use bindbc-allegro5 in conjunction with other BindBC packages, you can define `BindBC_Static` version to bind them all statically (some third-party BindBC packages may not support this). 
+To bind statically, define `BindAllegro_Static` version. If you use bindbc-allegro5 in conjunction with other BindBC packages, you can define `BindBC_Static` version to bind them all statically (some third-party BindBC packages may not support this). 
 
 To bind dynamically, call:
 ```d
-Allegro5Support loadAllegro5()
-Allegro5Support loadAllegro5(const(char)* libName)
+AllegroSupport loadAllegro()
+AllegroSupport loadAllegro(const(char)* libName)
 ```
 
 ### Supported Allegro versions:
 
-| Version     | Version ID       | `Allegro5Support` |
+| Version     | Version ID       | `AllegroSupport` |
 |-------------|------------------|-------------------|
 | 5.2.0       | default          | `v5_2_0`          |
 | 5.2.1       | `Allegro_5_2_1`  | `v5_2_1`          |
@@ -320,76 +320,76 @@ Official addons are part of Allegro, so they don’t have they own versioning.
 
 #### `Allegro_Main` (coming soon)
 ```d
-Allegro5Support loadAllegroMain()
-Allegro5Support loadAllegroMain(const(char)* libName)
+AllegroSupport loadAllegroMain()
+AllegroSupport loadAllegroMain(const(char)* libName)
 ```
 
 #### `Allegro_Image` (coming soon)
 ```d
-Allegro5Support loadAllegroImage()
-Allegro5Support loadAllegroImage(const(char)* libName)
+AllegroSupport loadAllegroImage()
+AllegroSupport loadAllegroImage(const(char)* libName)
 ```
 
 #### `Allegro_Primitives` (coming soon)
 ```d
-Allegro5Support loadAllegroPrimitives()
-Allegro5Support loadAllegroPrimitives(const(char)* libName)
+AllegroSupport loadAllegroPrimitives()
+AllegroSupport loadAllegroPrimitives(const(char)* libName)
 ```
 
 #### `Allegro_Color` (coming soon)
 ```d
-Allegro5Support loadAllegroColor()
-Allegro5Support loadAllegroColor(const(char)* libName)
+AllegroSupport loadAllegroColor()
+AllegroSupport loadAllegroColor(const(char)* libName)
 ```
 
 #### `Allegro_Font` (coming soon)
 ```d
-Allegro5Support loadAllegroFont()
-Allegro5Support loadAllegroFont(const(char)* libName)
+AllegroSupport loadAllegroFont()
+AllegroSupport loadAllegroFont(const(char)* libName)
 ```
 
 #### `Allegro_TTF` (coming soon)
 **Note**: Requires `Allegro_Font`
 ```d
-Allegro5Support loadAllegroTTF()
-Allegro5Support loadAllegroTTF(const(char)* libName)
+AllegroSupport loadAllegroTTF()
+AllegroSupport loadAllegroTTF(const(char)* libName)
 ```
 
 #### `Allegro_Audio` (coming soon)
 ```d
-Allegro5Support loadAllegroAudio()
-Allegro5Support loadAllegroAudio(const(char)* libName)
+AllegroSupport loadAllegroAudio()
+AllegroSupport loadAllegroAudio(const(char)* libName)
 ```
 
 #### `Allegro_ACodec` (coming soon)
 **Note**: Requires `Allegro_Audio`
 ```d
-Allegro5Support loadAllegroACodec()
-Allegro5Support loadAllegroACodec(const(char)* libName)
+AllegroSupport loadAllegroACodec()
+AllegroSupport loadAllegroACodec(const(char)* libName)
 ```
 
 #### `Allegro_Video` (coming soon)
 **Note**: Requires `Allegro_Audio`
 ```d
-Allegro5Support loadAllegroVideo()
-Allegro5Support loadAllegroVideo(const(char)* libName)
+AllegroSupport loadAllegroVideo()
+AllegroSupport loadAllegroVideo(const(char)* libName)
 ```
 
 #### `Allegro_Memfile` (coming soon)
 ```d
-Allegro5Support loadAllegroMemfile()
-Allegro5Support loadAllegroMemfile(const(char)* libName)
+AllegroSupport loadAllegroMemfile()
+AllegroSupport loadAllegroMemfile(const(char)* libName)
 ```
 
 #### `Allegro_PhysFS` (coming soon)
 ```d
-Allegro5Support loadAllegroAllegroPhysFS()
-Allegro5Support loadAllegroAllegroPhysFS(const(char)* libName)
+AllegroSupport loadAllegroAllegroPhysFS()
+AllegroSupport loadAllegroAllegroPhysFS(const(char)* libName)
 ```
 
 #### `Allegro_NativeDialog` (coming soon)
 ```d
-Allegro5Support loadAllegroAllegroNativeDialog()
-Allegro5Support loadAllegroAllegroNativeDialog(const(char)* libName)
+AllegroSupport loadAllegroAllegroNativeDialog()
+AllegroSupport loadAllegroAllegroNativeDialog(const(char)* libName)
 ```
 
