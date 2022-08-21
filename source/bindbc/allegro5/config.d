@@ -122,3 +122,10 @@ version (Allegro_Primitives) {
 else {
 	enum allegroPrimitives = false;
 }
+
+version (Allegro_Video) {
+	enum allegroVideo = true;
+}
+else {
+	enum allegroVideo = false;
+}
