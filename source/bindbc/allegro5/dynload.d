@@ -9,7 +9,7 @@ import bindbc.allegro5.bind;
 
 private {
 	__gshared SharedLib lib;
-	__gshared Allegro5Support loadedVersion;
+	__gshared AllegroSupport loadedVersion;
 }
 
 void unloadAllegro5() {
@@ -18,7 +18,7 @@ void unloadAllegro5() {
 	}
 }
 
-Allegro5Support loadedAllegro5Version() { 
+AllegroSupport loadedAllegro5Version() { 
 	return loadedVersion; 
 }
 
@@ -26,7 +26,7 @@ bool isAllegro5Loaded() {
 	return lib != invalidHandle;
 }
 
-Allegro5Support loadAllegro5() {
+AllegroSupport loadAllegro5() {
 
 	// FIXME: add OSX & POSIX
 	version (Windows) {
@@ -46,21 +46,21 @@ Allegro5Support loadAllegro5() {
 	typeof(return) result;
 	foreach (i; 0..libNames.length) {
 		result = loadAllegro5(libNames[i].ptr);
-		if (result != Allegro5Support.noLibrary) {
+		if (result != AllegroSupport.noLibrary) {
 			break;
 		}
 	}
 	return result;
 }
 
-Allegro5Support loadAllegro5(const(char)* libName) {
+AllegroSupport loadAllegro5(const(char)* libName) {
 	lib = load(libName);
 	if (lib == invalidHandle) {
-		return Allegro5Support.noLibrary;
+		return AllegroSupport.noLibrary;
 	}
 
 	auto lastErrorCount = errorCount();
-	loadedVersion = Allegro5Support.badLibrary;
+	loadedVersion = AllegroSupport.badLibrary;
 	
 	version (Android) {
 		lib.bindSymbol(cast(void**)&al_android_set_apk_file_interface, "al_android_set_apk_file_interface");
@@ -749,11 +749,11 @@ Allegro5Support loadAllegro5(const(char)* libName) {
 	}
 
 	if (errorCount() != lastErrorCount) {
-		return Allegro5Support.badLibrary;
+		return AllegroSupport.badLibrary;
 	}
-	loadedVersion = Allegro5Support.v5_2_0;
+	loadedVersion = AllegroSupport.v5_2_0;
 
-	static if (allegro5Support >= Allegro5Support.v5_2_1) {
+	static if (allegro5Support >= AllegroSupport.v5_2_1) {
 		version (ALLEGRO_UNSTABLE) {
 			lib.bindSymbol(cast(void**)&al_get_new_bitmap_depth, "al_get_new_bitmap_depth");
 			lib.bindSymbol(cast(void**)&al_set_new_bitmap_depth, "al_set_new_bitmap_depth");
@@ -766,12 +766,12 @@ Allegro5Support loadAllegro5(const(char)* libName) {
 			lib.bindSymbol(cast(void**)&al_backup_dirty_bitmaps, "al_backup_dirty_bitmaps");
 		}
 		if (errorCount() != lastErrorCount) {
-			return Allegro5Support.badLibrary;
+			return AllegroSupport.badLibrary;
 		}
-		loadedVersion = Allegro5Support.v5_2_1;
+		loadedVersion = AllegroSupport.v5_2_1;
 	}
 		
-	static if (allegro5Support >= Allegro5Support.v5_2_2) {
+	static if (allegro5Support >= AllegroSupport.v5_2_2) {
 		version (ALLEGRO_UNSTABLE) {
 			version (Android) {
 				lib.bindSymbol(cast(void**)&al_android_get_jni_env, "al_android_get_jni_env");
@@ -780,12 +780,12 @@ Allegro5Support loadAllegro5(const(char)* libName) {
 		}
 
 		if (errorCount() != lastErrorCount) {
-			return Allegro5Support.badLibrary;
+			return AllegroSupport.badLibrary;
 		}
-		loadedVersion = Allegro5Support.v5_2_2;
+		loadedVersion = AllegroSupport.v5_2_2;
 	}
 
-	static if (allegro5Support >= Allegro5Support.v5_2_3) {
+	static if (allegro5Support >= AllegroSupport.v5_2_3) {
 		version (ALLEGRO_UNSTABLE) {
 			version (ALLEGRO_X11) {
 				lib.bindSymbol(cast(void**)&al_x_set_initial_icon, "al_x_set_initial_icon");
@@ -796,22 +796,22 @@ Allegro5Support loadAllegro5(const(char)* libName) {
 		lib.bindSymbol(cast(void**)&al_path_ustr, "al_path_ustr");
 
 		if (errorCount() != lastErrorCount) {
-			return Allegro5Support.badLibrary;
+			return AllegroSupport.badLibrary;
 		}
-		loadedVersion = Allegro5Support.v5_2_3;
+		loadedVersion = AllegroSupport.v5_2_3;
 	}
 
-	static if (allegro5Support >= Allegro5Support.v5_2_4) {
+	static if (allegro5Support >= AllegroSupport.v5_2_4) {
 		lib.bindSymbol(cast(void**)&al_transform_coordinates_4d, "al_transform_coordinates_4d");
 		lib.bindSymbol(cast(void**)&al_transform_coordinates_3d_projective, "al_transform_coordinates_3d_projective");
 
 		if (errorCount() != lastErrorCount) {
-			return Allegro5Support.badLibrary;
+			return AllegroSupport.badLibrary;
 		}
-		loadedVersion = Allegro5Support.v5_2_4;
+		loadedVersion = AllegroSupport.v5_2_4;
 	}
 
-	static if (allegro5Support >= Allegro5Support.v5_2_5) {
+	static if (allegro5Support >= AllegroSupport.v5_2_5) {
 		version (ALLEGRO_UNSTABLE) {
 			lib.bindSymbol(cast(void**)&al_get_bitmap_blend_color, "al_get_bitmap_blend_color");
 			lib.bindSymbol(cast(void**)&al_get_bitmap_blender, "al_get_bitmap_blender");
@@ -830,43 +830,43 @@ Allegro5Support loadAllegro5(const(char)* libName) {
 		lib.bindSymbol(cast(void**)&al_transpose_transform, "al_transpose_transform");
 
 		if (errorCount() != lastErrorCount) {
-			return Allegro5Support.badLibrary;
+			return AllegroSupport.badLibrary;
 		}
-		loadedVersion = Allegro5Support.v5_2_5;
+		loadedVersion = AllegroSupport.v5_2_5;
 	}
 
-	static if (allegro5Support >= Allegro5Support.v5_2_6) {
+	static if (allegro5Support >= AllegroSupport.v5_2_6) {
 		version (ALLEGRO_UNSTABLE) {
 			lib.bindSymbol(cast(void**)&al_get_monitor_refresh_rate, "al_get_monitor_refresh_rate");
 		}
 
 		if (errorCount() != lastErrorCount) {
-			return Allegro5Support.badLibrary;
+			return AllegroSupport.badLibrary;
 		}
-		loadedVersion = Allegro5Support.v5_2_6;
+		loadedVersion = AllegroSupport.v5_2_6;
 	}
 
-	static if (allegro5Support >= Allegro5Support.v5_2_7) {
+	static if (allegro5Support >= AllegroSupport.v5_2_7) {
 		if (errorCount() != lastErrorCount) {
-			return Allegro5Support.badLibrary;
+			return AllegroSupport.badLibrary;
 		}
-		loadedVersion = Allegro5Support.v5_2_7;
+		loadedVersion = AllegroSupport.v5_2_7;
 	}
 
-	static if (allegro5Support >= Allegro5Support.v5_2_8) {
+	static if (allegro5Support >= AllegroSupport.v5_2_8) {
 		version (ALLEGRO_UNSTABLE) {
 			lib.bindSymbol(cast(void**)&al_get_new_bitmap_wrap, "al_get_new_bitmap_wrap");
 			lib.bindSymbol(cast(void**)&al_set_new_bitmap_wrap, "al_set_new_bitmap_wrap");
 		}
 
 		if (errorCount() != lastErrorCount) {
-			return Allegro5Support.badLibrary;
+			return AllegroSupport.badLibrary;
 		}
-		loadedVersion = Allegro5Support.v5_2_8;
+		loadedVersion = AllegroSupport.v5_2_8;
 	}
 		
 	if (errorCount() != lastErrorCount) {
-		return Allegro5Support.badLibrary;
+		return AllegroSupport.badLibrary;
 	}
 	else {
 		return loadedVersion;

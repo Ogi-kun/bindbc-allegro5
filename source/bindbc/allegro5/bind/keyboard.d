@@ -23,7 +23,7 @@ static if (staticBinding) {
 	bool al_key_down(const(ALLEGRO_KEYBOARD_STATE)*, int keycode);
 	ALLEGRO_EVENT_SOURCE* al_get_keyboard_event_source();
 
-	version (ALLEGRO_UNSTABLE) static if (allegro5Support >= Allegro5Support.v5_2_3) {
+	version (ALLEGRO_UNSTABLE) static if (allegro5Support >= AllegroSupport.v5_2_3) {
 		void al_clear_keyboard_state(ALLEGRO_DISPLAY* display);
 	}
 }
@@ -49,7 +49,7 @@ else {
 		pal_get_keyboard_event_source al_get_keyboard_event_source;
 	}
 	
-	version (ALLEGRO_UNSTABLE) static if (allegro5Support >= Allegro5Support.v5_2_3) {
+	version (ALLEGRO_UNSTABLE) static if (allegro5Support >= AllegroSupport.v5_2_3) {
 		alias pal_clear_keyboard_state = extern(C) void function(ALLEGRO_DISPLAY* display) @nogc nothrow;
 		__gshared pal_clear_keyboard_state al_clear_keyboard_state;
 	}

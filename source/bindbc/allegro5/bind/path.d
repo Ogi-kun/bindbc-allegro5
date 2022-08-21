@@ -46,7 +46,7 @@ static if (staticBinding) {
 
 	bool al_make_path_canonical(ALLEGRO_PATH* path);
 
-	static if (allegro5Support >= Allegro5Support.v5_2_3) {
+	static if (allegro5Support >= AllegroSupport.v5_2_3) {
 		const(ALLEGRO_USTR)* al_path_ustr(const(ALLEGRO_PATH)* path, char delim);
 	}
 }
@@ -81,7 +81,7 @@ else {
 
 		alias pal_make_path_canonical = bool function(ALLEGRO_PATH* path);
 
-		static if (allegro5Support >= Allegro5Support.v5_2_3) {
+		static if (allegro5Support >= AllegroSupport.v5_2_3) {
 			alias pal_path_ustr = const(ALLEGRO_USTR)* function(const(ALLEGRO_PATH)* path, char delim);
 		}
 	}
@@ -115,7 +115,7 @@ else {
 
 		pal_make_path_canonical al_make_path_canonical;
 
-		static if (allegro5Support >= Allegro5Support.v5_2_3) {
+		static if (allegro5Support >= AllegroSupport.v5_2_3) {
 			pal_path_ustr al_path_ustr;
 		}
 	}

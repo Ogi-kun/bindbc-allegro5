@@ -7,7 +7,7 @@ import bindbc.allegro5.bind.path : ALLEGRO_PATH;
 
 struct ALLEGRO_SYSTEM;
 
-static if (allegro5Support >= Allegro5Support.v5_2_5) {
+static if (allegro5Support >= AllegroSupport.v5_2_5) {
 	enum ALLEGRO_SYSTEM_ID {
 		ALLEGRO_SYSTEM_ID_UNKNOWN = 0,
 		ALLEGRO_SYSTEM_ID_XGLX = AL_ID('X', 'G', 'L', 'X'),
@@ -58,7 +58,7 @@ static if (staticBinding) {
 
 	bool al_inhibit_screensaver(bool inhibit);
 
-	static if (allegro5Support >= Allegro5Support.v5_2_5) {
+	static if (allegro5Support >= AllegroSupport.v5_2_5) {
 		ALLEGRO_SYSTEM_ID al_get_system_id();
 	}
 
@@ -81,7 +81,7 @@ else {
 
 		alias pal_inhibit_screensaver = bool function(bool inhibit);
 
-		static if (allegro5Support >= Allegro5Support.v5_2_5) {
+		static if (allegro5Support >= AllegroSupport.v5_2_5) {
 			alias pal_get_system_id = ALLEGRO_SYSTEM_ID function();
 		}
 	}
@@ -103,7 +103,7 @@ else {
 
 		pal_inhibit_screensaver al_inhibit_screensaver;
 
-		static if (allegro5Support >= Allegro5Support.v5_2_5) {
+		static if (allegro5Support >= AllegroSupport.v5_2_5) {
 			pal_get_system_id al_get_system_id;
 		}
 	}

@@ -13,7 +13,7 @@ struct ALLEGRO_COND;
 static if (staticBinding) {
 	extern(C) @nogc nothrow:
 	ALLEGRO_THREAD* al_create_thread(void* function(ALLEGRO_THREAD* thread, void* arg) proc, void* arg);
-	version (ALLEGRO_UNSTABLE) static if (allegro5Support >= Allegro5Support.v5_2_5) {
+	version (ALLEGRO_UNSTABLE) static if (allegro5Support >= AllegroSupport.v5_2_5) {
 		ALLEGRO_THREAD* al_create_thread_with_stacksize(
 				void* function(ALLEGRO_THREAD* thread, void* arg) proc, void* arg, size_t stacksize);
 	}
@@ -40,7 +40,7 @@ static if (staticBinding) {
 else {
 	extern(C) @nogc nothrow {
 		alias pal_create_thread = ALLEGRO_THREAD* function(void* function(ALLEGRO_THREAD* thread, void* arg) proc, void* arg);
-		version (ALLEGRO_UNSTABLE) static if (allegro5Support >= Allegro5Support.v5_2_5) {
+		version (ALLEGRO_UNSTABLE) static if (allegro5Support >= AllegroSupport.v5_2_5) {
 			alias pal_create_thread_with_stacksize = ALLEGRO_THREAD* function(
 					void* function(ALLEGRO_THREAD* thread, void* arg) proc, void* arg, size_t stacksize);
 		}
@@ -66,7 +66,7 @@ else {
 	}
 	__gshared {
 		pal_create_thread al_create_thread;
-		version (ALLEGRO_UNSTABLE) static if (allegro5Support >= Allegro5Support.v5_2_5) {
+		version (ALLEGRO_UNSTABLE) static if (allegro5Support >= AllegroSupport.v5_2_5) {
 			pal_create_thread_with_stacksize al_create_thread_with_stacksize;
 		}
 		pal_start_thread al_start_thread;
