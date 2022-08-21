@@ -873,73 +873,71 @@ AllegroSupport loadAllegro(const(char)* libName) {
 	
 	version (Allegro_Monolith) {
 		import bindbc.allegro5.allegro_acodec;
-		loadAllegroACodec(libName);
+		bindAllegroACodec(lib, libName);
 		if (errorCount() != lastErrorCount) {
 			return AllegroSupport.badLibrary;
 		}
 
 		import bindbc.allegro5.allegro_audio;
-		loadAllegroAudio(libName);
+		bindAllegroAudio(lib, libName);
 		if (errorCount() != lastErrorCount) {
 			return AllegroSupport.badLibrary;
 		}
 
 		import bindbc.allegro5.allegro_color;
-		loadAllegroColor(libName);
+		bindAllegroColor(lib, libName);
 		if (errorCount() != lastErrorCount) {
 			return AllegroSupport.badLibrary;
 		}
 
 		import bindbc.allegro5.allegro_font;
-		loadAllegroFont(libName);
+		bindAllegroFont(lib, libName);
 		if (errorCount() != lastErrorCount) {
 			return AllegroSupport.badLibrary;
 		}
 
 		import bindbc.allegro5.allegro_image;
-		loadAllegroImage(libName);
+		bindAllegroImage(lib, libName);
 		if (errorCount() != lastErrorCount) {
 			return AllegroSupport.badLibrary;
 		}
 
 
 		import bindbc.allegro5.allegro_memfile;
-		loadAllegroMemfile(libName);
+		bindAllegroMemfile(lib, libName);
 		if (errorCount() != lastErrorCount) {
 			return AllegroSupport.badLibrary;
 		}
 
 		import bindbc.allegro5.allegro_native_dialog;
-		loadAllegroDialog(libName);
+		bindAllegroDialog(lib, libName);
 		if (errorCount() != lastErrorCount) {
 			return AllegroSupport.badLibrary;
 		}
 
 		import bindbc.allegro5.allegro_physfs;
-		loadAllegroPhysFS(libName);
+		bindAllegroPhysFS(lib, libName);
 		if (errorCount() != lastErrorCount) {
 			return AllegroSupport.badLibrary;
 		}
 
 		import bindbc.allegro5.allegro_primitives;
-		loadAllegroPrimitives(libName);
+		bindAllegroPrimitives(lib, libName);
 		if (errorCount() != lastErrorCount) {
 			return AllegroSupport.badLibrary;
 		}
 
 		import bindbc.allegro5.allegro_ttf;
-		loadAllegroTTF(libName);
+		bindAllegroTTF(lib, libName);
 		if (errorCount() != lastErrorCount) {
 			return AllegroSupport.badLibrary;
 		}
 
 		import bindbc.allegro5.allegro_video;
-		loadAllegroVideo(libName);
+		bindAllegroVideo(lib, libName);
 		if (errorCount() != lastErrorCount) {
 			return AllegroSupport.badLibrary;
 		}
-
-		
 	}
 
 	return loadedVersion;

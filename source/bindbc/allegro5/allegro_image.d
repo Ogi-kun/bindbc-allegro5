@@ -38,50 +38,59 @@ else {
 
 	import bindbc.loader;
 
-	private {
-		__gshared SharedLib lib;
-		__gshared AllegroSupport loadedVersion;
-	}
-
 	@nogc nothrow:
 
-	void unloadAllegroImage() {
-		if (lib != invalidHandle) {
-			lib.unload();
+	version (Allegro_Monolith) {} else { 
+		
+		private {
+			__gshared SharedLib lib;
+			__gshared AllegroSupport loadedVersion;
 		}
-	}
 
-	AllegroSupport loadedAllegroImageVersion() {
-		return loadedVersion; 
-	}
-
-	bool isAllegroImageLoaded() {
-		return lib != invalidHandle;
-	}
-
-	AllegroSupport loadAllegroImage() {
-		const(char)[][1] libNames = [
-			libName!"image",
-		];
-
-		typeof(return) result;
-		foreach (i; 0..libNames.length) {
-			result = loadAllegroImage(libNames[i].ptr);
-			if (result != AllegroSupport.noLibrary) {
-				break;
+		void unloadAllegroImage() {
+			if (lib != invalidHandle) {
+				lib.unload();
 			}
 		}
-		return result;
-	}
 
-	AllegroSupport loadAllegroImage(const(char)* libName) {
-		lib = load(libName);
-		if (lib == invalidHandle) {
-			return AllegroSupport.noLibrary;
+		AllegroSupport loadedAllegroImageVersion() {
+			return loadedVersion; 
 		}
 
+		bool isAllegroImageLoaded() {
+			return lib != invalidHandle;
+		}
+
+		AllegroSupport loadAllegroImage() {
+			const(char)[][1] libNames = [
+				libName!"image",
+			];
+
+			typeof(return) result;
+			foreach (i; 0..libNames.length) {
+				result = loadAllegroImage(libNames[i].ptr);
+				if (result != AllegroSupport.noLibrary) {
+					break;
+				}
+			}
+			return result;
+		}
+
+		AllegroSupport loadAllegroImage(const(char)* libName) {
+			lib = load(libName);
+			if (lib == invalidHandle) {
+				return AllegroSupport.noLibrary;
+			}
+
+			loadedVersion = bindAllegroImage(lib, libName);
+			return loadedVersion;
+		}
+	}
+
+	package AllegroSupport bindAllegroImage(SharedLib lib, const(char)* libName) {
+		
 		auto lastErrorCount = errorCount();
-		loadedVersion = AllegroSupport.badLibrary;
+		auto loadedVersion = AllegroSupport.badLibrary;
 
 		lib.bindSymbol(cast(void**)&al_init_image_addon, "al_init_image_addon");
 		lib.bindSymbol(cast(void**)&al_shutdown_image_addon, "al_shutdown_image_addon");

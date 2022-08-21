@@ -21,50 +21,57 @@ else {
 
 	import bindbc.loader;
 
-	private {
-		__gshared SharedLib lib;
-		__gshared AllegroSupport loadedVersion;
-	}
-
 	@nogc nothrow:
 
-	void unloadAllegroPhysFS() {
-		if (lib != invalidHandle) {
-			lib.unload();
+	version (Allegro_Monolith) {} else {
+
+		private {
+			__gshared SharedLib lib;
+			__gshared AllegroSupport loadedVersion;
 		}
-	}
 
-	AllegroSupport loadedAllegroPhysFSVersion() {
-		return loadedVersion; 
-	}
-
-	bool isAllegroPhysFSLoaded() {
-		return lib != invalidHandle;
-	}
-
-	AllegroSupport loadAllegroPhysFS() {
-		const(char)[][1] libNames = [
-			libName!"physfs",
-		];
-
-		typeof(return) result;
-		foreach (i; 0..libNames.length) {
-			result = loadAllegroPhysFS(libNames[i].ptr);
-			if (result != AllegroSupport.noLibrary) {
-				break;
+		void unloadAllegroPhysFS() {
+			if (lib != invalidHandle) {
+				lib.unload();
 			}
 		}
-		return result;
-	}
 
-	AllegroSupport loadAllegroPhysFS(const(char)* libName) {
-		lib = load(libName);
-		if (lib == invalidHandle) {
-			return AllegroSupport.noLibrary;
+		AllegroSupport loadedAllegroPhysFSVersion() {
+			return loadedVersion; 
 		}
 
+		bool isAllegroPhysFSLoaded() {
+			return lib != invalidHandle;
+		}
+
+		AllegroSupport loadAllegroPhysFS() {
+			const(char)[][1] libNames = [
+				libName!"physfs",
+			];
+
+			typeof(return) result;
+			foreach (i; 0..libNames.length) {
+				result = loadAllegroPhysFS(libNames[i].ptr);
+				if (result != AllegroSupport.noLibrary) {
+					break;
+				}
+			}
+			return result;
+		}
+
+		AllegroSupport loadAllegroPhysFS(const(char)* libName) {
+			lib = load(libName);
+			if (lib == invalidHandle) {
+				return AllegroSupport.noLibrary;
+			}
+			loadedVersion = bindAllegroPhysFS(lib, libName);
+			return loadedVersion;
+		}
+	}
+	
+	package AllegroSupport bindAllegroPhysFS(SharedLib lib, const(char)* libName) {
 		auto lastErrorCount = errorCount();
-		loadedVersion = AllegroSupport.badLibrary;
+		auto loadedVersion = AllegroSupport.badLibrary;
 
 		lib.bindSymbol(cast(void**)&al_set_physfs_file_interface, "al_set_physfs_file_interface");
 		lib.bindSymbol(cast(void**)&al_get_allegro_physfs_version, "al_get_allegro_physfs_version");

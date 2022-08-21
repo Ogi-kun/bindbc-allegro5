@@ -206,50 +206,58 @@ else {
 
 	import bindbc.loader;
 
-	private {
-		__gshared SharedLib lib;
-		__gshared AllegroSupport loadedVersion;
-	}
-
 	@nogc nothrow:
 
-	void unloadAllegroFont() {
-		if (lib != invalidHandle) {
-			lib.unload();
+	version (Allegro_Monolith) {} else { 
+		
+		private {
+			__gshared SharedLib lib;
+			__gshared AllegroSupport loadedVersion;
 		}
-	}
 
-	AllegroSupport loadedAllegroFontVersion() {
-		return loadedVersion; 
-	}
-
-	bool isAllegroFontLoaded() {
-		return lib != invalidHandle;
-	}
-
-	AllegroSupport loadAllegroFont() {
-		const(char)[][1] libNames = [
-			libName!"font",
-		];
-
-		typeof(return) result;
-		foreach (i; 0..libNames.length) {
-			result = loadAllegroFont(libNames[i].ptr);
-			if (result != AllegroSupport.noLibrary) {
-				break;
+		void unloadAllegroFont() {
+			if (lib != invalidHandle) {
+				lib.unload();
 			}
 		}
-		return result;
-	}
 
-	AllegroSupport loadAllegroFont(const(char)* libName) {
-		lib = load(libName);
-		if (lib == invalidHandle) {
-			return AllegroSupport.noLibrary;
+		AllegroSupport loadedAllegroFontVersion() {
+			return loadedVersion; 
 		}
 
+		bool isAllegroFontLoaded() {
+			return lib != invalidHandle;
+		}
+
+		AllegroSupport loadAllegroFont() {
+			const(char)[][1] libNames = [
+				libName!"font",
+			];
+
+			typeof(return) result;
+			foreach (i; 0..libNames.length) {
+				result = loadAllegroFont(libNames[i].ptr);
+				if (result != AllegroSupport.noLibrary) {
+					break;
+				}
+			}
+			return result;
+		}
+
+		AllegroSupport loadAllegroFont(const(char)* libName) {
+			lib = load(libName);
+			if (lib == invalidHandle) {
+				return AllegroSupport.noLibrary;
+			}
+			loadedVersion = bindAllegroFont(lib, libName);
+			return loadedVersion;
+		}
+	}
+
+	package AllegroSupport bindAllegroFont(SharedLib lib, const(char)* libName) {
+
 		auto lastErrorCount = errorCount();
-		loadedVersion = AllegroSupport.badLibrary;
+		auto loadedVersion = AllegroSupport.badLibrary;
 
 		lib.bindSymbol(cast(void**)&al_init_font_addon, "al_init_font_addon");
 		lib.bindSymbol(cast(void**)&al_shutdown_font_addon, "al_shutdown_font_addon");

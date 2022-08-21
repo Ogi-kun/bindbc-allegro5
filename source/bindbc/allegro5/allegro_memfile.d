@@ -24,50 +24,58 @@ else {
 
 	import bindbc.loader;
 
-	private {
-		__gshared SharedLib lib;
-		__gshared AllegroSupport loadedVersion;
-	}
-
 	@nogc nothrow:
 
-	void unloadAllegroMemfile() {
-		if (lib != invalidHandle) {
-			lib.unload();
+	version (Allegro_Monolith) {} else { 
+		
+		private {
+			__gshared SharedLib lib;
+			__gshared AllegroSupport loadedVersion;
 		}
-	}
-
-	AllegroSupport loadedAllegroMemfileVersion() {
-		return loadedVersion; 
-	}
-
-	bool isAllegroMemfileLoaded() {
-		return lib != invalidHandle;
-	}
-
-	AllegroSupport loadAllegroMemfile() {
-		const(char)[][1] libNames = [
-			libName!"memfile",
-		];
-
-		typeof(return) result;
-		foreach (i; 0..libNames.length) {
-			result = loadAllegroMemfile(libNames[i].ptr);
-			if (result != AllegroSupport.noLibrary) {
-				break;
+	
+		void unloadAllegroMemfile() {
+			if (lib != invalidHandle) {
+				lib.unload();
 			}
 		}
-		return result;
-	}
-
-	AllegroSupport loadAllegroMemfile(const(char)* libName) {
-		lib = load(libName);
-		if (lib == invalidHandle) {
-			return AllegroSupport.noLibrary;
+	
+		AllegroSupport loadedAllegroMemfileVersion() {
+			return loadedVersion; 
+		}
+	
+		bool isAllegroMemfileLoaded() {
+			return lib != invalidHandle;
+		}
+	
+		AllegroSupport loadAllegroMemfile() {
+			const(char)[][1] libNames = [
+				libName!"memfile",
+			];
+	
+			typeof(return) result;
+			foreach (i; 0..libNames.length) {
+				result = loadAllegroMemfile(libNames[i].ptr);
+				if (result != AllegroSupport.noLibrary) {
+					break;
+				}
+			}
+			return result;
 		}
 
+		AllegroSupport loadAllegroMemfile(const(char)* libName) {
+			lib = load(libName);
+			if (lib == invalidHandle) {
+				return AllegroSupport.noLibrary;
+			}
+			loadedVersion = bindAllegroMemfile(lib, libName);
+			return loadedVersion;
+		}
+	}
+
+	package AllegroSupport bindAllegroMemfile(SharedLib lib, const(char)* libName) {
+
 		auto lastErrorCount = errorCount();
-		loadedVersion = AllegroSupport.badLibrary;
+		auto loadedVersion = AllegroSupport.badLibrary;
 
 		lib.bindSymbol(cast(void**)&al_open_memfile, "al_open_memfile");
 		lib.bindSymbol(cast(void**)&al_get_allegro_memfile_version, "al_get_allegro_memfile_version");

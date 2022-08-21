@@ -309,50 +309,58 @@ else {
 
 	import bindbc.loader;
 
-	private {
-		__gshared SharedLib lib;
-		__gshared AllegroSupport loadedVersion;
-	}
-
 	@nogc nothrow:
 
-	void unloadAllegroPrimitives() {
-		if (lib != invalidHandle) {
-			lib.unload();
+	version (Allegro_Monolith) {} else {
+
+		private {
+			__gshared SharedLib lib;
+			__gshared AllegroSupport loadedVersion;
 		}
-	}
 
-	AllegroSupport loadedAllegroPrimitivesVersion() {
-		return loadedVersion; 
-	}
-
-	bool isAllegroPrimitivesLoaded() {
-		return lib != invalidHandle;
-	}
-
-	AllegroSupport loadAllegroPrimitives() {
-		const(char)[][1] libNames = [
-			libName!"primitives",
-		];
-
-		typeof(return) result;
-		foreach (i; 0..libNames.length) {
-			result = loadAllegroPrimitives(libNames[i].ptr);
-			if (result != AllegroSupport.noLibrary) {
-				break;
+		void unloadAllegroPrimitives() {
+			if (lib != invalidHandle) {
+				lib.unload();
 			}
 		}
-		return result;
-	}
 
-	AllegroSupport loadAllegroPrimitives(const(char)* libName) {
-		lib = load(libName);
-		if (lib == invalidHandle) {
-			return AllegroSupport.noLibrary;
+		AllegroSupport loadedAllegroPrimitivesVersion() {
+			return loadedVersion; 
 		}
 
+		bool isAllegroPrimitivesLoaded() {
+			return lib != invalidHandle;
+		}
+
+		AllegroSupport loadAllegroPrimitives() {
+			const(char)[][1] libNames = [
+				libName!"primitives",
+			];
+
+			typeof(return) result;
+			foreach (i; 0..libNames.length) {
+				result = loadAllegroPrimitives(libNames[i].ptr);
+				if (result != AllegroSupport.noLibrary) {
+					break;
+				}
+			}
+			return result;
+		}
+
+		AllegroSupport loadAllegroPrimitives(const(char)* libName) {
+			lib = load(libName);
+			if (lib == invalidHandle) {
+				return AllegroSupport.noLibrary;
+			}
+			loadedVersion = bindAllegroPrimitives(lib, libName);
+			return loadedVersion;
+		}
+	}
+
+	package AllegroSupport bindAllegroPrimitives(SharedLib lib, const(char)* libName) {
+
 		auto lastErrorCount = errorCount();
-		loadedVersion = AllegroSupport.badLibrary;
+		auto loadedVersion = AllegroSupport.badLibrary;
 
 		lib.bindSymbol(cast(void**)&al_init_primitives_addon, "al_init_primitives_addon");
 		lib.bindSymbol(cast(void**)&al_shutdown_primitives_addon, "al_shutdown_primitives_addon");

@@ -241,50 +241,59 @@ else {
 
 	import bindbc.loader;
 
-	private {
-		__gshared SharedLib lib;
-		__gshared AllegroSupport loadedVersion;
-	}
-
 	@nogc nothrow:
 
-	void unloadAllegroDialog() {
-		if (lib != invalidHandle) {
-			lib.unload();
+	version (Allegro_Monolith) {} else {
+
+		private {
+			__gshared SharedLib lib;
+			__gshared AllegroSupport loadedVersion;
 		}
-	}
 
-	AllegroSupport loadedAllegroDialogVersion() {
-		return loadedVersion; 
-	}
-
-	bool isAllegroDialogLoaded() {
-		return lib != invalidHandle;
-	}
-
-	AllegroSupport loadAllegroDialog() {
-		const(char)[][1] libNames = [
-			libName!"dialog",
-		];
-
-		typeof(return) result;
-		foreach (i; 0..libNames.length) {
-			result = loadAllegroDialog(libNames[i].ptr);
-			if (result != AllegroSupport.noLibrary) {
-				break;
+		void unloadAllegroDialog() {
+			if (lib != invalidHandle) {
+				lib.unload();
 			}
 		}
-		return result;
-	}
 
-	AllegroSupport loadAllegroDialog(const(char)* libName) {
-		lib = load(libName);
-		if (lib == invalidHandle) {
-			return AllegroSupport.noLibrary;
+		AllegroSupport loadedAllegroDialogVersion() {
+			return loadedVersion; 
 		}
 
+		bool isAllegroDialogLoaded() {
+			return lib != invalidHandle;
+		}
+
+		AllegroSupport loadAllegroDialog() {
+			const(char)[][1] libNames = [
+				libName!"dialog",
+			];
+
+			typeof(return) result;
+			foreach (i; 0..libNames.length) {
+				result = loadAllegroDialog(libNames[i].ptr);
+				if (result != AllegroSupport.noLibrary) {
+					break;
+				}
+			}
+			return result;
+		}
+
+		AllegroSupport loadAllegroDialog(const(char)* libName) {
+			lib = load(libName);
+			if (lib == invalidHandle) {
+				return AllegroSupport.noLibrary;
+			}
+			loadedVersion = bindAllegroDialog(lib, libName);
+			return loadedVersion;
+		}
+
+	}
+
+	package AllegroSupport bindAllegroDialog(SharedLib lib, const(char)* libName) {
+
 		auto lastErrorCount = errorCount();
-		loadedVersion = AllegroSupport.badLibrary;
+		auto loadedVersion = AllegroSupport.badLibrary;
 
 		lib.bindSymbol(cast(void**)&al_init_native_dialog_addon, "al_init_native_dialog_addon");
 		lib.bindSymbol(cast(void**)&al_shutdown_native_dialog_addon, "al_shutdown_native_dialog_addon");

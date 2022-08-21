@@ -120,50 +120,58 @@ else {
 
 	import bindbc.loader;
 
-	private {
-		__gshared SharedLib lib;
-		__gshared AllegroSupport loadedVersion;
-	}
-
 	@nogc nothrow:
 
-	void unloadAllegroVideo() {
-		if (lib != invalidHandle) {
-			lib.unload();
+	version (Allegro_Monolith) {} else {
+
+		private {
+			__gshared SharedLib lib;
+			__gshared AllegroSupport loadedVersion;
 		}
-	}
-
-	AllegroSupport loadedAllegroVideoVersion() {
-		return loadedVersion; 
-	}
-
-	bool isAllegroVideoLoaded() {
-		return lib != invalidHandle;
-	}
-
-	AllegroSupport loadAllegroVideo() {
-		const(char)[][1] libNames = [
-			libName!"video",
-		];
-
-		typeof(return) result;
-		foreach (i; 0..libNames.length) {
-			result = loadAllegroVideo(libNames[i].ptr);
-			if (result != AllegroSupport.noLibrary) {
-				break;
+	
+		void unloadAllegroVideo() {
+			if (lib != invalidHandle) {
+				lib.unload();
 			}
 		}
-		return result;
-	}
-
-	AllegroSupport loadAllegroVideo(const(char)* libName) {
-		lib = load(libName);
-		if (lib == invalidHandle) {
-			return AllegroSupport.noLibrary;
+	
+		AllegroSupport loadedAllegroVideoVersion() {
+			return loadedVersion; 
+		}
+	
+		bool isAllegroVideoLoaded() {
+			return lib != invalidHandle;
+		}
+	
+		AllegroSupport loadAllegroVideo() {
+			const(char)[][1] libNames = [
+				libName!"video",
+			];
+	
+			typeof(return) result;
+			foreach (i; 0..libNames.length) {
+				result = loadAllegroVideo(libNames[i].ptr);
+				if (result != AllegroSupport.noLibrary) {
+					break;
+				}
+			}
+			return result;
 		}
 
+		AllegroSupport loadAllegroVideo(const(char)* libName) {
+			lib = load(libName);
+			if (lib == invalidHandle) {
+				return AllegroSupport.noLibrary;
+			}
+			loadedVersion = bindAllegroVideo(lib, libName);
+			return loadedVersion;
+		}
+	}
+
+	package AllegroSupport bindAllegroVideo(SharedLib lib, const(char)* libName) {
+
 		auto lastErrorCount = errorCount();
-		loadedVersion = AllegroSupport.badLibrary;
+		auto loadedVersion = AllegroSupport.badLibrary;
 
 		lib.bindSymbol(cast(void**)&al_init_video_addon, "al_init_video_addon");
 		lib.bindSymbol(cast(void**)&al_shutdown_video_addon, "al_shutdown_video_addon");

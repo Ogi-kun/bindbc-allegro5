@@ -673,52 +673,59 @@ else {
 
 	import bindbc.loader;
 
-	private {
-		__gshared SharedLib lib;
-		__gshared AllegroSupport loadedVersion;
-	}
-
 	@nogc nothrow:
 
-	void unloadAllegroAudio() {
-		if (lib != invalidHandle) {
-			lib.unload();
+	version (Allegro_Monolith) {} else { 
+
+		private {
+			__gshared SharedLib lib;
+			__gshared AllegroSupport loadedVersion;
 		}
-	}
 
-	AllegroSupport loadedAllegroAudioVersion() {
-		return loadedVersion; 
-	}
-
-	bool isAllegroAudioLoaded() {
-		return lib != invalidHandle;
-	}
-
-	AllegroSupport loadAllegroAudio() {
-
-		const(char)[][1] libNames = [
-			libName!"audio",
-		];
-
-		typeof(return) result;
-		foreach (i; 0..libNames.length) {
-			result = loadAllegroAudio(libNames[i].ptr);
-			if (result != AllegroSupport.noLibrary) {
-				break;
+		void unloadAllegroAudio() {
+			if (lib != invalidHandle) {
+				lib.unload();
 			}
 		}
-		return result;
-	}
 
-	AllegroSupport loadAllegroAudio(const(char)* libName) {
-		lib = load(libName);
-		if (lib == invalidHandle) {
-			return AllegroSupport.noLibrary;
+		AllegroSupport loadedAllegroAudioVersion() {
+			return loadedVersion; 
 		}
 
-		auto lastErrorCount = errorCount();
-		loadedVersion = AllegroSupport.badLibrary;
+		bool isAllegroAudioLoaded() {
+			return lib != invalidHandle;
+		}
 
+		AllegroSupport loadAllegroAudio() {
+
+			const(char)[][1] libNames = [
+				libName!"audio",
+			];
+
+			typeof(return) result;
+			foreach (i; 0..libNames.length) {
+				result = loadAllegroAudio(libNames[i].ptr);
+				if (result != AllegroSupport.noLibrary) {
+					break;
+				}
+			}
+			return result;
+		}
+
+		AllegroSupport loadAllegroAudio(const(char)* libName) {
+			lib = load(libName);
+			if (lib == invalidHandle) {
+				return AllegroSupport.noLibrary;
+			}
+			loadedVersion = bindAllegroAudio(lib, libName);
+			return loadedVersion;
+		}
+	}
+
+	package AllegroSupport bindAllegroAudio(SharedLib lib, const(char)* libName) {
+
+		auto lastErrorCount = errorCount();
+		auto loadedVersion = AllegroSupport.badLibrary;
 
 		lib.bindSymbol(cast(void**)&al_create_sample, "al_create_sample");
 		lib.bindSymbol(cast(void**)&al_destroy_sample, "al_destroy_sample");
