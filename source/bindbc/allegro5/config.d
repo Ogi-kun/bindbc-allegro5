@@ -87,3 +87,10 @@ version (Allegro_TTF) {
 else {
 	enum allegroTTF = false;
 }
+
+version (Allegro_Image) {
+	enum allegroImage = true;
+}
+else {
+	enum allegroImage = false;
+}
