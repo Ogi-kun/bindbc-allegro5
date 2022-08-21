@@ -748,6 +748,11 @@ Allegro5Support loadAllegro5(const(char)* libName) {
 		lib.bindSymbol(cast(void**)&al_get_touch_input_mouse_emulation_event_source, "al_get_touch_input_mouse_emulation_event_source");
 	}
 
+	if (errorCount() != lastErrorCount) {
+		return Allegro5Support.badLibrary;
+	}
+	loadedVersion = Allegro5Support.v5_2_0;
+
 	static if (allegro5Support >= Allegro5Support.v5_2_1) {
 		version (ALLEGRO_UNSTABLE) {
 			lib.bindSymbol(cast(void**)&al_get_new_bitmap_depth, "al_get_new_bitmap_depth");
@@ -760,7 +765,7 @@ Allegro5Support loadAllegro5(const(char)* libName) {
 			lib.bindSymbol(cast(void**)&al_backup_dirty_bitmap, "al_backup_dirty_bitmap");
 			lib.bindSymbol(cast(void**)&al_backup_dirty_bitmaps, "al_backup_dirty_bitmaps");
 		}
-		if (errorCount() != errCount) {
+		if (errorCount() != lastErrorCount) {
 			return Allegro5Support.badLibrary;
 		}
 		loadedVersion = Allegro5Support.v5_2_1;
@@ -774,7 +779,7 @@ Allegro5Support loadAllegro5(const(char)* libName) {
 			}
 		}
 
-		if (errorCount() != errCount) {
+		if (errorCount() != lastErrorCount) {
 			return Allegro5Support.badLibrary;
 		}
 		loadedVersion = Allegro5Support.v5_2_2;
@@ -790,14 +795,14 @@ Allegro5Support loadAllegro5(const(char)* libName) {
 		// Considered stable
 		lib.bindSymbol(cast(void**)&al_path_ustr, "al_path_ustr");
 
-		if (errorCount() != errCount) {
+		if (errorCount() != lastErrorCount) {
 			return Allegro5Support.badLibrary;
 		}
 		loadedVersion = Allegro5Support.v5_2_3;
 	}
 
 	static if (allegro5Support >= Allegro5Support.v5_2_4) {
-		if (errorCount() != errCount) {
+		if (errorCount() != lastErrorCount) {
 			return Allegro5Support.badLibrary;
 		}
 		loadedVersion = Allegro5Support.v5_2_4;
@@ -823,7 +828,7 @@ Allegro5Support loadAllegro5(const(char)* libName) {
 		lib.bindSymbol(cast(void**)&al_transform_coordinates_4d, "al_transform_coordinates_4d");
 		lib.bindSymbol(cast(void**)&al_transform_coordinates_3d_projective, "al_transform_coordinates_3d_projective");
 
-		if (errorCount() != errCount) {
+		if (errorCount() != lastErrorCount) {
 			return Allegro5Support.badLibrary;
 		}
 		loadedVersion = Allegro5Support.v5_2_5;
@@ -834,14 +839,14 @@ Allegro5Support loadAllegro5(const(char)* libName) {
 			lib.bindSymbol(cast(void**)&al_get_monitor_refresh_rate, "al_get_monitor_refresh_rate");
 		}
 
-		if (errorCount() != errCount) {
+		if (errorCount() != lastErrorCount) {
 			return Allegro5Support.badLibrary;
 		}
 		loadedVersion = Allegro5Support.v5_2_6;
 	}
 
 	static if (allegro5Support >= Allegro5Support.v5_2_7) {
-		if (errorCount() != errCount) {
+		if (errorCount() != lastErrorCount) {
 			return Allegro5Support.badLibrary;
 		}
 		loadedVersion = Allegro5Support.v5_2_7;
@@ -853,7 +858,7 @@ Allegro5Support loadAllegro5(const(char)* libName) {
 			lib.bindSymbol(cast(void**)&al_set_new_bitmap_wrap, "al_set_new_bitmap_wrap");
 		}
 
-		if (errorCount() != errCount) {
+		if (errorCount() != lastErrorCount) {
 			return Allegro5Support.badLibrary;
 		}
 		loadedVersion = Allegro5Support.v5_2_8;
