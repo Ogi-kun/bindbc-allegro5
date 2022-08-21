@@ -5,7 +5,7 @@ import bindbc.allegro5.config;
 import bindbc.allegro5.bind.utf8 : ALLEGRO_USTR;
 import bindbc.allegro5.bind.path : ALLEGRO_PATH;
 version (Posix) {
-    import core.sys.posix.sys.types : off_t;
+	import core.sys.posix.sys.types : off_t;
 }
 else {
 	alias off_t = uint;
@@ -30,9 +30,9 @@ struct ALLEGRO_FILE_INTERFACE {
 }
 
 enum ALLEGRO_SEEK {
-   ALLEGRO_SEEK_SET = 0,
-   ALLEGRO_SEEK_CUR,
-   ALLEGRO_SEEK_END
+	ALLEGRO_SEEK_SET = 0,
+	ALLEGRO_SEEK_CUR,
+	ALLEGRO_SEEK_END
 }
 
 static if (staticBinding) {
