@@ -1,0 +1,15 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/bindbc-allegro5
+bindbc-allegro5.so
+bindbc-allegro5.dylib
+bindbc-allegro5.dll
+bindbc-allegro5.a
+bindbc-allegro5.lib
+bindbc-allegro5-test-*
+*.exe
+*.o
+*.obj
+*.lst

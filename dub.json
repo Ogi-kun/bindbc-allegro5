@@ -1,0 +1,44 @@
+{
+	"authors": [
+		"Georgy Markov"
+	],
+	"copyright": "Copyright © 2022, Georgy Markov",
+	"dependencies": {
+		"bindbc-loader": "~>1.0.0"
+	},
+	"description": "Dynamic and static bindings to Allegro5 and its addons, compatible with -betterC, @nogc, and nothrow.",
+	"license": "Boost",
+	"name": "bindbc-allegro5",
+	"targetType" : "staticLibrary",
+	"targetPath" : "lib",
+	"targetName" : "BindBC_Allegro5",
+
+	"configurations" : [
+		{
+			"name" : "dynamic",
+			"dependencies": {
+				"bindbc-loader": "~>1.0.0"
+			},
+		},
+		{
+			"name" : "dynamicBC",
+			"dependencies": {
+				"bindbc-loader": "~>1.0.0"
+			},
+			"subConfigurations" : {
+				"bindbc-loader" : "yesBC"
+			}
+		},
+		{
+			"name" : "static",
+			"versions" : ["BindAllegro5_Static"]
+		},
+		{
+			"name" : "staticBC",
+			"versions" : ["BindAllegro5_Static"],
+			"subConfigurations" : {
+				"bindbc-loader" : "yesBC"
+			}
+		}
+	]
+}
