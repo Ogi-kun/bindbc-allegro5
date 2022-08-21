@@ -52,13 +52,3 @@ else version (Allegro_5_2_1) {
 else {
 	enum allegroSupport = AllegroSupport.v5_2_0;
 }
-
-deprecated("use AllegroSupport instead")
-alias Allegro5Support = AllegroSupport;
-
-version (BindAllegro5_Static) {
-	static assert(0, "use BindAllegro_Static instead");
-}
-
-deprecated("use allegroSupport instead")
-enum allegro5Support = allegroSupport;

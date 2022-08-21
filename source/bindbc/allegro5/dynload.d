@@ -873,15 +873,3 @@ AllegroSupport loadAllegro(const(char)* libName) {
 	}
 
 }
-
-deprecated("use loadAllegro instead")
-alias loadAllegro5 = loadAllegro;
-
-deprecated("use unloadAllegro instead")
-alias unloadAllegro5 = unloadAllegro;
-
-deprecated("use loadedAllegroVersion instead")
-alias loadedAllegro5Version = loadedAllegroVersion;
-
-deprecated("use isAllegroLoaded instead")
-alias isAllegro5Loaded = isAllegroLoaded;
