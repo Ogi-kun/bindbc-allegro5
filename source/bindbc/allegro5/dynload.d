@@ -29,17 +29,38 @@ bool isAllegroLoaded() {
 }
 
 AllegroSupport loadAllegro() {
+	version (Allegro_Monolith) {
+		enum monolith = true;
+	}
+	else {
+		enum monolith = false;
+	}
+
+	version (ALLEGRO_DEBUG) {
+		enum dbg = true;
+	}
+	else {
+		enum dbg = false;
+	}
 
 	// FIXME: add OSX & POSIX
 	version (Windows) {
-		version (ALLEGRO_DEBUG) {
+		enum libName(bool monolith, bool dbg, string suffix) = 
+				"allegro" ~
+				(monolith ? "_monolith" : "") ~
+				(dbg ? "-debug" : "") ~
+				suffix ~ 
+				".dll";
+
+		version (Allegro_Monolith) {
 			const(char)[][1] libNames = [
-				"allegro-debug-5.2.dll",
+				libName!(true, dbg, "-5.2"),
 			];
 		}
 		else {
-			const(char)[][1] libNames = [
-				"allegro-5.2.dll",
+			const(char)[][2] libNames = [
+				libName!(false, dbg, "-5.2"),
+				libName!(true, dbg, "-5.2"),
 			];
 		}
 	}
@@ -867,12 +888,78 @@ AllegroSupport loadAllegro(const(char)* libName) {
 		}
 		loadedVersion = AllegroSupport.v5_2_8;
 	}
+	
+	version (Allegro_Monolith) {
+		import bindbc.allegro5.allegro_acodec;
+		loadAllegroACodec(libName);
+		if (errorCount() != lastErrorCount) {
+			return AllegroSupport.badLibrary;
+		}
+
+		import bindbc.allegro5.allegro_audio;
+		loadAllegroAudio(libName);
+		if (errorCount() != lastErrorCount) {
+			return AllegroSupport.badLibrary;
+		}
+
+		import bindbc.allegro5.allegro_color;
+		loadAllegroColor(libName);
+		if (errorCount() != lastErrorCount) {
+			return AllegroSupport.badLibrary;
+		}
+
+		import bindbc.allegro5.allegro_font;
+		loadAllegroFont(libName);
+		if (errorCount() != lastErrorCount) {
+			return AllegroSupport.badLibrary;
+		}
+
+		import bindbc.allegro5.allegro_image;
+		loadAllegroImage(libName);
+		if (errorCount() != lastErrorCount) {
+			return AllegroSupport.badLibrary;
+		}
+
+
+		import bindbc.allegro5.allegro_memfile;
+		loadAllegroMemfile(libName);
+		if (errorCount() != lastErrorCount) {
+			return AllegroSupport.badLibrary;
+		}
+
+		import bindbc.allegro5.allegro_native_dialog;
+		loadAllegroDialog(libName);
+		if (errorCount() != lastErrorCount) {
+			return AllegroSupport.badLibrary;
+		}
+
+		import bindbc.allegro5.allegro_physfs;
+		loadAllegroPhysFS(libName);
+		if (errorCount() != lastErrorCount) {
+			return AllegroSupport.badLibrary;
+		}
+
+		import bindbc.allegro5.allegro_primitives;
+		loadAllegroPrimitives(libName);
+		if (errorCount() != lastErrorCount) {
+			return AllegroSupport.badLibrary;
+		}
+
+		import bindbc.allegro5.allegro_ttf;
+		loadAllegroTTF(libName);
+		if (errorCount() != lastErrorCount) {
+			return AllegroSupport.badLibrary;
+		}
+
+		import bindbc.allegro5.allegro_video;
+		loadAllegroVideo(libName);
+		if (errorCount() != lastErrorCount) {
+			return AllegroSupport.badLibrary;
+		}
+
 		
-	if (errorCount() != lastErrorCount) {
-		return AllegroSupport.badLibrary;
 	}
-	else {
-		return loadedVersion;
-	}
+
+	return loadedVersion;
 
 }

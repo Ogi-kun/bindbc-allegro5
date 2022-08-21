@@ -53,79 +53,94 @@ else {
 	enum allegroSupport = AllegroSupport.v5_2_0;
 }
 
-version (Allegro_Audio) {
+version (Allegro_Monolith) {
 	enum allegroAudio = true;
-}
-else {
-	enum allegroAudio = false;
-}
-
-version (Allegro_ACodec) {
 	enum allegroACodec = true;
-}
-else {
-	enum allegroACodec = false;
-}
-
-version (Allegro_Color) {
 	enum allegroColor = true;
-}
-else {
-	enum allegroColor = false;
-}
-
-version (Allegro_Font) {
 	enum allegroFont = true;
-}
-else {
-	enum allegroFont = false;
-}
-
-version (Allegro_TTF) {
 	enum allegroTTF = true;
-}
-else {
-	enum allegroTTF = false;
-}
-
-version (Allegro_Image) {
 	enum allegroImage = true;
-}
-else {
-	enum allegroImage = false;
-}
-
-version (Allegro_Memfile) {
 	enum allegroMemfile = true;
-}
-else {
-	enum allegroMemfile = false;
-}
-
-version (Allegro_Dialog) {
 	enum allegroDialog = true;
-}
-else {
-	enum allegroDialog = false;
-}
-
-version (Allegro_PhysFS) {
 	enum allegroPhysFS = true;
-}
-else {
-	enum allegroPhysFS = false;
-}
-
-version (Allegro_Primitives) {
 	enum allegroPrimitives = true;
-}
-else {
-	enum allegroPrimitives = false;
-}
-
-version (Allegro_Video) {
 	enum allegroVideo = true;
 }
 else {
-	enum allegroVideo = false;
+	version (Allegro_Audio) {
+		enum allegroAudio = true;
+	}
+	else {
+		enum allegroAudio = false;
+	}
+
+	version (Allegro_ACodec) {
+		enum allegroACodec = true;
+	}
+	else {
+		enum allegroACodec = false;
+	}
+
+	version (Allegro_Color) {
+		enum allegroColor = true;
+	}
+	else {
+		enum allegroColor = false;
+	}
+
+	version (Allegro_Font) {
+		enum allegroFont = true;
+	}
+	else {
+		enum allegroFont = false;
+	}
+
+	version (Allegro_TTF) {
+		enum allegroTTF = true;
+	}
+	else {
+		enum allegroTTF = false;
+	}
+
+	version (Allegro_Image) {
+		enum allegroImage = true;
+	}
+	else {
+		enum allegroImage = false;
+	}
+
+	version (Allegro_Memfile) {
+		enum allegroMemfile = true;
+	}
+	else {
+		enum allegroMemfile = false;
+	}
+
+	version (Allegro_Dialog) {
+		enum allegroDialog = true;
+	}
+	else {
+		enum allegroDialog = false;
+	}
+
+	version (Allegro_PhysFS) {
+		enum allegroPhysFS = true;
+	}
+	else {
+		enum allegroPhysFS = false;
+	}
+
+	version (Allegro_Primitives) {
+		enum allegroPrimitives = true;
+	}
+	else {
+		enum allegroPrimitives = false;
+	}
+
+	version (Allegro_Video) {
+		enum allegroVideo = true;
+	}
+	else {
+		enum allegroVideo = false;
+	}
 }
