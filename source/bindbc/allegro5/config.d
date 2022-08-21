@@ -28,25 +28,25 @@ else {
 version (Allegro_5_2_8) {
 	enum allegro5Support = Allegro5Support.v5_2_8;
 }
-version (Allegro_5_2_7) {
+else version (Allegro_5_2_7) {
 	enum allegro5Support = Allegro5Support.v5_2_7;
 }
-version (Allegro_5_2_6) {
+else version (Allegro_5_2_6) {
 	enum allegro5Support = Allegro5Support.v5_2_6;
 }
-version (Allegro_5_2_5) {
+else version (Allegro_5_2_5) {
 	enum allegro5Support = Allegro5Support.v5_2_5;
 }
-version (Allegro_5_2_4) {
+else version (Allegro_5_2_4) {
 	enum allegro5Support = Allegro5Support.v5_2_4;
 }
-version (Allegro_5_2_3) {
+else version (Allegro_5_2_3) {
 	enum allegro5Support = Allegro5Support.v5_2_3;
 }
-version (Allegro_5_2_2) {
+else version (Allegro_5_2_2) {
 	enum allegro5Support = Allegro5Support.v5_2_2;
 }
-version (Allegro_5_2_1) {
+else version (Allegro_5_2_1) {
 	enum allegro5Support = Allegro5Support.v5_2_1;
 }
 else {
