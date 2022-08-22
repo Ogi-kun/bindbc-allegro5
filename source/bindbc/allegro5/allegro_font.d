@@ -250,14 +250,13 @@ else {
 				return AllegroSupport.noLibrary;
 			}
 			loadedVersion = bindAllegroFont(lib);
-			return loadedVersion;
+			return loadedVersion == allegroSupport ? allegroSupport : AllegroSupport.badLibrary;
 		}
 	}
 
 	package AllegroSupport bindAllegroFont(SharedLib lib) {
 
 		auto lastErrorCount = errorCount();
-		auto loadedVersion = AllegroSupport.badLibrary;
 
 		lib.bindSymbol(cast(void**)&al_init_font_addon, "al_init_font_addon");
 		lib.bindSymbol(cast(void**)&al_shutdown_font_addon, "al_shutdown_font_addon");
@@ -306,26 +305,23 @@ else {
 		if (errorCount() != lastErrorCount) {
 			return AllegroSupport.badLibrary;
 		}
-		loadedVersion = AllegroSupport.v5_2_0;
 
 		static if (allegroSupport >= AllegroSupport.v5_2_1) {
 			version (ALLEGRO_UNSTABLE) {
 				lib.bindSymbol(cast(void**)&al_get_glyph, "al_get_glyph");
 			}
 			if (errorCount() != lastErrorCount) {
-				return AllegroSupport.badLibrary;
+				return AllegroSupport.v5_2_0;
 			}
-			loadedVersion = AllegroSupport.v5_2_1;
 		}
 
 		static if (allegroSupport >= AllegroSupport.v5_2_6) {
 			lib.bindSymbol(cast(void**)&al_is_font_addon_initialized, "al_is_font_addon_initialized");
 			if (errorCount() != lastErrorCount) {
-				return AllegroSupport.badLibrary;
+				return AllegroSupport.v5_2_5;
 			}
-			loadedVersion = AllegroSupport.v5_2_6;
 		}
 
-		return loadedVersion;
+		return allegroSupport;
 	}
 }

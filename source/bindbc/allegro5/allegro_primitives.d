@@ -353,14 +353,13 @@ else {
 				return AllegroSupport.noLibrary;
 			}
 			loadedVersion = bindAllegroPrimitives(lib);
-			return loadedVersion;
+			return loadedVersion == allegroSupport ? allegroSupport : AllegroSupport.badLibrary;
 		}
 	}
 
 	package AllegroSupport bindAllegroPrimitives(SharedLib lib) {
 
 		auto lastErrorCount = errorCount();
-		auto loadedVersion = AllegroSupport.badLibrary;
 
 		lib.bindSymbol(cast(void**)&al_init_primitives_addon, "al_init_primitives_addon");
 		lib.bindSymbol(cast(void**)&al_shutdown_primitives_addon, "al_shutdown_primitives_addon");
@@ -425,17 +424,15 @@ else {
 		if (errorCount() != lastErrorCount) {
 			return AllegroSupport.badLibrary;
 		}
-		loadedVersion = AllegroSupport.v5_2_0;
 
 		static if (allegroSupport >= AllegroSupport.v5_2_6) {
 			lib.bindSymbol(cast(void**)&al_is_primitives_addon_initialized, "al_is_primitives_addon_initialized");
 
 			if (errorCount() != lastErrorCount) {
-				return AllegroSupport.badLibrary;
+				return AllegroSupport.v5_2_5;
 			}
-			loadedVersion = AllegroSupport.v5_2_6;
 		}
 
-		return loadedVersion;
+		return allegroSupport;
 	}
 }

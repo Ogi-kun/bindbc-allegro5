@@ -65,7 +65,7 @@ else {
 				return AllegroSupport.noLibrary;
 			}
 			loadedVersion = bindAllegroPhysFS(lib);
-			return loadedVersion;
+			return loadedVersion == allegroSupport ? allegroSupport : AllegroSupport.badLibrary;
 		}
 	}
 	
@@ -79,8 +79,7 @@ else {
 		if (errorCount() != lastErrorCount) {
 			return AllegroSupport.badLibrary;
 		}
-		loadedVersion = AllegroSupport.v5_2_0;
 
-		return loadedVersion;
+		return allegroSupport;
 	}
 }

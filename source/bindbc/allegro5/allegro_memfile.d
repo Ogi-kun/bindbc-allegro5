@@ -68,14 +68,13 @@ else {
 				return AllegroSupport.noLibrary;
 			}
 			loadedVersion = bindAllegroMemfile(lib);
-			return loadedVersion;
+			return loadedVersion == allegroSupport ? allegroSupport : AllegroSupport.badLibrary;
 		}
 	}
 
 	package AllegroSupport bindAllegroMemfile(SharedLib lib) {
 
 		auto lastErrorCount = errorCount();
-		auto loadedVersion = AllegroSupport.badLibrary;
 
 		lib.bindSymbol(cast(void**)&al_open_memfile, "al_open_memfile");
 		lib.bindSymbol(cast(void**)&al_get_allegro_memfile_version, "al_get_allegro_memfile_version");
@@ -83,8 +82,7 @@ else {
 		if (errorCount() != lastErrorCount) {
 			return AllegroSupport.badLibrary;
 		}
-		loadedVersion = AllegroSupport.v5_2_0;
 
-		return loadedVersion;
+		return allegroSupport;
 	}
 }

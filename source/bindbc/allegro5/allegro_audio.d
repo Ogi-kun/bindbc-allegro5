@@ -718,14 +718,13 @@ else {
 				return AllegroSupport.noLibrary;
 			}
 			loadedVersion = bindAllegroAudio(lib);
-			return loadedVersion;
+			return loadedVersion == allegroSupport ? allegroSupport : AllegroSupport.badLibrary;
 		}
 	}
 
 	package AllegroSupport bindAllegroAudio(SharedLib lib) {
 
 		auto lastErrorCount = errorCount();
-		auto loadedVersion = AllegroSupport.badLibrary;
 
 		lib.bindSymbol(cast(void**)&al_create_sample, "al_create_sample");
 		lib.bindSymbol(cast(void**)&al_destroy_sample, "al_destroy_sample");
@@ -898,7 +897,6 @@ else {
 		if (errorCount() != lastErrorCount) {
 			return AllegroSupport.badLibrary;
 		}
-		loadedVersion = AllegroSupport.v5_2_0;
 
 		version (ALLEGRO_UNSTABLE) static if (allegroSupport >= AllegroSupport.v5_2_3) {
 			lib.bindSymbol(cast(void**)&al_set_sample_instance_channel_matrix, "al_set_sample_instance_channel_matrix");
@@ -908,9 +906,8 @@ else {
 			lib.bindSymbol(cast(void**)&al_unlock_sample_id, "al_unlock_sample_id");
 
 			if (errorCount() != lastErrorCount) {
-				return AllegroSupport.badLibrary;
+				return AllegroSupport.v5_2_2;
 			}
-			loadedVersion = AllegroSupport.v5_2_3;
 		}
 
 		static if (allegroSupport >= AllegroSupport.v5_2_8) {
@@ -927,11 +924,10 @@ else {
 			}
 
 			if (errorCount() != lastErrorCount) {
-				return AllegroSupport.badLibrary;
+				return AllegroSupport.v5_2_7;
 			}
-			loadedVersion = AllegroSupport.v5_2_8;
 		}
 
-		return loadedVersion;
+		return allegroSupport;
 	}
 }

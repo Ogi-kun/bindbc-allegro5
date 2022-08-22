@@ -227,14 +227,13 @@ else {
 				return AllegroSupport.noLibrary;
 			}
 			loadedVersion = bindAllegroColor(lib);
-			return loadedVersion;
+			return loadedVersion == allegroSupport ? allegroSupport : AllegroSupport.badLibrary;
 		}
 	}
 
 	package AllegroSupport bindAllegroColor(SharedLib lib) {
 
 		auto lastErrorCount = errorCount();
-		auto loadedVersion = AllegroSupport.badLibrary;
 
 		lib.bindSymbol(cast(void**)&al_get_allegro_color_version, "al_get_allegro_color_version");
 
@@ -263,7 +262,6 @@ else {
 		if (errorCount() != lastErrorCount) {
 			return AllegroSupport.badLibrary;
 		}
-		loadedVersion = AllegroSupport.v5_2_0;
 
 		static if (allegroSupport >= AllegroSupport.v5_2_3) {
 			lib.bindSymbol(cast(void**)&al_color_xyz_to_rgb, "al_color_xyz_to_rgb");
@@ -287,9 +285,8 @@ else {
 			lib.bindSymbol(cast(void**)&al_is_color_valid, "al_is_color_valid");
 
 			if (errorCount() != lastErrorCount) {
-				return AllegroSupport.badLibrary;
+				return AllegroSupport.v5_2_2;
 			}
-			loadedVersion = AllegroSupport.v5_2_3;
 		}
 
 		static if (allegroSupport >= AllegroSupport.v5_2_8) {
@@ -302,11 +299,10 @@ else {
 			lib.bindSymbol(cast(void**)&al_color_linear, "al_color_linear");
 
 			if (errorCount() != lastErrorCount) {
-				return AllegroSupport.badLibrary;
+				return AllegroSupport.v5_2_7;
 			}
-			loadedVersion = AllegroSupport.v5_2_8;
 		}
 
-		return loadedVersion;
+		return allegroSupport;
 	}
 }
