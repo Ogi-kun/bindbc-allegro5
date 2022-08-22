@@ -878,42 +878,54 @@ private AllegroSupport bindAllegro(SharedLib lib) {
 	}
 	
 	version (Allegro_Monolith) {
+		static AllegroSupport min(AllegroSupport lhs, AllegroSupport rhs) {
+			return lhs < rhs ? lhs : rhs;
+		}
+
 		import bindbc.allegro5.allegro_acodec;
-		bindAllegroACodec(lib);
+		auto acodecVersion = bindAllegroACodec(lib);
+		loadedVersion = min(loadedVersion, acodecVersion); 
 
 		import bindbc.allegro5.allegro_audio;
-		bindAllegroAudio(lib);
+		auto audioVersion = bindAllegroAudio(lib);
+		loadedVersion = min(loadedVersion, audioVersion); 
 
 		import bindbc.allegro5.allegro_color;
-		bindAllegroColor(lib);
+		auto colorVersion = bindAllegroColor(lib);
+		loadedVersion = min(loadedVersion, colorVersion); 
 
 		import bindbc.allegro5.allegro_font;
-		bindAllegroFont(lib);
+		auto fontVersion = bindAllegroFont(lib);
+		loadedVersion = min(loadedVersion, fontVersion); 
 
 		import bindbc.allegro5.allegro_image;
-		bindAllegroImage(lib);
+		auto imageVersion = bindAllegroImage(lib);
+		loadedVersion = min(loadedVersion, imageVersion); 
 
 		import bindbc.allegro5.allegro_memfile;
-		bindAllegroMemfile(lib);
+		auto memfileVersion = bindAllegroMemfile(lib);
+		loadedVersion = min(loadedVersion, memfileVersion); 
 
 		import bindbc.allegro5.allegro_native_dialog;
-		bindAllegroDialog(lib);
+		auto dialogVersion = bindAllegroDialog(lib);
+		loadedVersion = min(loadedVersion, dialogVersion); 
 
 		import bindbc.allegro5.allegro_physfs;
-		bindAllegroPhysFS(lib);
+		auto physFSVersion = bindAllegroPhysFS(lib);
+		loadedVersion = min(loadedVersion, physFSVersion); 
 
 		import bindbc.allegro5.allegro_primitives;
-		bindAllegroPrimitives(lib);
+		auto primVersion = bindAllegroPrimitives(lib);
+		loadedVersion = min(loadedVersion, primVersion); 
 
 		import bindbc.allegro5.allegro_ttf;
-		bindAllegroTTF(lib);
+		auto ttfVersion = bindAllegroTTF(lib);
+		loadedVersion = min(loadedVersion, ttfVersion); 
 
 		import bindbc.allegro5.allegro_video;
-		bindAllegroVideo(lib);
+		auto videoVersion = bindAllegroVideo(lib);
+		loadedVersion = min(loadedVersion, videoVersion); 
 
-		if (errorCount() != lastErrorCount) {
-			return AllegroSupport.badLibrary;
-		}
 	}
 
 	return loadedVersion;
