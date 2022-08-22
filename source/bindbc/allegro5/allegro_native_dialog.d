@@ -284,13 +284,13 @@ else {
 			if (lib == invalidHandle) {
 				return AllegroSupport.noLibrary;
 			}
-			loadedVersion = bindAllegroDialog(lib, libName);
+			loadedVersion = bindAllegroDialog(lib);
 			return loadedVersion;
 		}
 
 	}
 
-	package AllegroSupport bindAllegroDialog(SharedLib lib, const(char)* libName) {
+	package AllegroSupport bindAllegroDialog(SharedLib lib) {
 
 		auto lastErrorCount = errorCount();
 		auto loadedVersion = AllegroSupport.badLibrary;

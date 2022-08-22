@@ -64,12 +64,12 @@ else {
 			if (lib == invalidHandle) {
 				return AllegroSupport.noLibrary;
 			}
-			loadedVersion = bindAllegroPhysFS(lib, libName);
+			loadedVersion = bindAllegroPhysFS(lib);
 			return loadedVersion;
 		}
 	}
 	
-	package AllegroSupport bindAllegroPhysFS(SharedLib lib, const(char)* libName) {
+	package AllegroSupport bindAllegroPhysFS(SharedLib lib) {
 		auto lastErrorCount = errorCount();
 		auto loadedVersion = AllegroSupport.badLibrary;
 

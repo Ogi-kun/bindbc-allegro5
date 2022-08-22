@@ -226,12 +226,12 @@ else {
 			if (lib == invalidHandle) {
 				return AllegroSupport.noLibrary;
 			}
-			loadedVersion = bindAllegroColor(lib, libName);
+			loadedVersion = bindAllegroColor(lib);
 			return loadedVersion;
 		}
 	}
 
-	package AllegroSupport bindAllegroColor(SharedLib lib, const(char)* libName) {
+	package AllegroSupport bindAllegroColor(SharedLib lib) {
 
 		auto lastErrorCount = errorCount();
 		auto loadedVersion = AllegroSupport.badLibrary;

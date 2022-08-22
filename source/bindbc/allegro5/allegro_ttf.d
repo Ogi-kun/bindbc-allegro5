@@ -104,12 +104,12 @@ else {
 			if (lib == invalidHandle) {
 				return AllegroSupport.noLibrary;
 			}
-			loadedVersion = bindAllegroTTF(lib, libName);
+			loadedVersion = bindAllegroTTF(lib);
 			return loadedVersion;
 		}
 	}
 
-	package AllegroSupport bindAllegroTTF(SharedLib lib, const(char)* libName) {
+	package AllegroSupport bindAllegroTTF(SharedLib lib) {
 
 		auto lastErrorCount = errorCount();
 		auto loadedVersion = AllegroSupport.badLibrary;

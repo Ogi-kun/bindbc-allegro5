@@ -352,12 +352,12 @@ else {
 			if (lib == invalidHandle) {
 				return AllegroSupport.noLibrary;
 			}
-			loadedVersion = bindAllegroPrimitives(lib, libName);
+			loadedVersion = bindAllegroPrimitives(lib);
 			return loadedVersion;
 		}
 	}
 
-	package AllegroSupport bindAllegroPrimitives(SharedLib lib, const(char)* libName) {
+	package AllegroSupport bindAllegroPrimitives(SharedLib lib) {
 
 		auto lastErrorCount = errorCount();
 		auto loadedVersion = AllegroSupport.badLibrary;

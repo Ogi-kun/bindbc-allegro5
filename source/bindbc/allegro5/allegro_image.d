@@ -82,12 +82,12 @@ else {
 				return AllegroSupport.noLibrary;
 			}
 
-			loadedVersion = bindAllegroImage(lib, libName);
+			loadedVersion = bindAllegroImage(lib);
 			return loadedVersion;
 		}
 	}
 
-	package AllegroSupport bindAllegroImage(SharedLib lib, const(char)* libName) {
+	package AllegroSupport bindAllegroImage(SharedLib lib) {
 		
 		auto lastErrorCount = errorCount();
 		auto loadedVersion = AllegroSupport.badLibrary;

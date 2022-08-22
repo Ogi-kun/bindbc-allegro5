@@ -879,37 +879,37 @@ private AllegroSupport bindAllegro(SharedLib lib) {
 	
 	version (Allegro_Monolith) {
 		import bindbc.allegro5.allegro_acodec;
-		bindAllegroACodec(lib, libName);
+		bindAllegroACodec(lib);
 
 		import bindbc.allegro5.allegro_audio;
-		bindAllegroAudio(lib, libName);
+		bindAllegroAudio(lib);
 
 		import bindbc.allegro5.allegro_color;
-		bindAllegroColor(lib, libName);
+		bindAllegroColor(lib);
 
 		import bindbc.allegro5.allegro_font;
-		bindAllegroFont(lib, libName);
+		bindAllegroFont(lib);
 
 		import bindbc.allegro5.allegro_image;
-		bindAllegroImage(lib, libName);
+		bindAllegroImage(lib);
 
 		import bindbc.allegro5.allegro_memfile;
-		bindAllegroMemfile(lib, libName);
+		bindAllegroMemfile(lib);
 
 		import bindbc.allegro5.allegro_native_dialog;
-		bindAllegroDialog(lib, libName);
+		bindAllegroDialog(lib);
 
 		import bindbc.allegro5.allegro_physfs;
-		bindAllegroPhysFS(lib, libName);
+		bindAllegroPhysFS(lib);
 
 		import bindbc.allegro5.allegro_primitives;
-		bindAllegroPrimitives(lib, libName);
+		bindAllegroPrimitives(lib);
 
 		import bindbc.allegro5.allegro_ttf;
-		bindAllegroTTF(lib, libName);
+		bindAllegroTTF(lib);
 
 		import bindbc.allegro5.allegro_video;
-		bindAllegroVideo(lib, libName);
+		bindAllegroVideo(lib);
 
 		if (errorCount() != lastErrorCount) {
 			return AllegroSupport.badLibrary;

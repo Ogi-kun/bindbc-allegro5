@@ -163,12 +163,12 @@ else {
 			if (lib == invalidHandle) {
 				return AllegroSupport.noLibrary;
 			}
-			loadedVersion = bindAllegroVideo(lib, libName);
+			loadedVersion = bindAllegroVideo(lib);
 			return loadedVersion;
 		}
 	}
 
-	package AllegroSupport bindAllegroVideo(SharedLib lib, const(char)* libName) {
+	package AllegroSupport bindAllegroVideo(SharedLib lib) {
 
 		auto lastErrorCount = errorCount();
 		auto loadedVersion = AllegroSupport.badLibrary;

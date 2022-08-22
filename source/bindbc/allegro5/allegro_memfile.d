@@ -67,12 +67,12 @@ else {
 			if (lib == invalidHandle) {
 				return AllegroSupport.noLibrary;
 			}
-			loadedVersion = bindAllegroMemfile(lib, libName);
+			loadedVersion = bindAllegroMemfile(lib);
 			return loadedVersion;
 		}
 	}
 
-	package AllegroSupport bindAllegroMemfile(SharedLib lib, const(char)* libName) {
+	package AllegroSupport bindAllegroMemfile(SharedLib lib) {
 
 		auto lastErrorCount = errorCount();
 		auto loadedVersion = AllegroSupport.badLibrary;

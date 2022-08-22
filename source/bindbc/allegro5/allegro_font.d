@@ -249,12 +249,12 @@ else {
 			if (lib == invalidHandle) {
 				return AllegroSupport.noLibrary;
 			}
-			loadedVersion = bindAllegroFont(lib, libName);
+			loadedVersion = bindAllegroFont(lib);
 			return loadedVersion;
 		}
 	}
 
-	package AllegroSupport bindAllegroFont(SharedLib lib, const(char)* libName) {
+	package AllegroSupport bindAllegroFont(SharedLib lib) {
 
 		auto lastErrorCount = errorCount();
 		auto loadedVersion = AllegroSupport.badLibrary;

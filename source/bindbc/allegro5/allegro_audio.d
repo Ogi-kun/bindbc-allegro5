@@ -717,12 +717,12 @@ else {
 			if (lib == invalidHandle) {
 				return AllegroSupport.noLibrary;
 			}
-			loadedVersion = bindAllegroAudio(lib, libName);
+			loadedVersion = bindAllegroAudio(lib);
 			return loadedVersion;
 		}
 	}
 
-	package AllegroSupport bindAllegroAudio(SharedLib lib, const(char)* libName) {
+	package AllegroSupport bindAllegroAudio(SharedLib lib) {
 
 		auto lastErrorCount = errorCount();
 		auto loadedVersion = AllegroSupport.badLibrary;
