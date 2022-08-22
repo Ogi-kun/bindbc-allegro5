@@ -853,6 +853,7 @@ AllegroSupport loadAllegro(const(char)* libName) {
 	}
 
 	static if (allegroSupport >= AllegroSupport.v5_2_7) {
+		// No new functions
 		if (errorCount() != lastErrorCount) {
 			return AllegroSupport.badLibrary;
 		}
@@ -874,67 +875,37 @@ AllegroSupport loadAllegro(const(char)* libName) {
 	version (Allegro_Monolith) {
 		import bindbc.allegro5.allegro_acodec;
 		bindAllegroACodec(lib, libName);
-		if (errorCount() != lastErrorCount) {
-			return AllegroSupport.badLibrary;
-		}
 
 		import bindbc.allegro5.allegro_audio;
 		bindAllegroAudio(lib, libName);
-		if (errorCount() != lastErrorCount) {
-			return AllegroSupport.badLibrary;
-		}
 
 		import bindbc.allegro5.allegro_color;
 		bindAllegroColor(lib, libName);
-		if (errorCount() != lastErrorCount) {
-			return AllegroSupport.badLibrary;
-		}
 
 		import bindbc.allegro5.allegro_font;
 		bindAllegroFont(lib, libName);
-		if (errorCount() != lastErrorCount) {
-			return AllegroSupport.badLibrary;
-		}
 
 		import bindbc.allegro5.allegro_image;
 		bindAllegroImage(lib, libName);
-		if (errorCount() != lastErrorCount) {
-			return AllegroSupport.badLibrary;
-		}
-
 
 		import bindbc.allegro5.allegro_memfile;
 		bindAllegroMemfile(lib, libName);
-		if (errorCount() != lastErrorCount) {
-			return AllegroSupport.badLibrary;
-		}
 
 		import bindbc.allegro5.allegro_native_dialog;
 		bindAllegroDialog(lib, libName);
-		if (errorCount() != lastErrorCount) {
-			return AllegroSupport.badLibrary;
-		}
 
 		import bindbc.allegro5.allegro_physfs;
 		bindAllegroPhysFS(lib, libName);
-		if (errorCount() != lastErrorCount) {
-			return AllegroSupport.badLibrary;
-		}
 
 		import bindbc.allegro5.allegro_primitives;
 		bindAllegroPrimitives(lib, libName);
-		if (errorCount() != lastErrorCount) {
-			return AllegroSupport.badLibrary;
-		}
 
 		import bindbc.allegro5.allegro_ttf;
 		bindAllegroTTF(lib, libName);
-		if (errorCount() != lastErrorCount) {
-			return AllegroSupport.badLibrary;
-		}
 
 		import bindbc.allegro5.allegro_video;
 		bindAllegroVideo(lib, libName);
+
 		if (errorCount() != lastErrorCount) {
 			return AllegroSupport.badLibrary;
 		}
