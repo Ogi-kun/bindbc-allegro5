@@ -414,7 +414,7 @@ bool isAllegroPhysFSLoaded();
 AllegroSupport loadedAllegroPhysFSVersion();
 ```
 
-#### `Allegro_NativeDialog`
+#### `Allegro_Dialog`
 ```d
 AllegroSupport loadAllegroAllegroDialog();
 AllegroSupport loadAllegroAllegroDialog(const(char)* libName);
