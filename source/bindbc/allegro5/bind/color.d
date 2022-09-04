@@ -40,6 +40,7 @@ enum ALLEGRO_PIXEL_FORMAT {
    ALLEGRO_PIXEL_FORMAT_COMPRESSED_RGBA_DXT5  = 30,
    ALLEGRO_NUM_PIXEL_FORMATS
 }
+mixin ExpandEnum!ALLEGRO_PIXEL_FORMAT;
 
 static if (staticBinding) {
 	extern(C) @nogc nothrow:

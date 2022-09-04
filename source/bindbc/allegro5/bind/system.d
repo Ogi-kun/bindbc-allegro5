@@ -19,6 +19,7 @@ static if (allegroSupport >= AllegroSupport.v5_2_5) {
 		ALLEGRO_SYSTEM_ID_RASPBERRYPI = AL_ID('R', 'A', 'S', 'P'),
 		ALLEGRO_SYSTEM_ID_SDL = AL_ID('S', 'D', 'L', '2')
 	}
+	mixin ExpandEnum!ALLEGRO_SYSTEM_ID;
 }
 
 enum {

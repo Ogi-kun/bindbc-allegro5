@@ -21,6 +21,7 @@ enum ALLEGRO_JOYFLAGS {
 	ALLEGRO_JOYFLAG_DIGITAL  = 0x01,
 	ALLEGRO_JOYFLAG_ANALOGUE = 0x02,
 }
+mixin ExpandEnum!ALLEGRO_JOYFLAGS;
 
 static if (staticBinding) {
 	extern(C) @nogc nothrow:

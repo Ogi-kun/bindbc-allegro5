@@ -14,11 +14,11 @@ enum ALLEGRO_STATE_FLAGS {
 	ALLEGRO_STATE_BITMAP                 = ALLEGRO_STATE_TARGET_BITMAP + ALLEGRO_STATE_NEW_BITMAP_PARAMETERS,
 	ALLEGRO_STATE_ALL                    = 0xffff,
 }
+mixin ExpandEnum!ALLEGRO_STATE_FLAGS;
 
 struct ALLEGRO_STATE {
 	char[1024] _tls;
 }
-
 
 static if (staticBinding) {
 	extern(C) @nogc nothrow:

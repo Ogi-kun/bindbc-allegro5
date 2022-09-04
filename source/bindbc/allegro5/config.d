@@ -166,3 +166,9 @@ package {
 	}
 	else static assert(0, "No known library names for this platform.");
 }
+
+mixin template ExpandEnum(EnumType, string fqnEnumType = EnumType.stringof) {
+	static foreach (m; __traits(allMembers, EnumType)) {
+		mixin("alias " ~ m ~ " = " ~ fqnEnumType ~ "." ~ m ~ ";");
+	}
+}

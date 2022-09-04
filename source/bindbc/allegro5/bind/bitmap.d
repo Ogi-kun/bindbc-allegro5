@@ -12,6 +12,7 @@ version (ALLEGRO_UNSTABLE) static if (allegroSupport >= AllegroSupport.v5_2_8) {
 		ALLEGRO_BITMAP_WRAP_CLAMP = 2,
 		ALLEGRO_BITMAP_WRAP_MIRROR = 3,
 	}
+	mixin ExpandEnum!ALLEGRO_BITMAP_WRAP;
 }
 
 enum {

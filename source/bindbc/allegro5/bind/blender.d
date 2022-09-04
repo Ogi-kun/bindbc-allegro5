@@ -16,6 +16,7 @@ enum ALLEGRO_BLEND_MODE {
 	ALLEGRO_INVERSE_CONST_COLOR = 9,
 	ALLEGRO_NUM_BLEND_MODES
 }
+mixin ExpandEnum!ALLEGRO_BLEND_MODE;
 
 enum ALLEGRO_BLEND_OPERATIONS {
 	ALLEGRO_ADD                = 0,
@@ -23,6 +24,7 @@ enum ALLEGRO_BLEND_OPERATIONS {
 	ALLEGRO_DEST_MINUS_SRC     = 2,
 	ALLEGRO_NUM_BLEND_OPERATIONS
 }
+mixin ExpandEnum!ALLEGRO_BLEND_OPERATIONS;
 
 static if (staticBinding) {
 	extern(C) @nogc nothrow:

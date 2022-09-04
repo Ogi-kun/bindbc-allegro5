@@ -35,6 +35,7 @@ enum ALLEGRO_SEEK {
 	ALLEGRO_SEEK_CUR,
 	ALLEGRO_SEEK_END
 }
+mixin ExpandEnum!ALLEGRO_SEEK;
 
 static if (staticBinding) {
 	extern(C) @nogc nothrow:
