@@ -4,19 +4,19 @@ import bindbc.allegro5.config;
 
 version (Windows):
 
-struct IDirect3DDevice9;
-struct IDirect3DTexture9;
-
 import bindbc.allegro5.bind.display : ALLEGRO_DIRECT3D_INTERNAL, ALLEGRO_DISPLAY;
 import bindbc.allegro5.bind.bitmap : ALLEGRO_BITMAP;
 
 enum ALLEGRO_DIRECT3D = ALLEGRO_DIRECT3D_INTERNAL;
 
+alias LPDIRECT3DDEVICE9 = void*;
+alias LPDIRECT3DTEXTURE9 = void*;
+
 static if (staticBinding) {
 	extern(C) @nogc nothrow:
-	IDirect3DDevice9* al_get_d3d_device(ALLEGRO_DISPLAY*);
-	IDirect3DTexture9* al_get_d3d_system_texture(ALLEGRO_BITMAP*);
-	IDirect3DTexture9* al_get_d3d_video_texture(ALLEGRO_BITMAP*);
+	LPDIRECT3DDEVICE9 al_get_d3d_device(ALLEGRO_DISPLAY*);
+	LPDIRECT3DTEXTURE9 al_get_d3d_system_texture(ALLEGRO_BITMAP*);
+	LPDIRECT3DTEXTURE9 al_get_d3d_video_texture(ALLEGRO_BITMAP*);
 	bool al_have_d3d_non_pow2_texture_support();
 	bool al_have_d3d_non_square_texture_support();
 	void al_get_d3d_texture_position(ALLEGRO_BITMAP* bitmap, int* u, int* v);
@@ -27,9 +27,9 @@ static if (staticBinding) {
 }
 else {
 	extern(C) @nogc nothrow {
-		alias pal_get_d3d_device = IDirect3DDevice9* function(ALLEGRO_DISPLAY*);
-		alias pal_get_d3d_system_texture = IDirect3DTexture9* function(ALLEGRO_BITMAP*);
-		alias pal_get_d3d_video_texture = IDirect3DTexture9* function(ALLEGRO_BITMAP*);
+		alias pal_get_d3d_device = LPDIRECT3DDEVICE9 function(ALLEGRO_DISPLAY*);
+		alias pal_get_d3d_system_texture = LPDIRECT3DTEXTURE9 function(ALLEGRO_BITMAP*);
+		alias pal_get_d3d_video_texture = LPDIRECT3DTEXTURE9 function(ALLEGRO_BITMAP*);
 		alias pal_have_d3d_non_pow2_texture_support = bool function();
 		alias pal_have_d3d_non_square_texture_support = bool function();
 		alias pal_get_d3d_texture_position = void function(ALLEGRO_BITMAP* bitmap, int* u, int* v);
