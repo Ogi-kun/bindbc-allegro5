@@ -3,8 +3,6 @@ __Note__ This is not an official BindBC package.
 
 This project provides both static and dynamic bindings to the [Allegro libraries](https://liballeg.org). They are compatible with `@nogc` and `nothrow` and can be compiled with `-betterC` compatibility. 
 
-Currently in beta. Only tested on Windows and Linux.
-
 ## General BindBC Usage
 
 BindBC is a cross-platform API for creating D bindings for C libraries. This entire section was adapted from bindbc-sdl’s README. You may skip to [Package Declarations section](#package-declarations) if you are already familiar with BindBC conventions.
