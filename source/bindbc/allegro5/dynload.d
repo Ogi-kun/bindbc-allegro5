@@ -395,6 +395,11 @@ private AllegroSupport bindAllegro(SharedLib lib) {
 
 	lib.bindSymbol(cast(void**)&al_get_file_userdata, "al_get_file_userdata");
 
+	lib.bindSymbol(cast(void**)&al_fixsqrt, "al_fixsqrt");
+	lib.bindSymbol(cast(void**)&al_fixhypot, "al_fixhypot");
+	lib.bindSymbol(cast(void**)&al_fixatan, "al_fixatan");
+	lib.bindSymbol(cast(void**)&al_fixatan2, "al_fixatan2");
+
 	lib.bindSymbol(cast(void**)&al_create_fs_entry, "al_create_fs_entry");
 	lib.bindSymbol(cast(void**)&al_destroy_fs_entry, "al_destroy_fs_entry");
 	lib.bindSymbol(cast(void**)&al_get_fs_entry_name, "al_get_fs_entry_name");
