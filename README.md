@@ -9,7 +9,7 @@ Currently in beta. Only tested on Windows and Linux.
 
 BindBC is a cross-platform API for creating D bindings for C libraries. This entire section was adapted from bindbc-sdl’s README. You may skip to [Package Declarations section](#package-declarations) if you are already familiar with BindBC conventions.
 
-By default, bindbc-allegro5 is configured to compile as dynamic bindings that are not BetterC-compatible. The dynamic bindings have no link-time dependency on the Allegro libraries, so the SDL shared libraries must be manually loaded at runtime. When configured as static bindings, there is a link-time dependency on the Allegro libraries—either the static libraries or the appropriate files for linking with shared libraries on your system (see below).
+By default, bindbc-allegro5 is configured to compile as dynamic bindings that are not BetterC-compatible. The dynamic bindings have no link-time dependency on the Allegro libraries, so the Allegro shared libraries must be manually loaded at runtime. When configured as static bindings, there is a link-time dependency on the Allegro libraries—either the static libraries or the appropriate files for linking with shared libraries on your system (see below).
 
 When using DUB to manage your project, the static bindings can be enabled via a DUB `subConfiguration` statement in your project’s package file. BetterC compatibility is also enabled via subconfigurations.
 
@@ -152,7 +152,7 @@ No matter which version was configured, the successfully loaded version can be o
 * `AllegroSupport.badLibrary` if `loadAllegro` returned `AllegroSupport.badLibrary` and no version of Allegro successfully loaded
 * a member of `AllegroSupport` indicating the version of Allegro that successfully loaded. When `loadAllegro` returns `AllegroSupport.badLibrary`, this will be a version number lower than the one configured at compile time. Otherwise, it will be the same as the manifest constant `allegroSupport`.
 
-The function `isAllegro5Loaded` returns `true` if any version of the shared library has been loaded and `false` if not.
+The function `isAllegroLoaded` returns `true` if any version of the shared library has been loaded and `false` if not.
 
 ```d
 AllegroSupport ret = loadAllegro();
