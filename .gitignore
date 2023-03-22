@@ -13,3 +13,4 @@ bindbc-allegro5-test-*
 *.o
 *.obj
 *.lst
+.DS_store
