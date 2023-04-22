@@ -4,6 +4,8 @@ import bindbc.allegro5.config;
 
 version (OSX):
 
+import bindbc.allegro5.bind.display : ALLEGRO_DISPLAY;
+
 extern (Objective-C)
 extern class NSWindow {}
 
