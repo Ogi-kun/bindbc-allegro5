@@ -303,6 +303,11 @@ static if (staticBinding) {
 			ALLEGRO_AUDIO_STREAM* al_play_audio_stream_f(ALLEGRO_FILE* fp, const(char)* ident);
 		}
 	}
+
+	static if (allegroSupport >= AllegroSupport.v5_2_9) {
+		bool al_mixer_has_attachments(const ALLEGRO_MIXER *mixer);
+		bool al_voice_has_attachments(const ALLEGRO_VOICE* voice);
+	}
 }
 else {
 	extern(C) @nogc nothrow {
@@ -495,6 +500,11 @@ else {
 				alias pal_play_audio_stream_f = ALLEGRO_AUDIO_STREAM* function(ALLEGRO_FILE* fp, const(char)* ident);
 			}
 		}
+
+		static if (allegroSupport >= AllegroSupport.v5_2_9) {
+			alias pal_mixer_has_attachments = bool function(const ALLEGRO_MIXER *mixer);
+			alias pal_voice_has_attachments = bool function(const ALLEGRO_VOICE* voice);
+		}
 	}
 	__gshared {
 		pal_create_sample al_create_sample;
@@ -686,6 +696,11 @@ else {
 				pal_play_audio_stream al_play_audio_stream;
 				pal_play_audio_stream_f al_play_audio_stream_f;
 			}
+		}
+
+		static if (allegroSupport >= AllegroSupport.v5_2_9) {
+			pal_mixer_has_attachments al_mixer_has_attachments;
+			pal_voice_has_attachments al_voice_has_attachments;
 		}
 	}
 
@@ -943,6 +958,15 @@ else {
 
 			if (errorCount() != lastErrorCount) {
 				return AllegroSupport.v5_2_7;
+			}
+		}
+
+		static if (allegroSupport >= AllegroSupport.v5_2_9) {
+			lib.bindSymbol(cast(void**)&al_mixer_has_attachments, "al_mixer_has_attachments");
+			lib.bindSymbol(cast(void**)&al_voice_has_attachments, "al_voice_has_attachments");
+
+			if (errorCount() != lastErrorCount) {
+				return AllegroSupport.v5_2_8;
 			}
 		}
 

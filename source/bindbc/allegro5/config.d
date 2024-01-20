@@ -12,6 +12,7 @@ enum AllegroSupport {
 	v5_2_6 = 5_02_06,
 	v5_2_7 = 5_02_07,
 	v5_2_8 = 5_02_08,
+	v5_2_9 = 5_02_09,
 }
 
 version (BindBC_Static) {
@@ -25,7 +26,10 @@ else {
 	enum staticBinding = false;
 }
 
-version (Allegro_5_2_8) {
+version (Allegro_5_2_9) {
+	enum allegroSupport = AllegroSupport.v5_2_9;
+}
+else version (Allegro_5_2_8) {
 	enum allegroSupport = AllegroSupport.v5_2_8;
 }
 else version (Allegro_5_2_7) {

@@ -27,6 +27,9 @@ version (ALLEGRO_UNSTABLE) {
 	static if (allegroSupport >= AllegroSupport.v5_2_7) {
 		enum ALLEGRO_OPENGL_CORE_PROFILE    = 1 << 15;
 	}
+	static if (allegroSupport >= AllegroSupport.v5_2_9) {
+		enum ALLEGRO_DRAG_AND_DROP    = 1 << 16;
+	}
 }
 
 mixin(
@@ -168,6 +171,9 @@ static if (staticBinding) {
 		static if (allegroSupport >= AllegroSupport.v5_2_1) {
 			void al_backup_dirty_bitmaps(ALLEGRO_DISPLAY* display);
 		}
+		static if (allegroSupport >= AllegroSupport.v5_2_9) {
+			bool al_get_window_borders(ALLEGRO_DISPLAY *display, int *left, int *top, int *right, int *bottom);
+		}
 	}
 }
 else {
@@ -304,6 +310,14 @@ else {
 			}
 			__gshared {
 				pal_backup_dirty_bitmaps al_backup_dirty_bitmaps;
+			}
+		}
+		static if (allegroSupport >= AllegroSupport.v5_2_9) {
+			extern(C) @nogc nothrow {
+				alias pal_get_window_borders = bool function(ALLEGRO_DISPLAY *display, int *left, int *top, int *right, int *bottom);
+			}
+			__gshared {
+				pal_get_window_borders al_get_window_borders;
 			}
 		}
 	}

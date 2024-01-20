@@ -47,7 +47,9 @@ enum {
 	ALLEGRO_EVENT_DISPLAY_CONNECTED           = 60,
 	ALLEGRO_EVENT_DISPLAY_DISCONNECTED        = 61,
 }
-
+static if (allegroSupport >= AllegroSupport.v5_2_9) {
+	enum ALLEGRO_EVENT_DROP                   = 62;
+}
 
 @nogc nothrow {
 	bool ALLEGRO_EVENT_TYPE_IS_USER(ALLEGRO_EVENT_TYPE t) {
@@ -61,7 +63,7 @@ enum {
 
 
 struct ALLEGRO_EVENT_SOURCE {
-   int[32] __pad;
+	int[32] __pad;
 }
 
 
@@ -140,6 +142,17 @@ struct ALLEGRO_USER_EVENT {
 	intptr_t data4;
 }
 
+static if (allegroSupport >= AllegroSupport.v5_2_9) {
+	struct ALLEGRO_DROP_EVENT {
+		mixin _AL_EVENT_HEADER!ALLEGRO_DISPLAY;
+		int x, y;
+		int row;
+		bool is_file;
+		char *text;
+		bool is_complete;
+	}
+}
+
 union ALLEGRO_EVENT {
 	ALLEGRO_EVENT_TYPE     type;
 	ALLEGRO_ANY_EVENT      any;
@@ -150,6 +163,9 @@ union ALLEGRO_EVENT {
 	ALLEGRO_TIMER_EVENT    timer;
 	ALLEGRO_TOUCH_EVENT    touch;
 	ALLEGRO_USER_EVENT     user;
+	static if (allegroSupport >= AllegroSupport.v5_2_9) {
+		ALLEGRO_DROP_EVENT drop;
+	}
 }
 
 struct ALLEGRO_EVENT_QUEUE;

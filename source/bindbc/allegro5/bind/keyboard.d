@@ -8,8 +8,8 @@ import bindbc.allegro5.bind.display : ALLEGRO_DISPLAY;
 struct ALLEGRO_KEYBOARD;
 
 struct ALLEGRO_KEYBOARD_STATE {
-   ALLEGRO_DISPLAY *display;
-   uint[(ALLEGRO_KEY_MAX + 31) / 32] __key_down__internal__;
+	ALLEGRO_DISPLAY *display;
+	uint[(ALLEGRO_KEY_MAX + 31) / 32] __key_down__internal__;
 }
 
 static if (staticBinding) {
@@ -25,6 +25,9 @@ static if (staticBinding) {
 
 	version (ALLEGRO_UNSTABLE) static if (allegroSupport >= AllegroSupport.v5_2_3) {
 		void al_clear_keyboard_state(ALLEGRO_DISPLAY* display);
+	}
+	static if (allegroSupport >= AllegroSupport.v5_2_9) {
+		bool al_can_set_keyboard_leds();
 	}
 }
 else {
@@ -52,6 +55,14 @@ else {
 	version (ALLEGRO_UNSTABLE) static if (allegroSupport >= AllegroSupport.v5_2_3) {
 		alias pal_clear_keyboard_state = extern(C) void function(ALLEGRO_DISPLAY* display) @nogc nothrow;
 		__gshared pal_clear_keyboard_state al_clear_keyboard_state;
+	}
+	static if (allegroSupport >= AllegroSupport.v5_2_9) {
+		extern(C) @nogc nothrow {
+			alias pal_can_set_keyboard_leds = bool function();
+		}
+		__gshared {
+			pal_can_set_keyboard_leds al_can_set_keyboard_leds;
+		}
 	}
 	
 }

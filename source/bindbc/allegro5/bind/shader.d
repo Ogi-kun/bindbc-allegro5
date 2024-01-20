@@ -7,19 +7,19 @@ import bindbc.allegro5.bind.transformations : ALLEGRO_TRANSFORM;
 struct ALLEGRO_SHADER;
 
 enum ALLEGRO_SHADER_TYPE {
-   ALLEGRO_VERTEX_SHADER = 1,
-   ALLEGRO_PIXEL_SHADER = 2,
+	ALLEGRO_VERTEX_SHADER = 1,
+	ALLEGRO_PIXEL_SHADER = 2,
 }
 mixin ExpandEnum!ALLEGRO_SHADER_TYPE;
 
 enum ALLEGRO_SHADER_PLATFORM {
-   ALLEGRO_SHADER_AUTO = 0,
-   ALLEGRO_SHADER_GLSL = 1,
-   ALLEGRO_SHADER_HLSL = 2,
-   ALLEGRO_SHADER_AUTO_MINIMAL = 3,
-   ALLEGRO_SHADER_GLSL_MINIMAL = 4,
-   ALLEGRO_SHADER_HLSL_MINIMAL = 5,
-   ALLEGRO_SHADER_HLSL_SM_3_0 = 6,
+	ALLEGRO_SHADER_AUTO = 0,
+	ALLEGRO_SHADER_GLSL = 1,
+	ALLEGRO_SHADER_HLSL = 2,
+	ALLEGRO_SHADER_AUTO_MINIMAL = 3,
+	ALLEGRO_SHADER_GLSL_MINIMAL = 4,
+	ALLEGRO_SHADER_HLSL_MINIMAL = 5,
+	ALLEGRO_SHADER_HLSL_SM_3_0 = 6,
 }
 mixin ExpandEnum!ALLEGRO_SHADER_PLATFORM;
 
@@ -56,6 +56,10 @@ static if (staticBinding) {
 	bool al_set_shader_bool(const(char)* name, bool b);
 
 	const(char)* al_get_default_shader_source(ALLEGRO_SHADER_PLATFORM platform, ALLEGRO_SHADER_TYPE type);
+
+	static if (allegroSupport >= AllegroSupport.v5_2_9) {
+		ALLEGRO_SHADER* al_get_current_shader();
+	}
 }
 else {
 	extern(C) @nogc nothrow {
@@ -97,5 +101,13 @@ else {
 		pal_set_shader_bool al_set_shader_bool;
 
 		pal_get_default_shader_source al_get_default_shader_source;
+	}
+	static if (allegroSupport >= AllegroSupport.v5_2_9) {
+		extern(C) @nogc nothrow {
+			alias pal_get_current_shader = ALLEGRO_SHADER* function();
+		}
+		__gshared {
+			pal_get_current_shader al_get_current_shader;
+		}
 	}
 }

@@ -9,14 +9,14 @@ enum ALLEGRO_MOUSE_MAX_EXTRA_AXES = 4;
 struct ALLEGRO_MOUSE;
 
 struct ALLEGRO_MOUSE_STATE {
-   int x;
-   int y;
-   int z;
-   int w;
-   int[ALLEGRO_MOUSE_MAX_EXTRA_AXES] more_axes;
-   int buttons;
-   float pressure;
-   ALLEGRO_DISPLAY* display;
+	int x;
+	int y;
+	int z;
+	int w;
+	int[ALLEGRO_MOUSE_MAX_EXTRA_AXES] more_axes;
+	int buttons;
+	float pressure;
+	ALLEGRO_DISPLAY* display;
 }
 
 static if (staticBinding) {
@@ -39,6 +39,9 @@ static if (staticBinding) {
 	void al_set_mouse_wheel_precision(int precision);
 	int al_get_mouse_wheel_precision();
 	ALLEGRO_EVENT_SOURCE* al_get_mouse_event_source();
+	static if (allegroSupport >= AllegroSupport.v5_2_9) {
+		bool al_can_get_mouse_cursor_position();
+	}
 }
 else {
 	extern(C) @nogc nothrow {
@@ -80,5 +83,13 @@ else {
 		pal_set_mouse_wheel_precision al_set_mouse_wheel_precision;
 		pal_get_mouse_wheel_precision al_get_mouse_wheel_precision;
 		pal_get_mouse_event_source al_get_mouse_event_source;
+	}
+	static if (allegroSupport >= AllegroSupport.v5_2_9) {
+		extern(C) @nogc nothrow {
+			alias pal_can_get_mouse_cursor_position = bool function();
+		}
+		__gshared {
+			pal_can_get_mouse_cursor_position al_can_get_mouse_cursor_position;
+		}
 	}
 }

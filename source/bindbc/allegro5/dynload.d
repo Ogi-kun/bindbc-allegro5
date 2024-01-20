@@ -881,6 +881,19 @@ private AllegroSupport bindAllegro(SharedLib lib) {
 		}
 		loadedVersion = AllegroSupport.v5_2_8;
 	}
+
+	static if (allegroSupport >= AllegroSupport.v5_2_9) {
+		lib.bindSymbol(cast(void**)&al_can_set_keyboard_leds, "al_can_set_keyboard_leds");
+		lib.bindSymbol(cast(void**)&al_can_get_mouse_cursor_position, "al_can_get_mouse_cursor_position");
+		lib.bindSymbol(cast(void**)&al_get_current_shader, "al_get_current_shader");
+		version (ALLEGRO_UNSTABLE) {
+			lib.bindSymbol(cast(void**)&al_get_window_borders, "al_get_window_borders");
+		}
+		if (errorCount() != lastErrorCount) {
+			return loadedVersion;
+		}
+		loadedVersion = AllegroSupport.v5_2_9;
+	}
 	
 	version (Allegro_Monolith) {
 		static AllegroSupport min(AllegroSupport lhs, AllegroSupport rhs) {
