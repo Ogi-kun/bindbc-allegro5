@@ -40,7 +40,7 @@ To load the shared libraries, you need to call the appropriate load function. Th
 * a member of `AllegroSupport` indicating a version number that matches the version of Allegro that bindbc-allegro5 was configured at compile-time to load. By default, that is `AllegroSupport.v5_2_0`, but can be configured via a version identifier (see below). This value will match the global manifest constant, `allegroSupport`.
 
 ```d
-import bindbc.allegro;
+import bindbc.allegro5;
 
 /*
  This version attempts to load the Allegro shared library using well-known 
@@ -80,7 +80,7 @@ version (Windows) loadAllegro("libs/allegro-5.2.dll");
 
 ```d
 // Import the dependent package
-import bindbc.allegro;
+import bindbc.allegro5;
 
 /*
  Import the sharedlib module for error handling. Assigning an alias ensures 
@@ -305,7 +305,7 @@ AllegroSupport loadedAllegroVersion();
 | 5.2.6       | `Allegro_5_2_6`  | `v5_2_6`          |
 | 5.2.7       | `Allegro_5_2_7`  | `v5_2_7`          |
 | 5.2.8       | `Allegro_5_2_8`  | `v5_2_8`          |
-
+| 5.2.9       | `Allegro_5_2_9`  | `v5_2_9`          |
 
 __Note__: To use Allegro debugging capabilities, define `ALLEGRO_DEBUG` version and link with debug library builds. 
 
@@ -405,8 +405,8 @@ AllegroSupport loadedAllegroMemfileVersion();
 
 #### `Allegro_PhysFS`
 ```d
-AllegroSupport loadAllegroAllegroPhysFS();
-AllegroSupport loadAllegroAllegroPhysFS(const(char)* libName);
+AllegroSupport loadAllegroPhysFS();
+AllegroSupport loadAllegroPhysFS(const(char)* libName);
 void unloadAllegroPhysFS();
 bool isAllegroPhysFSLoaded();
 AllegroSupport loadedAllegroPhysFSVersion();
@@ -414,8 +414,8 @@ AllegroSupport loadedAllegroPhysFSVersion();
 
 #### `Allegro_Dialog`
 ```d
-AllegroSupport loadAllegroAllegroDialog();
-AllegroSupport loadAllegroAllegroDialog(const(char)* libName);
+AllegroSupport loadAllegroDialog();
+AllegroSupport loadAllegroDialog(const(char)* libName);
 void unloadAllegroDialog();
 bool isAllegroDialogLoaded();
 AllegroSupport loadedAllegroDialogVersion();
