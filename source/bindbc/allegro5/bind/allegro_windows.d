@@ -7,6 +7,17 @@ version (Windows):
 
 import core.sys.windows.windows;
 
+extern(C) @nogc nothrow {
+	alias al_win_window_callback = bool function(
+			ALLEGRO_DISPLAY* display, 
+			UINT message, 
+			WPARAM wparam, 
+			LPARAM lparam, 
+			LRESULT* result, 
+			void* userdata
+	);
+}
+
 static if (staticBinding) {
 	extern(C) @nogc nothrow:
 	
@@ -14,24 +25,12 @@ static if (staticBinding) {
 	
 	bool al_win_add_window_callback(
 			ALLEGRO_DISPLAY* display, 
-			bool function(
-					ALLEGRO_DISPLAY* display, 
-					UINT message, 
-					WPARAM wparam, 
-					LPARAM lparam, 
-					LRESULT* result, 
-					void* userdata) callback, 
+			al_win_window_callback callback, 
 			void* userdata);
 	
 	bool al_win_remove_window_callback(
 			ALLEGRO_DISPLAY* display, 
-			bool function(
-					ALLEGRO_DISPLAY* display, 
-					UINT message, 
-					WPARAM wparam, 
-					LPARAM lparam, 
-					LRESULT* result, 
-					void* userdata) callback, 
+			al_win_window_callback callback, 
 			void* userdata);
 }
 else {
@@ -40,25 +39,12 @@ else {
 		
 		alias pal_win_add_window_callback = bool function(
 				ALLEGRO_DISPLAY* display, 
-				bool function(
-						ALLEGRO_DISPLAY* display, 
-						UINT message, 
-						WPARAM wparam, 
-						LPARAM lparam, 
-						LRESULT* result, 
-						void* userdata) callback, 
+				al_win_window_callback callback, 
 				void* userdata);
 		
 		alias pal_win_remove_window_callback = bool function(
 				ALLEGRO_DISPLAY* display, 
-				bool function(
-						ALLEGRO_DISPLAY* display, 
-						UINT message, 
-						WPARAM wparam, 
-						LPARAM lparam, 
-						LRESULT* 
-						result, 
-						void* userdata) callback, 
+				al_win_window_callback callback, 
 				void* userdata);
 	}
 	

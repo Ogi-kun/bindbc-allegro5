@@ -54,6 +54,9 @@ struct ALLEGRO_FS_INTERFACE {
 	ALLEGRO_FILE* function(ALLEGRO_FS_ENTRY* e, const(char)* mode) fs_open_file;
 }
 
+extern(C) @nogc nothrow {
+	alias al_for_each_fs_entry_callback = int function(ALLEGRO_FS_ENTRY* entry, void* extra);
+}
 
 static if (staticBinding) {
 	extern(C) @nogc nothrow:
@@ -81,8 +84,7 @@ static if (staticBinding) {
 
 	ALLEGRO_FILE* al_open_fs_entry(ALLEGRO_FS_ENTRY* e, const(char)* mode);
 
-	int al_for_each_fs_entry(ALLEGRO_FS_ENTRY* dir, 
-			int function(ALLEGRO_FS_ENTRY* entry, void* extra) callback, void* extra);
+	int al_for_each_fs_entry(ALLEGRO_FS_ENTRY* dir, al_for_each_fs_entry_callback callback, void* extra);
 
 	const(ALLEGRO_FS_INTERFACE)* al_get_fs_interface();
 	void al_set_fs_interface(const(ALLEGRO_FS_INTERFACE)* vtable);
@@ -116,7 +118,7 @@ else {
 		alias pal_open_fs_entry = ALLEGRO_FILE* function(ALLEGRO_FS_ENTRY* e, const(char)* mode);
 
 		alias pal_for_each_fs_entry = int function(ALLEGRO_FS_ENTRY* dir, 
-				int function(ALLEGRO_FS_ENTRY* entry, void* extra) callback, void* extra);
+				al_for_each_fs_entry_callback callback, void* extra);
 
 		alias pal_get_fs_interface = const(ALLEGRO_FS_INTERFACE)* function();
 		alias pal_set_fs_interface = void function(const(ALLEGRO_FS_INTERFACE)* vtable);

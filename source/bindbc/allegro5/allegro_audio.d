@@ -97,6 +97,20 @@ version (ALLEGRO_UNSTABLE) {
 	}
 }
 
+extern(C) @nogc nothrow {
+	alias al_audio_mixer_callback = void function(void* buf, uint samples, void* data);
+
+	alias al_audio_sample_loader = ALLEGRO_SAMPLE* function(const(char)* filename);
+	alias al_audio_sample_saver = bool function(const(char)* filename, ALLEGRO_SAMPLE* spl);
+	alias al_audio_stream_loader = ALLEGRO_AUDIO_STREAM* function(const(char)* filename,size_t buffer_count, uint samples);
+
+	alias al_audio_sample_loader_f = ALLEGRO_SAMPLE* function(ALLEGRO_FILE* fp);
+	alias al_audio_sample_saver_f = bool function(ALLEGRO_FILE* fp, ALLEGRO_SAMPLE* spl);
+	alias al_audio_stream_loader_f = ALLEGRO_AUDIO_STREAM* function(ALLEGRO_FILE* fp, size_t buffer_count, uint samples);
+
+	alias al_sample_identifier = bool function(ALLEGRO_FILE* fp);
+}
+
 
 static if (staticBinding) {
 	extern(C) @nogc nothrow:
@@ -191,7 +205,7 @@ static if (staticBinding) {
 	bool al_attach_sample_instance_to_mixer( ALLEGRO_SAMPLE_INSTANCE* stream, ALLEGRO_MIXER* mixer);
 	bool al_attach_audio_stream_to_mixer(ALLEGRO_AUDIO_STREAM* stream, ALLEGRO_MIXER* mixer);
 	bool al_attach_mixer_to_mixer(ALLEGRO_MIXER* stream, ALLEGRO_MIXER* mixer);
-	bool al_set_mixer_postprocess_callback(ALLEGRO_MIXER* mixer, void function(void* buf, uint samples, void* data)cb, void* data);
+	bool al_set_mixer_postprocess_callback(ALLEGRO_MIXER* mixer, al_audio_mixer_callback cb, void* data);
 
 	uint al_get_mixer_frequency(const(ALLEGRO_MIXER)* mixer);
 	ALLEGRO_CHANNEL_CONF al_get_mixer_channels(const(ALLEGRO_MIXER)* mixer);
@@ -241,13 +255,13 @@ static if (staticBinding) {
 	ALLEGRO_VOICE* al_get_default_voice();
 	void al_set_default_voice(ALLEGRO_VOICE* voice);
 
-	bool al_register_sample_loader(const(char)* ext,ALLEGRO_SAMPLE* function(const(char)* filename) loader);
-	bool al_register_sample_saver(const(char)* ext,bool function(const(char)* filename, ALLEGRO_SAMPLE* spl) saver);
-	bool al_register_audio_stream_loader(const(char)* ext,ALLEGRO_AUDIO_STREAM* function(const(char)* filename,size_t buffer_count, uint samples) stream_loader);
+	bool al_register_sample_loader(const(char)* ext, al_audio_sample_loader loader);
+	bool al_register_sample_saver(const(char)* ext, al_audio_sample_saver saver);
+	bool al_register_audio_stream_loader(const(char)* ext, al_audio_stream_loader stream_loader);
 			 
-	bool al_register_sample_loader_f(const(char)* ext,ALLEGRO_SAMPLE* function(ALLEGRO_FILE* fp) loader);
-	bool al_register_sample_saver_f(const(char)* ext,bool function(ALLEGRO_FILE* fp, ALLEGRO_SAMPLE* spl) saver);
-	bool al_register_audio_stream_loader_f(const(char)* ext,ALLEGRO_AUDIO_STREAM* function(ALLEGRO_FILE* fp, size_t buffer_count, uint samples) stream_loader);
+	bool al_register_sample_loader_f(const(char)* ext, al_audio_sample_loader_f loader);
+	bool al_register_sample_saver_f(const(char)* ext, al_audio_sample_saver_f saver);
+	bool al_register_audio_stream_loader_f(const(char)* ext, al_audio_stream_loader_f stream_loader);
 
 	ALLEGRO_SAMPLE* al_load_sample(const(char)* filename);
 	bool al_save_sample(const(char)* filename,ALLEGRO_SAMPLE* spl);
@@ -282,7 +296,7 @@ static if (staticBinding) {
 		int al_get_num_audio_output_devices();
 		const(ALLEGRO_AUDIO_DEVICE)* al_get_audio_output_device(int index);
 		const(char)* al_get_audio_device_name(const(ALLEGRO_AUDIO_DEVICE)* device);
-		bool al_register_sample_identifier(const(char)* ext,bool function(ALLEGRO_FILE* fp) identifier);
+		bool al_register_sample_identifier(const(char)* ext, al_sample_identifier identifier);
 
 		version(ALLEGRO_UNSTABLE) {
 			ALLEGRO_AUDIO_STREAM* al_play_audio_stream(const(char)* filename);
@@ -383,7 +397,7 @@ else {
 		alias pal_attach_sample_instance_to_mixer = bool function( ALLEGRO_SAMPLE_INSTANCE* stream, ALLEGRO_MIXER* mixer);
 		alias pal_attach_audio_stream_to_mixer = bool function(ALLEGRO_AUDIO_STREAM* stream, ALLEGRO_MIXER* mixer);
 		alias pal_attach_mixer_to_mixer = bool function(ALLEGRO_MIXER* stream, ALLEGRO_MIXER* mixer);
-		alias pal_set_mixer_postprocess_callback = bool function(ALLEGRO_MIXER* mixer, void function(void* buf, uint samples, void* data)cb, void* data);
+		alias pal_set_mixer_postprocess_callback = bool function(ALLEGRO_MIXER* mixer, al_audio_mixer_callback cb, void* data);
 
 		alias pal_get_mixer_frequency = uint function(const(ALLEGRO_MIXER)* mixer);
 		alias pal_get_mixer_channels = ALLEGRO_CHANNEL_CONF function(const(ALLEGRO_MIXER)* mixer);
@@ -433,13 +447,13 @@ else {
 		alias pal_get_default_voice = ALLEGRO_VOICE* function();
 		alias pal_set_default_voice = void function(ALLEGRO_VOICE* voice);
 
-		alias pal_register_sample_loader = bool function(const(char)* ext,ALLEGRO_SAMPLE* function(const(char)* filename) loader);
-		alias pal_register_sample_saver = bool function(const(char)* ext,bool function(const(char)* filename, ALLEGRO_SAMPLE* spl) saver);
-		alias pal_register_audio_stream_loader = bool function(const(char)* ext,ALLEGRO_AUDIO_STREAM* function(const(char)* filename,size_t buffer_count, uint samples) stream_loader);
+		alias pal_register_sample_loader = bool function(const(char)* ext, al_audio_sample_loader loader);
+		alias pal_register_sample_saver = bool function(const(char)* ext, al_audio_sample_saver saver);
+		alias pal_register_audio_stream_loader = bool function(const(char)* ext, al_audio_stream_loader stream_loader);
 				 
-		alias pal_register_sample_loader_f = bool function(const(char)* ext,ALLEGRO_SAMPLE* function(ALLEGRO_FILE* fp) loader);
-		alias pal_register_sample_saver_f = bool function(const(char)* ext,bool function(ALLEGRO_FILE* fp, ALLEGRO_SAMPLE* spl) saver);
-		alias pal_register_audio_stream_loader_f = bool function(const(char)* ext,ALLEGRO_AUDIO_STREAM* function(ALLEGRO_FILE* fp, size_t buffer_count, uint samples) stream_loader);
+		alias pal_register_sample_loader_f = bool function(const(char)* ext, al_audio_sample_loader_f loader);
+		alias pal_register_sample_saver_f = bool function(const(char)* ext, al_audio_sample_saver_f saver);
+		alias pal_register_audio_stream_loader_f = bool function(const(char)* ext, al_audio_stream_loader_f stream_loader);
 
 		alias pal_load_sample = ALLEGRO_SAMPLE* function(const(char)* filename);
 		alias pal_save_sample = bool function(const(char)* filename,ALLEGRO_SAMPLE* spl);
@@ -474,7 +488,7 @@ else {
 			alias pal_get_num_audio_output_devices = int function();
 			alias pal_get_audio_output_device = const(ALLEGRO_AUDIO_DEVICE)* function(int index);
 			alias pal_get_audio_device_name = const(char)* function(const(ALLEGRO_AUDIO_DEVICE)* device);
-			alias pal_register_sample_identifier = bool function(const(char)* ext,bool function(ALLEGRO_FILE* fp) identifier);
+			alias pal_register_sample_identifier = bool function(const(char)* ext, al_sample_identifier identifier);
 
 			version(ALLEGRO_UNSTABLE) {
 				alias pal_play_audio_stream = ALLEGRO_AUDIO_STREAM* function(const(char)* filename);

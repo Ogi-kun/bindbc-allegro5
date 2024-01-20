@@ -99,6 +99,20 @@ struct ALLEGRO_VERTEX_BUFFER;
 
 struct ALLEGRO_INDEX_BUFFER;
 
+extern(C) @nogc nothrow {
+	alias al_emit_triangle_callback = void function(int, int, int, void*);
+
+	alias al_soft_triangle_init = void function(uintptr_t, ALLEGRO_VERTEX*, ALLEGRO_VERTEX*, ALLEGRO_VERTEX*);
+	alias al_soft_triangle_first = void function(uintptr_t, int, int, int, int);
+	alias al_soft_triangle_step = void function(uintptr_t, int);
+	alias al_soft_triangle_draw = void function(uintptr_t, int, int, int);
+
+	alias al_soft_line_first = void function(uintptr_t, int, int, ALLEGRO_VERTEX*, ALLEGRO_VERTEX*);
+	alias al_soft_line_step = void function(uintptr_t, int);
+	alias al_soft_line_draw = void function(uintptr_t, int, int);
+
+}
+
 static if (staticBinding) {
 	extern(C) @nogc nothrow:
 
@@ -126,17 +140,17 @@ static if (staticBinding) {
 	void al_unlock_index_buffer(ALLEGRO_INDEX_BUFFER* buffer);
 	int al_get_index_buffer_size(ALLEGRO_INDEX_BUFFER* buffer);
 
-	bool al_triangulate_polygon(const(float)* vertices, size_t vertex_stride, const(int)* vertex_counts, void function(int, int, int, void*) emit_triangle, void* userdata);
+	bool al_triangulate_polygon(const(float)* vertices, size_t vertex_stride, const(int)* vertex_counts, al_emit_triangle_callback emit_triangle, void* userdata);
 
 	void al_draw_soft_triangle(ALLEGRO_VERTEX* v1, ALLEGRO_VERTEX* v2, ALLEGRO_VERTEX* v3, uintptr_t state,
-			void function(uintptr_t, ALLEGRO_VERTEX*, ALLEGRO_VERTEX*, ALLEGRO_VERTEX*) init,
-			void function(uintptr_t, int, int, int, int) first,
-			void function(uintptr_t, int) step,
-			void function(uintptr_t, int, int, int) draw);
+			al_soft_triangle_init init,
+			al_soft_triangle_first first,
+			al_soft_triangle_step step,
+			al_soft_triangle_draw draw);
 	void al_draw_soft_line(ALLEGRO_VERTEX* v1, ALLEGRO_VERTEX* v2, uintptr_t state,
-			void function(uintptr_t, int, int, ALLEGRO_VERTEX*, ALLEGRO_VERTEX*) first,
-			void function(uintptr_t, int) step,
-			void function(uintptr_t, int, int) draw);
+			al_soft_line_first first,
+			al_soft_line_step step,
+			al_soft_line_draw draw);
 
 	void al_draw_line(float x1, float y1, float x2, float y2, ALLEGRO_COLOR color, float thickness);
 	void al_draw_triangle(float x1, float y1, float x2, float y2, float x3, float y3, ALLEGRO_COLOR color, float thickness);
@@ -199,17 +213,17 @@ else {
 		alias pal_unlock_index_buffer = void function(ALLEGRO_INDEX_BUFFER* buffer);
 		alias pal_get_index_buffer_size = int function(ALLEGRO_INDEX_BUFFER* buffer);
 	
-		alias pal_triangulate_polygon = bool function(const(float)* vertices, size_t vertex_stride, const(int)* vertex_counts, void function(int, int, int, void*) emit_triangle, void* userdata);
+		alias pal_triangulate_polygon = bool function(const(float)* vertices, size_t vertex_stride, const(int)* vertex_counts, al_emit_triangle_callback emit_triangle, void* userdata);
 	
 		alias pal_draw_soft_triangle = void function(ALLEGRO_VERTEX* v1, ALLEGRO_VERTEX* v2, ALLEGRO_VERTEX* v3, uintptr_t state,
-				void function(uintptr_t, ALLEGRO_VERTEX*, ALLEGRO_VERTEX*, ALLEGRO_VERTEX*) init,
-				void function(uintptr_t, int, int, int, int) first,
-				void function(uintptr_t, int) step,
-			    void function(uintptr_t, int, int, int) draw);
+				al_soft_triangle_init init,
+				al_soft_triangle_first first,
+				al_soft_triangle_step step,
+			    al_soft_triangle_draw draw);
 		alias pal_draw_soft_line = void function(ALLEGRO_VERTEX* v1, ALLEGRO_VERTEX* v2, uintptr_t state,
-				void function(uintptr_t, int, int, ALLEGRO_VERTEX*, ALLEGRO_VERTEX*) first,
-				void function(uintptr_t, int) step,
-				void function(uintptr_t, int, int) draw);
+				al_soft_line_first first,
+				al_soft_line_step step,
+				al_soft_line_draw draw);
 	
 		alias pal_draw_line = void function(float x1, float y1, float x2, float y2, ALLEGRO_COLOR color, float thickness);
 		alias pal_draw_triangle = void function(float x1, float y1, float x2, float y2, float x3, float y3, ALLEGRO_COLOR color, float thickness);

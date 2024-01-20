@@ -39,11 +39,13 @@ extern(C) @nogc nothrow {
 		import bindbc.allegro5.bind.base : ALLEGRO_VERSION_INT;
 		return al_install_system(ALLEGRO_VERSION_INT, &atexit);
 	}
+
+	alias al_atexit_callback = int function(void function());
 }
 
 static if (staticBinding) {
 	extern(C) @nogc nothrow:
-	bool al_install_system(int version_, int function(void function()) atexit_ptr);
+	bool al_install_system(int version_, al_atexit_callback atexit_ptr);
 	void al_uninstall_system();
 	bool al_is_system_installed();
 	ALLEGRO_SYSTEM* al_get_system_driver();
@@ -66,7 +68,7 @@ static if (staticBinding) {
 }
 else {
 	extern(C) @nogc nothrow {
-		alias pal_install_system = bool function(int version_, int function(void function()) atexit_ptr);
+		alias pal_install_system = bool function(int version_, al_atexit_callback atexit_ptr);
 		alias pal_uninstall_system = void function();
 		alias pal_is_system_installed = bool function();
 		alias pal_get_system_driver = ALLEGRO_SYSTEM* function();

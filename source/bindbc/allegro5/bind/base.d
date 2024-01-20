@@ -77,15 +77,19 @@ extern(C) uint AL_ID(char a, char b, char c, char d) @nogc nothrow {
 	return (a<<24) | (b<<16) | (c<<8) | d;
 }
 
+extern(C) @nogc nothrow {
+	alias main_t = int function(int, char**);
+}  
+
 static if (staticBinding) {
 	extern(C) @nogc nothrow:
 	uint al_get_allegro_version();
-	int al_run_main(int argc, char** argv, int function(int, char**) user_main);
+	int al_run_main(int argc, char** argv, main_t user_main);
 }
 else {
 	extern(C) @nogc nothrow {
 		alias pal_get_allegro_version = uint function();
-		alias pal_run_main = int function(int argc, char** argv, int function(int, char**) user_main);
+		alias pal_run_main = int function(int argc, char** argv, main_t user_main);
 	}
 	__gshared {
 		pal_get_allegro_version al_get_allegro_version;

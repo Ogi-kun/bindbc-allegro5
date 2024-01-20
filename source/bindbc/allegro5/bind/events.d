@@ -154,11 +154,15 @@ union ALLEGRO_EVENT {
 
 struct ALLEGRO_EVENT_QUEUE;
 
+extern(C) @nogc nothrow {
+	alias al_user_event_dtor = void function(ALLEGRO_USER_EVENT*);
+}
+
 static if (staticBinding) {
 	extern(C) @nogc nothrow:
 	void al_init_user_event_source(ALLEGRO_EVENT_SOURCE*);
 	void al_destroy_user_event_source(ALLEGRO_EVENT_SOURCE*);
-	bool al_emit_user_event(ALLEGRO_EVENT_SOURCE*, ALLEGRO_EVENT*, void function(ALLEGRO_USER_EVENT*) dtor);
+	bool al_emit_user_event(ALLEGRO_EVENT_SOURCE*, ALLEGRO_EVENT*, al_user_event_dtor dtor);
 	void al_unref_user_event(ALLEGRO_USER_EVENT*);
 	void al_set_event_source_data(ALLEGRO_EVENT_SOURCE*, intptr_t data);
 	intptr_t al_get_event_source_data(const(ALLEGRO_EVENT_SOURCE)*);
@@ -183,7 +187,7 @@ else {
 	extern(C) @nogc nothrow {
 		alias pal_init_user_event_source = void function(ALLEGRO_EVENT_SOURCE*);
 		alias pal_destroy_user_event_source = void function(ALLEGRO_EVENT_SOURCE*);
-		alias pal_emit_user_event = bool function(ALLEGRO_EVENT_SOURCE*, ALLEGRO_EVENT*, void function(ALLEGRO_USER_EVENT*) dtor);
+		alias pal_emit_user_event = bool function(ALLEGRO_EVENT_SOURCE*, ALLEGRO_EVENT*, al_user_event_dtor dtor);
 		alias pal_unref_user_event = void function(ALLEGRO_USER_EVENT*);
 		alias pal_set_event_source_data = void function(ALLEGRO_EVENT_SOURCE*, intptr_t data);
 		alias pal_get_event_source_data = intptr_t function(const(ALLEGRO_EVENT_SOURCE)*);

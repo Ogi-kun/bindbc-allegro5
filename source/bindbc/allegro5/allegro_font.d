@@ -33,6 +33,12 @@ enum {
 	ALLEGRO_ALIGN_INTEGER    = 4,
 }
 
+extern(C) @nogc nothrow {
+	alias al_font_loader = ALLEGRO_FONT* function(const(char)* filename, int size, int flags);
+	alias al_multiline_text_callback = bool function(int line_num, const(char)* line, int size, void* extra);
+	alias al_multiline_ustr_callback = bool function(int line_num, const(ALLEGRO_USTR)* line, void* extra);
+}
+
 static if (staticBinding) {
 	extern(C) @nogc nothrow:
 
@@ -45,7 +51,7 @@ static if (staticBinding) {
 	ALLEGRO_FONT* al_load_font(const(char)* filename, int size, int flags);
 	ALLEGRO_FONT* al_grab_font_from_bitmap(ALLEGRO_BITMAP* bmp, int n, const(int)* ranges);
 	ALLEGRO_FONT* al_create_builtin_font();
-	bool al_register_font_loader(const(char)* ext, ALLEGRO_FONT* function(const(char)* filename, int size, int flags) load);
+	bool al_register_font_loader(const(char)* ext, al_font_loader load);
 	void al_destroy_font(ALLEGRO_FONT* f);
 
 	void al_set_fallback_font(ALLEGRO_FONT* font, ALLEGRO_FONT* fallback);
@@ -77,8 +83,8 @@ static if (staticBinding) {
 	void al_draw_multiline_textf(const(ALLEGRO_FONT)* font, ALLEGRO_COLOR color, float x, float y, float max_width, float line_height, int flags, const(char)* format, ...);
 	void al_draw_multiline_ustr(const(ALLEGRO_FONT)* font, ALLEGRO_COLOR color, float x, float y, float max_width, float line_height, int flags, const(ALLEGRO_USTR)* text);
 
-	void al_do_multiline_text(const(ALLEGRO_FONT)* font, float max_width, const(char)* text, bool function(int line_num, const(char)* line, int size, void* extra) cb, void* extra);
-	void al_do_multiline_ustr(const(ALLEGRO_FONT)* font, float max_width, const(ALLEGRO_USTR)* ustr, bool function(int line_num, const(ALLEGRO_USTR)* line, void* extra) cb, void* extra);
+	void al_do_multiline_text(const(ALLEGRO_FONT)* font, float max_width, const(char)* text, al_multiline_text_callback cb, void* extra);
+	void al_do_multiline_ustr(const(ALLEGRO_FONT)* font, float max_width, const(ALLEGRO_USTR)* ustr, al_multiline_ustr_callback cb, void* extra);
 
 	static if (allegroSupport >= AllegroSupport.v5_2_1) {
 		version (ALLEGRO_UNSTABLE) {
@@ -102,7 +108,7 @@ else {
 		alias pal_load_font = ALLEGRO_FONT* function(const(char)* filename, int size, int flags);
 		alias pal_grab_font_from_bitmap = ALLEGRO_FONT* function(ALLEGRO_BITMAP* bmp, int n, const(int)* ranges);
 		alias pal_create_builtin_font = ALLEGRO_FONT* function();
-		alias pal_register_font_loader = bool function(const(char)* ext, ALLEGRO_FONT* function(const(char)* filename, int size, int flags) load);
+		alias pal_register_font_loader = bool function(const(char)* ext, al_font_loader load);
 		alias pal_destroy_font = void function(ALLEGRO_FONT* f);
 	
 		alias pal_set_fallback_font = void function(ALLEGRO_FONT* font, ALLEGRO_FONT* fallback);
@@ -134,8 +140,8 @@ else {
 		alias pal_draw_multiline_textf = void function(const(ALLEGRO_FONT)* font, ALLEGRO_COLOR color, float x, float y, float max_width, float line_height, int flags, const(char)* format, ...);
 		alias pal_draw_multiline_ustr = void function(const(ALLEGRO_FONT)* font, ALLEGRO_COLOR color, float x, float y, float max_width, float line_height, int flags, const(ALLEGRO_USTR)* text);
 	
-		alias pal_do_multiline_text = void function(const(ALLEGRO_FONT)* font, float max_width, const(char)* text, bool function(int line_num, const(char)* line, int size, void* extra) cb, void* extra);
-		alias pal_do_multiline_ustr = void function(const(ALLEGRO_FONT)* font, float max_width, const(ALLEGRO_USTR)* ustr, bool function(int line_num, const(ALLEGRO_USTR)* line, void* extra) cb, void* extra);
+		alias pal_do_multiline_text = void function(const(ALLEGRO_FONT)* font, float max_width, const(char)* text, al_multiline_text_callback cb, void* extra);
+		alias pal_do_multiline_ustr = void function(const(ALLEGRO_FONT)* font, float max_width, const(ALLEGRO_USTR)* ustr, al_multiline_ustr_callback cb, void* extra);
 	
 		static if (allegroSupport >= AllegroSupport.v5_2_1) {
 			version (ALLEGRO_UNSTABLE) {

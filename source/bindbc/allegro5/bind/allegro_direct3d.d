@@ -12,6 +12,10 @@ enum ALLEGRO_DIRECT3D = ALLEGRO_DIRECT3D_INTERNAL;
 alias LPDIRECT3DDEVICE9 = void*;
 alias LPDIRECT3DTEXTURE9 = void*;
 
+extern(C) @nogc nothrow {
+	alias al_d3d_device_callback = void function(ALLEGRO_DISPLAY* display);
+}
+
 static if (staticBinding) {
 	extern(C) @nogc nothrow:
 	LPDIRECT3DDEVICE9 al_get_d3d_device(ALLEGRO_DISPLAY*);
@@ -22,8 +26,8 @@ static if (staticBinding) {
 	void al_get_d3d_texture_position(ALLEGRO_BITMAP* bitmap, int* u, int* v);
 	bool al_get_d3d_texture_size(ALLEGRO_BITMAP* bitmap, int* width, int* height);
 	bool al_is_d3d_device_lost(ALLEGRO_DISPLAY* display);
-	void al_set_d3d_device_release_callback(void function(ALLEGRO_DISPLAY* display) callback);
-	void al_set_d3d_device_restore_callback(void function(ALLEGRO_DISPLAY* display) callback);
+	void al_set_d3d_device_release_callback(al_d3d_device_callback callback);
+	void al_set_d3d_device_restore_callback(al_d3d_device_callback callback);
 }
 else {
 	extern(C) @nogc nothrow {
@@ -35,8 +39,8 @@ else {
 		alias pal_get_d3d_texture_position = void function(ALLEGRO_BITMAP* bitmap, int* u, int* v);
 		alias pal_get_d3d_texture_size = bool function(ALLEGRO_BITMAP* bitmap, int* width, int* height);
 		alias pal_is_d3d_device_lost = bool function(ALLEGRO_DISPLAY* display);
-		alias pal_set_d3d_device_release_callback = void function(void function(ALLEGRO_DISPLAY* display) callback);
-		alias pal_set_d3d_device_restore_callback = void function(void function(ALLEGRO_DISPLAY* display) callback);
+		alias pal_set_d3d_device_release_callback = void function(al_d3d_device_callback callback);
+		alias pal_set_d3d_device_restore_callback = void function(al_d3d_device_callback callback);
 	}
 
 	__gshared {
