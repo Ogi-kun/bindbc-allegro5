@@ -15,6 +15,7 @@ else {
 struct ALLEGRO_FILE;
 
 struct ALLEGRO_FILE_INTERFACE {
+	extern(C) @nogc nothrow:
 	void* function(const char *path, const char *mode) fi_fopen;
 	bool function(ALLEGRO_FILE *handle) fi_fclose;
 	size_t function(ALLEGRO_FILE *f, void *ptr, size_t size) fi_fread;
