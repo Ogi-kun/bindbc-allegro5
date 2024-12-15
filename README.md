@@ -26,14 +26,17 @@ An example that’s configured to use Allegro v5.2.3 with Font and TTF addons:
 
 __dub.json__
 ```json
-dependencies {
-    "bindbc-allegro5": "~>1.0.0",
-},
-"versions": [
-	"Allegro_5_2_3",
-    "Allegro_Font",
-    "Allegro_TTF"
-]
+{
+    "name": "example",
+    "dependencies": {
+        "bindbc-allegro5": "~>1.0.0",
+    },
+    "versions": [
+        "Allegro_5_2_3",
+        "Allegro_Font",
+        "Allegro_TTF"
+    ]
+}
 ```
 
 __app.d__
