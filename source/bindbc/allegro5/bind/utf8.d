@@ -98,6 +98,10 @@ static if (staticBinding) {
 	size_t al_ustr_encode_utf16(const(ALLEGRO_USTR)* us, wchar* s, size_t n);
 	size_t al_utf16_width(int c);
 	size_t al_utf16_encode(wchar* s, int c);
+
+	static if (allegroSupport >= AllegroSupport.v5_2_10) {
+		const(ALLEGRO_USTR)* al_ref_info(const(ALLEGRO_USTR_INFO)* info);
+	}
 }
 else {
 	extern(C) @nogc nothrow {
@@ -263,5 +267,14 @@ else {
 		pal_utf16_width al_utf16_width;
 		pal_utf16_encode al_utf16_encode;
 
+	}
+
+	static if (allegroSupport >= AllegroSupport.v5_2_10) {
+		extern(C) @nogc nothrow {
+			alias pal_ref_info = const(ALLEGRO_USTR)* function(const(ALLEGRO_USTR_INFO)* info);
+		}
+		__gshared {
+			pal_ref_info al_ref_info;
+		}
 	}
 }
