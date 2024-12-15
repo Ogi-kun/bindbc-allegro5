@@ -36,8 +36,12 @@ enum ALLEGRO_WRITE_MASK_FLAGS {
 mixin ExpandEnum!ALLEGRO_WRITE_MASK_FLAGS;
 
 static if (staticBinding) {
-	extern(C) @nogc nothrow:
-	void al_set_render_state(ALLEGRO_RENDER_STATE state, int value);
+	extern(C) @nogc nothrow {
+   	void al_set_render_state(ALLEGRO_RENDER_STATE state, int value);
+      static if (allegroSupport >= AllegroSupport.v5_2_10) {
+         int al_get_render_state(ALLEGRO_RENDER_STATE state);
+      }
+   }
 }
 else {
 	extern(C) @nogc nothrow {
@@ -46,4 +50,13 @@ else {
 	__gshared {
 		pal_set_render_state al_set_render_state;
 	}
+
+   static if (allegroSupport >= AllegroSupport.v5_2_10) {
+      extern(C) @nogc nothrow {
+         alias pal_get_render_state = int function(ALLEGRO_RENDER_STATE state);
+      }
+      __gshared {
+         pal_get_render_state al_get_render_state;
+      }
+   }
 }

@@ -17,6 +17,10 @@ static if (staticBinding) {
 	void al_android_set_apk_fs_interface();
 	void _al_android_set_capture_volume_keys(ALLEGRO_DISPLAY* display, bool onoff);
 
+	static if (allegroSupport >= AllegroSupport.v5_2_10) {
+		int al_android_open_fd(const(char)* uri, const(char)* mode);
+	}
+
 	version (ALLEGRO_UNSTABLE) static if (allegroSupport >= AllegroSupport.v5_2_2) {
 		JNIEnv* al_android_get_jni_env();
 		jobject al_android_get_activity();
@@ -44,6 +48,15 @@ else {
 		version (ALLEGRO_UNSTABLE) static if (allegroSupport >= AllegroSupport.v5_2_2) {
 			pal_android_get_jni_env al_android_get_jni_env;
 			pal_android_get_activity al_android_get_activity;
+		}
+	}
+
+	static if (allegroSupport >= AllegroSupport.v5_2_10) {
+		extern(C) @nogc nothrow {
+			alias pal_android_open_fd = int function(const(char)* uri, const(char)* mode);
+		}
+		__gshared {
+			pal_android_open_fd al_android_open_fd;
 		}
 	}
 }

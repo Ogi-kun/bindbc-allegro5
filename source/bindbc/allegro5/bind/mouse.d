@@ -19,6 +19,15 @@ struct ALLEGRO_MOUSE_STATE {
 	ALLEGRO_DISPLAY* display;
 }
 
+
+enum ALLEGRO_MOUSE_BUTTON
+{
+   ALLEGRO_MOUSE_BUTTON_LEFT = 1,
+   ALLEGRO_MOUSE_BUTTON_RIGHT = 2,
+   ALLEGRO_MOUSE_BUTTON_MIDDLE = 3,
+}
+mixin ExpandEnum!ALLEGRO_MOUSE_BUTTON;
+
 static if (staticBinding) {
 	extern(C) @nogc nothrow:
 	bool al_is_mouse_installed();

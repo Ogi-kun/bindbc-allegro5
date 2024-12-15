@@ -167,6 +167,11 @@ static if (staticBinding) {
 
 	void al_acknowledge_drawing_halt(ALLEGRO_DISPLAY* display);
 	void al_acknowledge_drawing_resume(ALLEGRO_DISPLAY* display);
+
+	static if (allegroSupport >= AllegroSupport.v5_2_10) {
+		int al_get_display_adapter(ALLEGRO_DISPLAY *display);
+	}
+
 	version (ALLEGRO_UNSTABLE) {
 		static if (allegroSupport >= AllegroSupport.v5_2_1) {
 			void al_backup_dirty_bitmaps(ALLEGRO_DISPLAY* display);
@@ -302,7 +307,16 @@ else {
 		pal_acknowledge_drawing_halt al_acknowledge_drawing_halt;
 		pal_acknowledge_drawing_resume al_acknowledge_drawing_resume;
 	}
-		
+
+	static if (allegroSupport >= AllegroSupport.v5_2_10) {
+		extern(C) @nogc nothrow {
+			alias pal_get_display_adapter = int function(ALLEGRO_DISPLAY *display);
+		}
+		__gshared {
+			pal_get_display_adapter al_get_display_adapter;
+		}
+	}
+	
 	version (ALLEGRO_UNSTABLE) {
 		static if (allegroSupport >= AllegroSupport.v5_2_1) {
 			extern(C) @nogc nothrow {

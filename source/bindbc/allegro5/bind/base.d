@@ -10,7 +10,11 @@ enum ALLEGRO_SUB_VERSION = 2;
 *  The workaround is to define everything as strings and mixin when you need integers
 */ 
 
-version (Allegro_5_2_9) {
+version (Allegro_5_2_10) {
+	private enum _ALLEGRO_WIP_VERSION_STR = "10";
+	private enum _ALLEGRO_DATE_STR = "20241126";
+}
+else version (Allegro_5_2_9) {
 	private enum _ALLEGRO_WIP_VERSION_STR = "9";
 	private enum _ALLEGRO_DATE_STR = "20231121";
 }

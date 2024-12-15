@@ -894,6 +894,18 @@ private AllegroSupport bindAllegro(SharedLib lib) {
 		}
 		loadedVersion = AllegroSupport.v5_2_9;
 	}
+
+	static if (allegroSupport >= AllegroSupport.v5_2_10) {
+		lib.bindSymbol(cast(void**)&al_android_open_fd, "al_android_open_fd");
+		lib.bindSymbol(cast(void**)&al_get_display_adapter, "al_get_display_adapter");
+		lib.bindSymbol(cast(void**)&al_get_render_state, "al_get_render_state");
+		lib.bindSymbol(cast(void**)&al_ref_info, "al_ref_info");
+
+		if (errorCount() != lastErrorCount) {
+			return loadedVersion;
+		}
+		loadedVersion = AllegroSupport.v5_2_10;
+	}
 	
 	version (Allegro_Monolith) {
 		static AllegroSupport min(AllegroSupport lhs, AllegroSupport rhs) {
