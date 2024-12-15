@@ -15,36 +15,36 @@ extern(C) @nogc nothrow {
 			}
 		}
 	}
-	
+
 	void ALLEGRO_TRACE_LEVEL(
 			const(char)* file = __FILE__.ptr, int line = __LINE__, const(char)* fun = __FUNCTION__.ptr, T...
 			)(int level, const(char)* msg, T args) {
 		ALLEGRO_TRACE_CHANNEL_LEVEL!(file, line, fun)(__al_debug_channel, level, msg, args);
 	}
-	
+
 	void ALLEGRO_DEBUG(
 			const(char)* file = __FILE__.ptr, int line = __LINE__, const(char)* fun = __FUNCTION__.ptr, T...
 			)(const(char)* msg, T args) {
 		ALLEGRO_TRACE_LEVEL!(file, line, fun)(0, msg, args);
 	}
-	
+
 	void ALLEGRO_INFO(
 			const(char)* file = __FILE__.ptr, int line = __LINE__, const(char)* fun = __FUNCTION__.ptr, T...
 			)(const(char)* msg, T args) {
 		ALLEGRO_TRACE_LEVEL!(file, line, fun)(1, msg, args);
 	}
-	
+
 	void ALLEGRO_WARN(
 			const(char)* file = __FILE__.ptr, int line = __LINE__, const(char)* fun = __FUNCTION__.ptr, T...
 			)(const(char)* msg, T args) {
 		ALLEGRO_TRACE_LEVEL!(file, line, fun)(2, msg, args);
 	}
-	
+
 	void ALLEGRO_ERROR(
 			const(char)* file = __FILE__.ptr, int line = __LINE__, const(char)* fun = __FUNCTION__.ptr, T...
 			)(const(char)* msg, T args) {
 		ALLEGRO_TRACE_LEVEL!(file, line, fun)(3, msg, args);
-	}	
+	}
 }
 
 version (ALLEGRO_DEBUG) {

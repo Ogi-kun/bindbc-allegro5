@@ -14,15 +14,15 @@ extern(C) @nogc nothrow {
 	void* al_malloc(size_t n, int line = __LINE__, const(char)* file = __FILE__.ptr, const(char)* func = __FUNCTION__.ptr) {
 		return al_malloc_with_context(n, line, file, func);
 	}
-	
+
 	void al_free(void* p, int line = __LINE__, const(char)* file = __FILE__.ptr, const(char)* func = __FUNCTION__.ptr) {
 		al_free_with_context(p, line, file, func);
 	}
-	
+
 	void* al_realloc(void* p, size_t n, int line = __LINE__, const(char)* file = __FILE__.ptr, const(char)* func = __FUNCTION__.ptr) {
 		return al_realloc_with_context(p, n, line, file, func);
 	}
-	
+
 	void* al_calloc(size_t c, size_t n, int line = __LINE__, const(char)* file = __FILE__.ptr, const(char)* func = __FUNCTION__.ptr) {
 		return al_calloc_with_context(c, n, line, file, func);
 	}

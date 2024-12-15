@@ -31,7 +31,7 @@ static if (staticBinding) {
 	bool al_join_paths(ALLEGRO_PATH* path, const(ALLEGRO_PATH)* tail);
 	bool al_rebase_path(const(ALLEGRO_PATH)* head, ALLEGRO_PATH* tail);
 	const(char)* al_path_cstr(const(ALLEGRO_PATH)* path, char delim);
-	
+
 	void al_destroy_path(ALLEGRO_PATH* path);
 
 	void al_set_path_drive(ALLEGRO_PATH* path, const(char)* drive);

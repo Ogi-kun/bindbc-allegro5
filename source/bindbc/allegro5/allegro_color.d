@@ -185,7 +185,7 @@ else {
 
 	@nogc nothrow:
 
-	version (Allegro_Monolith) {} else { 
+	version (Allegro_Monolith) {} else {
 
 		private {
 			__gshared SharedLib lib;
@@ -199,7 +199,7 @@ else {
 		}
 
 		AllegroSupport loadedAllegroColorVersion() {
-			return loadedVersion; 
+			return loadedVersion;
 		}
 
 		bool isAllegroColorLoaded() {

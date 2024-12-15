@@ -22,7 +22,7 @@ struct ALLEGRO_JOYSTICK;
 struct ALLEGRO_JOYSTICK_STATE {
 	private struct STICK {
 		float[_AL_MAX_JOYSTICK_AXES] axis;
-	} 
+	}
 	STICK[_AL_MAX_JOYSTICK_STICKS] stick;
 	int[_AL_MAX_JOYSTICK_BUTTONS] button;
 }

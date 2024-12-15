@@ -133,7 +133,7 @@ else {
 		alias pal_convert_bitmap = void function(ALLEGRO_BITMAP* bitmap);
 		alias pal_convert_memory_bitmaps = void function();
 	}
-	
+
 	__gshared {
 		pal_set_new_bitmap_format al_set_new_bitmap_format;
 		pal_set_new_bitmap_flags al_set_new_bitmap_flags;
@@ -170,7 +170,7 @@ else {
 		pal_convert_bitmap al_convert_bitmap;
 		pal_convert_memory_bitmaps al_convert_memory_bitmaps;
 	}
-	
+
 	version (ALLEGRO_UNSTABLE) {
 		static if (allegroSupport >= AllegroSupport.v5_2_1) {
 			extern(C) @nogc nothrow {
@@ -192,7 +192,7 @@ else {
 				pal_backup_dirty_bitmap al_backup_dirty_bitmap;
 			}
 		}
-			
+
 		static if (allegroSupport >= AllegroSupport.v5_2_5) {
 			extern(C) @nogc nothrow {
 				alias pal_get_bitmap_blend_color = ALLEGRO_COLOR function();
@@ -213,7 +213,7 @@ else {
 				pal_reset_bitmap_blender al_reset_bitmap_blender;
 			}
 		}
-			
+
 		static if (allegroSupport >= AllegroSupport.v5_2_8) {
 			extern(C) @nogc nothrow {
 				alias pal_get_new_bitmap_wrap = void function(ALLEGRO_BITMAP_WRAP* u, ALLEGRO_BITMAP_WRAP* v);
@@ -226,5 +226,5 @@ else {
 		}
 
 	}
-	
+
 }

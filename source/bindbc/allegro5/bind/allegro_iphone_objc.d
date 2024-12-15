@@ -22,7 +22,7 @@ else {
 		alias pal_iphone_get_window = UIWindow function(ALLEGRO_DISPLAY *d);
 		alias pal_iphone_get_view = UIView function(ALLEGRO_DISPLAY *d);
 	}
-	
+
 	__gshared {
 		pal_iphone_get_window al_iphone_get_window;
 		pal_iphone_get_view al_iphone_get_view;

@@ -55,7 +55,7 @@ static if (allegroSupport >= AllegroSupport.v5_2_9) {
 	bool ALLEGRO_EVENT_TYPE_IS_USER(ALLEGRO_EVENT_TYPE t) {
 		return t >= 512;
 	}
-	
+
 	ALLEGRO_EVENT_TYPE ALLEGRO_GET_EVENT_TYPE(char a, char b, char c, char d) {
 		return AL_ID(a, b, c, d);
 	}
@@ -68,7 +68,7 @@ struct ALLEGRO_EVENT_SOURCE {
 
 
 mixin template _AL_EVENT_HEADER(Src) {
-	ALLEGRO_EVENT_TYPE type; 
+	ALLEGRO_EVENT_TYPE type;
 	Src* source;
 	double timestamp;
 }

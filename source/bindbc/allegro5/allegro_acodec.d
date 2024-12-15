@@ -37,7 +37,7 @@ else {
 
 	@nogc nothrow:
 
-	version (Allegro_Monolith) {} else { 
+	version (Allegro_Monolith) {} else {
 
 		private {
 			__gshared SharedLib lib;
@@ -51,7 +51,7 @@ else {
 		}
 
 		AllegroSupport loadedAllegroACodecVersion() {
-			return loadedVersion; 
+			return loadedVersion;
 		}
 
 		bool isAllegroACodecLoaded() {
@@ -103,7 +103,7 @@ else {
 		}
 
 		return allegroSupport;
-		
+
 	}
 
 }

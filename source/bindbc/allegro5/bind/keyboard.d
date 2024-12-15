@@ -51,7 +51,7 @@ else {
 		pal_key_down al_key_down;
 		pal_get_keyboard_event_source al_get_keyboard_event_source;
 	}
-	
+
 	version (ALLEGRO_UNSTABLE) static if (allegroSupport >= AllegroSupport.v5_2_3) {
 		alias pal_clear_keyboard_state = extern(C) void function(ALLEGRO_DISPLAY* display) @nogc nothrow;
 		__gshared pal_clear_keyboard_state al_clear_keyboard_state;
@@ -64,5 +64,5 @@ else {
 			pal_can_set_keyboard_leds al_can_set_keyboard_leds;
 		}
 	}
-	
+
 }

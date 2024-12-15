@@ -117,14 +117,14 @@ else {
 
 		alias pal_open_fs_entry = ALLEGRO_FILE* function(ALLEGRO_FS_ENTRY* e, const(char)* mode);
 
-		alias pal_for_each_fs_entry = int function(ALLEGRO_FS_ENTRY* dir, 
+		alias pal_for_each_fs_entry = int function(ALLEGRO_FS_ENTRY* dir,
 				al_for_each_fs_entry_callback callback, void* extra);
 
 		alias pal_get_fs_interface = const(ALLEGRO_FS_INTERFACE)* function();
 		alias pal_set_fs_interface = void function(const(ALLEGRO_FS_INTERFACE)* vtable);
 		alias pal_set_standard_fs_interface = void function();
 	}
-	
+
 	__gshared {
 		pal_create_fs_entry al_create_fs_entry;
 		pal_destroy_fs_entry al_destroy_fs_entry;

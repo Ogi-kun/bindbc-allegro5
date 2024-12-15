@@ -80,7 +80,7 @@ mixin ExpandEnum!ALLEGRO_PRIM_BUFFER_FLAGS;
 enum ALLEGRO_VERTEX_CACHE_SIZE = 256;
 
 enum ALLEGRO_PRIM_QUALITY = 10;
-	
+
 struct ALLEGRO_VERTEX_ELEMENT {
 	 int attribute;
 	 int storage;
@@ -192,29 +192,29 @@ else {
 		alias pal_init_primitives_addon = bool function();
 		alias pal_shutdown_primitives_addon = void function();
 		alias pal_get_allegro_primitives_version = uint function();
-	
+
 		alias pal_draw_prim = int function(const(void)* vtxs, const(ALLEGRO_VERTEX_DECL)* decl, ALLEGRO_BITMAP* texture, int start, int end, int type);
 		alias pal_draw_indexed_prim = int function(const(void)* vtxs, const(ALLEGRO_VERTEX_DECL)* decl, ALLEGRO_BITMAP* texture, const(int)* indices, int num_vtx, int type);
 		alias pal_draw_vertex_buffer = int function(ALLEGRO_VERTEX_BUFFER* vertex_buffer, ALLEGRO_BITMAP* texture, int start, int end, int type);
 		alias pal_draw_indexed_buffer = int function(ALLEGRO_VERTEX_BUFFER* vertex_buffer, ALLEGRO_BITMAP* texture, ALLEGRO_INDEX_BUFFER* index_buffer, int start, int end, int type);
-	
+
 		alias pal_create_vertex_decl = ALLEGRO_VERTEX_DECL* function(const(ALLEGRO_VERTEX_ELEMENT)* elements, int stride);
 		alias pal_destroy_vertex_decl = void function(ALLEGRO_VERTEX_DECL* decl);
-	
+
 		alias pal_create_vertex_buffer = ALLEGRO_VERTEX_BUFFER* function(ALLEGRO_VERTEX_DECL* decl, const(void)* initial_data, int num_vertices, int flags);
 		alias pal_destroy_vertex_buffer = void function(ALLEGRO_VERTEX_BUFFER* buffer);
 		alias pal_lock_vertex_buffer = void* function(ALLEGRO_VERTEX_BUFFER* buffer, int offset, int length, int flags);
 		alias pal_unlock_vertex_buffer = void function(ALLEGRO_VERTEX_BUFFER* buffer);
 		alias pal_get_vertex_buffer_size = int function(ALLEGRO_VERTEX_BUFFER* buffer);
-	
+
 		alias pal_create_index_buffer = ALLEGRO_INDEX_BUFFER* function(int index_size, const(void)* initial_data, int num_indices, int flags);
 		alias pal_destroy_index_buffer = void function(ALLEGRO_INDEX_BUFFER* buffer);
 		alias pal_lock_index_buffer = void* function(ALLEGRO_INDEX_BUFFER* buffer, int offset, int length, int flags);
 		alias pal_unlock_index_buffer = void function(ALLEGRO_INDEX_BUFFER* buffer);
 		alias pal_get_index_buffer_size = int function(ALLEGRO_INDEX_BUFFER* buffer);
-	
+
 		alias pal_triangulate_polygon = bool function(const(float)* vertices, size_t vertex_stride, const(int)* vertex_counts, al_emit_triangle_callback emit_triangle, void* userdata);
-	
+
 		alias pal_draw_soft_triangle = void function(ALLEGRO_VERTEX* v1, ALLEGRO_VERTEX* v2, ALLEGRO_VERTEX* v3, uintptr_t state,
 				al_soft_triangle_init init,
 				al_soft_triangle_first first,
@@ -224,38 +224,38 @@ else {
 				al_soft_line_first first,
 				al_soft_line_step step,
 				al_soft_line_draw draw);
-	
+
 		alias pal_draw_line = void function(float x1, float y1, float x2, float y2, ALLEGRO_COLOR color, float thickness);
 		alias pal_draw_triangle = void function(float x1, float y1, float x2, float y2, float x3, float y3, ALLEGRO_COLOR color, float thickness);
 		alias pal_draw_rectangle = void function(float x1, float y1, float x2, float y2, ALLEGRO_COLOR color, float thickness);
 		alias pal_draw_rounded_rectangle = void function(float x1, float y1, float x2, float y2, float rx, float ry, ALLEGRO_COLOR color, float thickness);
-	
+
 		alias pal_calculate_arc = void function(float* dest, int stride, float cx, float cy, float rx, float ry, float start_theta, float delta_theta, float thickness, int num_points);
 		alias pal_draw_circle = void function(float cx, float cy, float r, ALLEGRO_COLOR color, float thickness);
 		alias pal_draw_ellipse = void function(float cx, float cy, float rx, float ry, ALLEGRO_COLOR color, float thickness);
 		alias pal_draw_arc = void function(float cx, float cy, float r, float start_theta, float delta_theta, ALLEGRO_COLOR color, float thickness);
 		alias pal_draw_elliptical_arc = void function(float cx, float cy, float rx, float ry, float start_theta, float delta_theta, ALLEGRO_COLOR color, float thickness);
 		alias pal_draw_pieslice = void function(float cx, float cy, float r, float start_theta, float delta_theta, ALLEGRO_COLOR color, float thickness);
-	
+
 		alias pal_calculate_spline = void function(float* dest, int stride, float[8] points, float thickness, int num_segments);
 		alias pal_draw_spline = void function(float[8] points, ALLEGRO_COLOR color, float thickness);
-	
+
 		alias pal_calculate_ribbon = void function(float* dest, int dest_stride, const(float)  points, int points_stride, float thickness, int num_segments);
 		alias pal_draw_ribbon = void function(const(float)* points, int points_stride, ALLEGRO_COLOR color, float thickness, int num_segments);
-	
+
 		alias pal_draw_filled_triangle = void function(float x1, float y1, float x2, float y2, float x3, float y3, ALLEGRO_COLOR color);
 		alias pal_draw_filled_rectangle = void function(float x1, float y1, float x2, float y2, ALLEGRO_COLOR color);
 		alias pal_draw_filled_ellipse = void function(float cx, float cy, float rx, float ry, ALLEGRO_COLOR color);
 		alias pal_draw_filled_circle = void function(float cx, float cy, float r, ALLEGRO_COLOR color);
 		alias pal_draw_filled_pieslice = void function(float cx, float cy, float r, float start_theta, float delta_theta, ALLEGRO_COLOR color);
 		alias pal_draw_filled_rounded_rectangle = void function(float x1, float y1, float x2, float y2, float rx, float ry, ALLEGRO_COLOR color);
-	
+
 		alias pal_draw_polyline = void function(const(float)* vertices, int vertex_stride, int vertex_count, int join_style, int cap_style, ALLEGRO_COLOR color, float thickness, float miter_limit);
-	
+
 		alias pal_draw_polygon = void function(const(float)* vertices, int vertex_count, int join_style, ALLEGRO_COLOR color, float thickness, float miter_limit);
 		alias pal_draw_filled_polygon = void function(const(float)* vertices, int vertex_count, ALLEGRO_COLOR color);
 		alias pal_draw_filled_polygon_with_holes = void function(const(float)* vertices, const(int)* vertex_counts, ALLEGRO_COLOR color);
-	
+
 		static if (allegroSupport >= AllegroSupport.v5_2_6) {
 			alias pal_is_primitives_addon_initialized = bool function();
 		}
@@ -345,7 +345,7 @@ else {
 		}
 
 		AllegroSupport loadedAllegroPrimitivesVersion() {
-			return loadedVersion; 
+			return loadedVersion;
 		}
 
 		bool isAllegroPrimitivesLoaded() {

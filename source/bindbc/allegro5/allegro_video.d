@@ -59,11 +59,11 @@ static if (staticBinding) {
 }
 else {
 	extern(C) @nogc nothrow {
-	
+
 		alias pal_init_video_addon = bool function();
 		alias pal_shutdown_video_addon = void function();
 		alias pal_get_allegro_video_version = uint function();
-	
+
 		alias pal_open_video = ALLEGRO_VIDEO* function(const(char)* filename);
 		alias pal_close_video = void function(ALLEGRO_VIDEO* video);
 		alias pal_start_video = void function(ALLEGRO_VIDEO* video, ALLEGRO_MIXER* mixer);
@@ -78,22 +78,22 @@ else {
 		alias pal_get_video_frame = ALLEGRO_BITMAP* function(ALLEGRO_VIDEO* video);
 		alias pal_get_video_position = double function(ALLEGRO_VIDEO* video, ALLEGRO_VIDEO_POSITION_TYPE which);
 		alias pal_seek_video = bool function(ALLEGRO_VIDEO* video, double pos_in_seconds);
-	
+
 		static if (allegroSupport >= AllegroSupport.v5_2_6) {
 			alias pal_is_video_addon_initialized = bool function();
 		}
-	
+
 		static if (allegroSupport >= AllegroSupport.v5_2_8) {
 			alias pal_identify_video_f = const(char)* function(ALLEGRO_FILE* fp);
 			alias pal_identify_video = const(char)* function(const(char)* filename);
 		}
 	}
 	__gshared {
-	
+
 		pal_init_video_addon al_init_video_addon;
 		pal_shutdown_video_addon al_shutdown_video_addon;
 		pal_get_allegro_video_version al_get_allegro_video_version;
-	
+
 		pal_open_video al_open_video;
 		pal_close_video al_close_video;
 		pal_start_video al_start_video;
@@ -108,11 +108,11 @@ else {
 		pal_get_video_frame al_get_video_frame;
 		pal_get_video_position al_get_video_position;
 		pal_seek_video al_seek_video;
-	
+
 		static if (allegroSupport >= AllegroSupport.v5_2_6) {
 			pal_is_video_addon_initialized al_is_video_addon_initialized;
 		}
-	
+
 		static if (allegroSupport >= AllegroSupport.v5_2_8) {
 			pal_identify_video_f al_identify_video_f;
 			pal_identify_video al_identify_video;
@@ -129,26 +129,26 @@ else {
 			__gshared SharedLib lib;
 			__gshared AllegroSupport loadedVersion;
 		}
-	
+
 		void unloadAllegroVideo() {
 			if (lib != invalidHandle) {
 				lib.unload();
 			}
 		}
-	
+
 		AllegroSupport loadedAllegroVideoVersion() {
-			return loadedVersion; 
+			return loadedVersion;
 		}
-	
+
 		bool isAllegroVideoLoaded() {
 			return lib != invalidHandle;
 		}
-	
+
 		AllegroSupport loadAllegroVideo() {
 			const(char)[][1] libNames = [
 				libName!"video",
 			];
-	
+
 			typeof(return) result;
 			foreach (i; 0..libNames.length) {
 				result = loadAllegroVideo(libNames[i].ptr);
@@ -176,7 +176,7 @@ else {
 		lib.bindSymbol(cast(void**)&al_init_video_addon, "al_init_video_addon");
 		lib.bindSymbol(cast(void**)&al_shutdown_video_addon, "al_shutdown_video_addon");
 		lib.bindSymbol(cast(void**)&al_get_allegro_video_version, "al_get_allegro_video_version");
-	
+
 		lib.bindSymbol(cast(void**)&al_open_video, "al_open_video");
 		lib.bindSymbol(cast(void**)&al_close_video, "al_close_video");
 		lib.bindSymbol(cast(void**)&al_start_video, "al_start_video");
@@ -195,7 +195,7 @@ else {
 		if (errorCount() != lastErrorCount) {
 			return AllegroSupport.badLibrary;
 		}
-	
+
 		static if (allegroSupport >= AllegroSupport.v5_2_6) {
 			lib.bindSymbol(cast(void**)&al_is_video_addon_initialized, "al_is_video_addon_initialized");
 
@@ -203,7 +203,7 @@ else {
 				return AllegroSupport.badLibrary;
 			}
 		}
-	
+
 		static if (allegroSupport >= AllegroSupport.v5_2_8) {
 			lib.bindSymbol(cast(void**)&al_identify_video_f, "al_identify_video_f");
 			lib.bindSymbol(cast(void**)&al_identify_video, "al_identify_video");

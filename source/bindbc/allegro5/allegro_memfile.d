@@ -26,32 +26,32 @@ else {
 
 	@nogc nothrow:
 
-	version (Allegro_Monolith) {} else { 
-		
+	version (Allegro_Monolith) {} else {
+
 		private {
 			__gshared SharedLib lib;
 			__gshared AllegroSupport loadedVersion;
 		}
-	
+
 		void unloadAllegroMemfile() {
 			if (lib != invalidHandle) {
 				lib.unload();
 			}
 		}
-	
+
 		AllegroSupport loadedAllegroMemfileVersion() {
-			return loadedVersion; 
+			return loadedVersion;
 		}
-	
+
 		bool isAllegroMemfileLoaded() {
 			return lib != invalidHandle;
 		}
-	
+
 		AllegroSupport loadAllegroMemfile() {
 			const(char)[][1] libNames = [
 				libName!"memfile",
 			];
-	
+
 			typeof(return) result;
 			foreach (i; 0..libNames.length) {
 				result = loadAllegroMemfile(libNames[i].ptr);

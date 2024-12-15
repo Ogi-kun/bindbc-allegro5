@@ -51,7 +51,7 @@ else {
 		alias pal_get_first_config_entry = const(char)* function(const(ALLEGRO_CONFIG)* config, const(char)* section, ALLEGRO_CONFIG_ENTRY** iterator);
 		alias pal_get_next_config_entry = const(char)* function(ALLEGRO_CONFIG_ENTRY** iterator);
 	}
-	
+
 	__gshared {
 		pal_create_config al_create_config;
 		pal_add_config_section al_add_config_section;

@@ -44,7 +44,7 @@ else {
 		alias pal_set_current_opengl_context = void function(ALLEGRO_DISPLAY* display);
 		alias pal_get_opengl_variant = int function();
 	}
-	
+
 	__gshared {
 		pal_get_opengl_version al_get_opengl_version;
 		pal_have_opengl_extension al_have_opengl_extension;

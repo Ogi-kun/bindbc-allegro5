@@ -61,7 +61,7 @@ else {
 		pal_get_touch_input_state al_get_touch_input_state;
 		pal_get_touch_input_event_source al_get_touch_input_event_source;
 	}
-	
+
 	version (ALLEGRO_UNSTABLE) {
 		extern(C) @nogc nothrow {
 			alias pal_set_mouse_emulation_mode = void function(int mode);

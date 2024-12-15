@@ -22,7 +22,7 @@ else {
 			alias pal_x_set_initial_icon = bool function(ALLEGRO_BITMAP* bitmap);
 		}
 	}
-	
+
 	__gshared {
 		pal_get_x_window_id al_get_x_window_id;
 		version (ALLEGRO_UNSTABLE) static if (allegroSupport >= AllegroSupport.v5_2_3) {

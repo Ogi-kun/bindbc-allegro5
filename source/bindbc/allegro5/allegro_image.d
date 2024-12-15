@@ -40,8 +40,8 @@ else {
 
 	@nogc nothrow:
 
-	version (Allegro_Monolith) {} else { 
-		
+	version (Allegro_Monolith) {} else {
+
 		private {
 			__gshared SharedLib lib;
 			__gshared AllegroSupport loadedVersion;
@@ -54,7 +54,7 @@ else {
 		}
 
 		AllegroSupport loadedAllegroImageVersion() {
-			return loadedVersion; 
+			return loadedVersion;
 		}
 
 		bool isAllegroImageLoaded() {
@@ -88,7 +88,7 @@ else {
 	}
 
 	package AllegroSupport bindAllegroImage(SharedLib lib) {
-		
+
 		auto lastErrorCount = errorCount();
 
 		lib.bindSymbol(cast(void**)&al_init_image_addon, "al_init_image_addon");

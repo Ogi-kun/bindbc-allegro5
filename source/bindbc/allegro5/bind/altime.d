@@ -19,7 +19,7 @@ else {
 		alias pal_rest = void function(double seconds);
 		alias pal_init_timeout = void function(ALLEGRO_TIMEOUT* timeout, double seconds);
 	}
-	
+
 	__gshared {
 		pal_get_time al_get_time;
 		pal_rest al_rest;

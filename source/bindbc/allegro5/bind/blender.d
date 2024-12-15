@@ -32,9 +32,9 @@ static if (staticBinding) {
 	void al_set_blend_color(ALLEGRO_COLOR color);
 	void al_get_blender(int* op, int* source, int* dest);
 	ALLEGRO_COLOR al_get_blend_color();
-	void al_set_separate_blender(int op, int source, int dest, int alpha_op, 
+	void al_set_separate_blender(int op, int source, int dest, int alpha_op,
 			int alpha_source, int alpha_dest);
-	void al_get_separate_blender(int* op, int* source, int* dest, int* alpha_op, 
+	void al_get_separate_blender(int* op, int* source, int* dest, int* alpha_op,
 			int* alpha_src, int* alpha_dest);
 }
 else {
@@ -43,9 +43,9 @@ else {
 		alias pal_set_blend_color = void function(ALLEGRO_COLOR color);
 		alias pal_get_blender = void function(int* op, int* source, int* dest);
 		alias pal_get_blend_color = ALLEGRO_COLOR function();
-		alias pal_set_separate_blender = void function(int op, int source, 
+		alias pal_set_separate_blender = void function(int op, int source,
 				int dest, int alpha_op, int alpha_source, int alpha_dest);
-		alias pal_get_separate_blender = void function(int* op, int* source, 
+		alias pal_get_separate_blender = void function(int* op, int* source,
 				int* dest, int* alpha_op, int* alpha_src, int* alpha_dest);
 	}
 	__gshared {

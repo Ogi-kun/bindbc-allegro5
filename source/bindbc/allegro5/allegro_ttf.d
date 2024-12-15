@@ -39,7 +39,7 @@ else {
 		alias pal_load_ttf_font_f = ALLEGRO_FONT* function(ALLEGRO_FILE* file, const(char)* filename, int size, int flags);
 		alias pal_load_ttf_font_stretch = ALLEGRO_FONT* function(const(char)* filename, int w, int h, int flags);
 		alias pal_load_ttf_font_stretch_f = ALLEGRO_FONT* function(ALLEGRO_FILE* file, const(char)* filename, int w, int h, int flags);
-	
+
 		static if (allegroSupport >= AllegroSupport.v5_2_6) {
 			alias pal_is_ttf_addon_initialized = bool function();
 		}
@@ -53,7 +53,7 @@ else {
 		pal_load_ttf_font_f al_load_ttf_font_f;
 		pal_load_ttf_font_stretch al_load_ttf_font_stretch;
 		pal_load_ttf_font_stretch_f al_load_ttf_font_stretch_f;
-	
+
 		static if (allegroSupport >= AllegroSupport.v5_2_6) {
 			pal_is_ttf_addon_initialized al_is_ttf_addon_initialized;
 		}
@@ -69,26 +69,26 @@ else {
 			__gshared SharedLib lib;
 			__gshared AllegroSupport loadedVersion;
 		}
-		
+
 		void unloadAllegroTTF() {
 			if (lib != invalidHandle) {
 				lib.unload();
 			}
 		}
-	
+
 		AllegroSupport loadedAllegroTTFVersion() {
-			return loadedVersion; 
+			return loadedVersion;
 		}
-	
+
 		bool isAllegroTTFLoaded() {
 			return lib != invalidHandle;
 		}
-	
+
 		AllegroSupport loadAllegroTTF() {
 			const(char)[][1] libNames = [
 				libName!"ttf",
 			];
-	
+
 			typeof(return) result;
 			foreach (i; 0..libNames.length) {
 				result = loadAllegroTTF(libNames[i].ptr);

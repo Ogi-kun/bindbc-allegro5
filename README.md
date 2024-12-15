@@ -1,25 +1,25 @@
 # bindbc-allegro5
 
-__Note__ This is not an official BindBC package. 
+__Note__ This is not an official BindBC package.
 
-This project provides both static and dynamic bindings 
-to the [Allegro libraries](https://liballeg.org). They are compatible 
-with `@nogc` and `nothrow` and can be compiled with BetterC compatibility. 
+This project provides both static and dynamic bindings
+to the [Allegro libraries](https://liballeg.org). They are compatible
+with `@nogc` and `nothrow` and can be compiled with BetterC compatibility.
 
 
 ## Basic Usage
 
-The default configuration generates dynamic bindings to core Allegro v5.2.0 
-without BetterC compatibility. Dynamic binding assume run-time dynamic linking. 
+The default configuration generates dynamic bindings to core Allegro v5.2.0
+without BetterC compatibility. Dynamic binding assume run-time dynamic linking.
 
-When using run-time dynamic linking, there are no link-time dependencies, 
-but the shared libraries (.dll/.so/.dylib depending on platform) must be present 
-on the user’s machine, and you need to load the libraries and bind to their 
-symbols before use. This is done by calling `loadAllegro` and the respective 
-functions from the addon submodules. 
+When using run-time dynamic linking, there are no link-time dependencies,
+but the shared libraries (.dll/.so/.dylib depending on platform) must be present
+on the user’s machine, and you need to load the libraries and bind to their
+symbols before use. This is done by calling `loadAllegro` and the respective
+functions from the addon submodules.
 
-To target a newer version of Allegro, pass the respective version ID 
-from the [supported version list](#supported-versions), and to enable addons, 
+To target a newer version of Allegro, pass the respective version ID
+from the [supported version list](#supported-versions), and to enable addons,
 pass the respective version IDs from the [addon list](#addons).
 
 An example that’s configured to use Allegro v5.2.3 with Font and TTF addons:
@@ -65,14 +65,14 @@ void main() {
 ```
 
 `AllegroSupport` is a enumeration of `noLibrary`, `badLibrary`, and values from
-the from the [supported version list](#supported-versions). `allegroSupport` 
+the from the [supported version list](#supported-versions). `allegroSupport`
 is a manifest constant equal to the target Allegro version (`v5_2_3` in our case).
-`loadAllegro` will return  version number on success or `noLibrary`/ `badLibrary` 
-on failure. The version number may be lower than `allegroSupport`, indicating 
-that the older version was loaded. This example just asserts that the libraries 
-are loaded properly and are no older than v5.2.3, but in the real code you 
-should show a proper error message if the libraries are not found 
-or not compatible. See 
+`loadAllegro` will return  version number on success or `noLibrary`/ `badLibrary`
+on failure. The version number may be lower than `allegroSupport`, indicating
+that the older version was loaded. This example just asserts that the libraries
+are loaded properly and are no older than v5.2.3, but in the real code you
+should show a proper error message if the libraries are not found
+or not compatible. See
 [bindbc-loader error reporting API](https://github.com/BindBC/bindbc-loader#error-handling).
 
 
@@ -92,9 +92,9 @@ or not compatible. See
 | 5.2.9   | `Allegro_5_2_9`  | `v5_2_9`         |
 | 5.2.10  | `Allegro_5_2_10` | `v5_2_10`        |
 
-__Note__: Parts of Allegro API, including most of the new functions introduced 
-in 5.2.x releases, are marked as unstable. If you want to enable unstable API, 
-pass the `ALLEGRO_UNSTABLE` version. Unstable API is tied to a specific release; 
+__Note__: Parts of Allegro API, including most of the new functions introduced
+in 5.2.x releases, are marked as unstable. If you want to enable unstable API,
+pass the `ALLEGRO_UNSTABLE` version. Unstable API is tied to a specific release;
 e.g. if `ALLEGRO_UNSTABLE` and `Allegro_5_2_3` are passed but the user happen
 to have Allegro v5.2.4 or newer, the system will fail to initialize.
 
@@ -115,13 +115,13 @@ to have Allegro v5.2.4 or newer, the system will fail to initialize.
 | PhysicsFS                          | `Allegro_PhysFS`     | `allegro_physfs`        |
 | Native Dialogs                     | `Allegro_Dialog`     | `allegro_native_dialog` |
 
-Official addons are part of the Allegro package, so they don’t have their own 
-versioning. 
+Official addons are part of the Allegro package, so they don’t have their own
+versioning.
 
-Allegro can be built with all addons included. This is called monolith build. 
-To bind to it, pass `Allegro_Monolith` version. With dynamic bindings, 
-`loadAllegro` will also bind to all addon functions. You don’t need to call 
-addon loading functions such as `loadAllegroImage` (they are not even defined 
+Allegro can be built with all addons included. This is called monolith build.
+To bind to it, pass `Allegro_Monolith` version. With dynamic bindings,
+`loadAllegro` will also bind to all addon functions. You don’t need to call
+addon loading functions such as `loadAllegroImage` (they are not even defined
 in the monolith version).
 
 
@@ -236,31 +236,31 @@ AllegroSupport loadedAllegroDialogVersion();
 
 ## The Static Bindings
 
-Static bindings can be used for static linking and load-time dynamic linking. 
-You may need Allegro development package installed on your system. 
-[Allegro releases on GitHub](https://github.com/liballeg/allegro5/releases) 
-provide precompiled Windows binaries. On OS X, you can use 
+Static bindings can be used for static linking and load-time dynamic linking.
+You may need Allegro development package installed on your system.
+[Allegro releases on GitHub](https://github.com/liballeg/allegro5/releases)
+provide precompiled Windows binaries. On OS X, you can use
 [Homebrew](https://formulae.brew.sh/formula/allegro). On other systems, they may
-be available on your system package repository. See 
-[Allegro downloads page](https://liballeg.org/download.html) 
+be available on your system package repository. See
+[Allegro downloads page](https://liballeg.org/download.html)
 for details and additional options.
 
-When using load-time dynamic linking, there is a runtime dependency on the shared 
-libraries just as there is when using the run-time dynamic bindings. The difference 
-is that the OS automatically loads the required libraries and bind to their symbols 
+When using load-time dynamic linking, there is a runtime dependency on the shared
+libraries just as there is when using the run-time dynamic bindings. The difference
+is that the OS automatically loads the required libraries and bind to their symbols
 when the program is launched, so there’s no need to call any functions from dynamic
 binding API such as `loadAllegro` (they are not even defined in the static bindings).
-You need to statically link against the import libraries from the development 
-packages (on Windows) or directly against the shared libraries (on other systems). 
+You need to statically link against the import libraries from the development
+packages (on Windows) or directly against the shared libraries (on other systems).
 
-When using static linking, there are no runtime dependencies, but there is 
-a link-time dependency on static Allegro libraries from the development packages, 
-*and all their dependencies* in the form of static libraries for the target platform. 
-This is the only option if dynamic linking is not allowed, such as when targeting 
-iOS. See [Allegro README](https://github.com/liballeg/allegro5?tab=readme-ov-file#library-dependencies) 
-for details. 
+When using static linking, there are no runtime dependencies, but there is
+a link-time dependency on static Allegro libraries from the development packages,
+*and all their dependencies* in the form of static libraries for the target platform.
+This is the only option if dynamic linking is not allowed, such as when targeting
+iOS. See [Allegro README](https://github.com/liballeg/allegro5?tab=readme-ov-file#library-dependencies)
+for details.
 
-Static bindings are enabled by passing the `BindAllegro_Static` version. 
+Static bindings are enabled by passing the `BindAllegro_Static` version.
 Alternatively, if you use DUB to build your project, you can select the `static`
 configuration:
 
@@ -275,16 +275,16 @@ __dub.json__
 "versions": [ "Allegro_Image" ],
 "libs": ["liballegro", "liballegro_image"]
 ```
-This package also recognizes the `BindBC_Static` version that can be used 
+This package also recognizes the `BindBC_Static` version that can be used
 to enable static binding for all BindBC packages that support this option.
 
 
 ## BetterC support
 
-BetterC support is enabled by selecting `dynamicBC` or `staticBC` configuration, 
-for dynamic and static bindings respectively. When not using DUB to manage your 
-project, first use DUB to compile the BindBC libraries in the `dynamicBC` 
-or `staticBC` configuration, then pass `-betterC` to the compiler when building 
+BetterC support is enabled by selecting `dynamicBC` or `staticBC` configuration,
+for dynamic and static bindings respectively. When not using DUB to manage your
+project, first use DUB to compile the BindBC libraries in the `dynamicBC`
+or `staticBC` configuration, then pass `-betterC` to the compiler when building
 your project (and `-version=BindAllegro_Static` if you selected the `staticBC`
 configuration).
 
@@ -292,7 +292,7 @@ configuration).
 ## Misc
 
 To enable Allegro debugging capabilities, pass `ALLEGRO_DEBUG` version
-and link against debug library builds. 
+and link against debug library builds.
 
 To access X11-specific functions, pass `ALLEGRO_X11` version.
 

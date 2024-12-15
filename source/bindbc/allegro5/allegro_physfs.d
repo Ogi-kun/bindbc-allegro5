@@ -37,7 +37,7 @@ else {
 		}
 
 		AllegroSupport loadedAllegroPhysFSVersion() {
-			return loadedVersion; 
+			return loadedVersion;
 		}
 
 		bool isAllegroPhysFSLoaded() {
@@ -68,7 +68,7 @@ else {
 			return loadedVersion == allegroSupport ? allegroSupport : AllegroSupport.badLibrary;
 		}
 	}
-	
+
 	package AllegroSupport bindAllegroPhysFS(SharedLib lib) {
 		auto lastErrorCount = errorCount();
 		auto loadedVersion = AllegroSupport.badLibrary;

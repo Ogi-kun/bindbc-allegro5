@@ -105,11 +105,11 @@ static if (staticBinding) {
 
 	ALLEGRO_MENU* al_find_menu(ALLEGRO_MENU* haystack, ushort id);
 	bool al_find_menu_item(ALLEGRO_MENU* haystack, ushort id, ALLEGRO_MENU** menu, int* index);
-	 
+
 	ALLEGRO_EVENT_SOURCE* al_get_default_menu_event_source();
 	ALLEGRO_EVENT_SOURCE* al_enable_menu_event_source(ALLEGRO_MENU* menu);
 	void al_disable_menu_event_source(ALLEGRO_MENU* menu);
-	 
+
 	ALLEGRO_MENU* al_get_display_menu(ALLEGRO_DISPLAY* display);
 	bool al_set_display_menu(ALLEGRO_DISPLAY* display, ALLEGRO_MENU* menu);
 	bool al_popup_menu(ALLEGRO_MENU* popup, ALLEGRO_DISPLAY* display);
@@ -126,24 +126,24 @@ static if (staticBinding) {
 }
 else {
 	extern(C) @nogc nothrow {
-	
+
 		alias pal_init_native_dialog_addon = bool function();
 		alias pal_shutdown_native_dialog_addon = void function();
 		alias pal_get_allegro_native_dialog_version = uint function();
-	
+
 		alias pal_create_native_file_dialog = ALLEGRO_FILECHOOSER* function(const(char)* initial_path, const(char)* title, const(char)* patterns, int mode);
 		alias pal_show_native_file_dialog = bool function(ALLEGRO_DISPLAY* display, ALLEGRO_FILECHOOSER* dialog);
 		alias pal_get_native_file_dialog_count = int function(const(ALLEGRO_FILECHOOSER)* dialog);
 		alias pal_get_native_file_dialog_path = const(char)* function(const(ALLEGRO_FILECHOOSER)* dialog, size_t index);
 		alias pal_destroy_native_file_dialog = void function(ALLEGRO_FILECHOOSER* dialog);
-	
+
 		alias pal_show_native_message_box = int function(ALLEGRO_DISPLAY* display, const(char)* title, const(char)* heading, const(char)* text, const(char)* buttons, int flags);
-	
+
 		alias pal_open_native_text_log = ALLEGRO_TEXTLOG* function(const(char)* title, int flags);
 		alias pal_close_native_text_log = void function(ALLEGRO_TEXTLOG* textlog);
 		alias pal_append_native_text_log = void function(ALLEGRO_TEXTLOG* textlog, const(char)* format, ...);
 		alias pal_get_native_text_log_event_source = ALLEGRO_EVENT_SOURCE* function(ALLEGRO_TEXTLOG* textlog);
-	
+
 		alias pal_create_menu = ALLEGRO_MENU* function();
 		alias pal_create_popup_menu = ALLEGRO_MENU* function();
 		alias pal_build_menu = ALLEGRO_MENU* function(ALLEGRO_MENU_INFO* info);
@@ -153,31 +153,31 @@ else {
 		alias pal_clone_menu = ALLEGRO_MENU* function(ALLEGRO_MENU* menu);
 		alias pal_clone_menu_for_popup = ALLEGRO_MENU* function(ALLEGRO_MENU* menu);
 		alias pal_destroy_menu = void function(ALLEGRO_MENU* menu);
-	
+
 		alias pal_get_menu_item_caption = const(char)* function(ALLEGRO_MENU* menu, int pos);
 		alias pal_set_menu_item_caption = void function(ALLEGRO_MENU* menu, int pos, const(char)* caption);
 		alias pal_get_menu_item_flags = int function(ALLEGRO_MENU* menu, int pos);
 		alias pal_set_menu_item_flags = void function(ALLEGRO_MENU* menu, int pos, int flags);
 		alias pal_get_menu_item_icon = ALLEGRO_BITMAP* function(ALLEGRO_MENU* menu, int pos);
 		alias pal_set_menu_item_icon = void function(ALLEGRO_MENU* menu, int pos, ALLEGRO_BITMAP* icon);
-	
+
 		alias pal_find_menu = ALLEGRO_MENU* function(ALLEGRO_MENU* haystack, ushort id);
 		alias pal_find_menu_item = bool function(ALLEGRO_MENU* haystack, ushort id, ALLEGRO_MENU** menu, int* index);
-		 
+
 		alias pal_get_default_menu_event_source = ALLEGRO_EVENT_SOURCE* function();
 		alias pal_enable_menu_event_source = ALLEGRO_EVENT_SOURCE* function(ALLEGRO_MENU* menu);
 		alias pal_disable_menu_event_source = void function(ALLEGRO_MENU* menu);
-		 
+
 		alias pal_get_display_menu = ALLEGRO_MENU* function(ALLEGRO_DISPLAY* display);
 		alias pal_set_display_menu = bool function(ALLEGRO_DISPLAY* display, ALLEGRO_MENU* menu);
 		alias pal_popup_menu = bool function(ALLEGRO_MENU* popup, ALLEGRO_DISPLAY* display);
 		alias pal_remove_display_menu = ALLEGRO_MENU* function(ALLEGRO_DISPLAY* display);
-	
-	
+
+
 		version (ALLEGRO_UNSTABLE) {
 			alias pal_toggle_menu_item_flags = int function(ALLEGRO_MENU* menu, int pos, int flags);
 		}
-	
+
 		static if (allegroSupport >= AllegroSupport.v5_2_6) {
 			alias pal_is_native_dialog_addon_initialized = bool function();
 		}
@@ -219,11 +219,11 @@ else {
 
 		pal_find_menu al_find_menu;
 		pal_find_menu_item al_find_menu_item;
-		 
+
 		pal_get_default_menu_event_source al_get_default_menu_event_source;
 		pal_enable_menu_event_source al_enable_menu_event_source;
 		pal_disable_menu_event_source al_disable_menu_event_source;
-		 
+
 		pal_get_display_menu al_get_display_menu;
 		pal_set_display_menu al_set_display_menu;
 		pal_popup_menu al_popup_menu;
@@ -257,7 +257,7 @@ else {
 		}
 
 		AllegroSupport loadedAllegroDialogVersion() {
-			return loadedVersion; 
+			return loadedVersion;
 		}
 
 		bool isAllegroDialogLoaded() {
@@ -330,11 +330,11 @@ else {
 
 		lib.bindSymbol(cast(void**)&al_find_menu, "al_find_menu");
 		lib.bindSymbol(cast(void**)&al_find_menu_item, "al_find_menu_item");
-		 
+
 		lib.bindSymbol(cast(void**)&al_get_default_menu_event_source, "al_get_default_menu_event_source");
 		lib.bindSymbol(cast(void**)&al_enable_menu_event_source, "al_enable_menu_event_source");
 		lib.bindSymbol(cast(void**)&al_disable_menu_event_source, "al_disable_menu_event_source");
-		 
+
 		lib.bindSymbol(cast(void**)&al_get_display_menu, "al_get_display_menu");
 		lib.bindSymbol(cast(void**)&al_set_display_menu, "al_set_display_menu");
 		lib.bindSymbol(cast(void**)&al_popup_menu, "al_popup_menu");

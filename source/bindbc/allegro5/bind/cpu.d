@@ -12,7 +12,7 @@ else {
 		alias pal_get_cpu_count = int function();
 		alias pal_get_ram_size = int function();
 	}
-	
+
 	__gshared {
 		pal_get_cpu_count al_get_cpu_count;
 		pal_get_ram_size al_get_ram_size;

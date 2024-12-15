@@ -14,7 +14,7 @@ static if (staticBinding) {
 	void al_copy_transform(ALLEGRO_TRANSFORM* dest, const(ALLEGRO_TRANSFORM)* src);
 	void al_identity_transform(ALLEGRO_TRANSFORM* trans);
 	void al_build_transform(ALLEGRO_TRANSFORM* trans, float x, float y, float sx, float sy, float theta);
-	void al_build_camera_transform(ALLEGRO_TRANSFORM* trans, float position_x, float position_y, float position_z, 
+	void al_build_camera_transform(ALLEGRO_TRANSFORM* trans, float position_x, float position_y, float position_z,
 			float look_x, float look_y, float look_z, float up_x, float up_y, float up_z);
 	void al_translate_transform(ALLEGRO_TRANSFORM* trans, float x, float y);
 	void al_translate_transform_3d(ALLEGRO_TRANSFORM* trans, float x, float y, float z);
@@ -24,7 +24,7 @@ static if (staticBinding) {
 	void al_scale_transform_3d(ALLEGRO_TRANSFORM* trans, float sx, float sy, float sz);
 	void al_transform_coordinates(const(ALLEGRO_TRANSFORM)* trans, float* x, float* y);
 	void al_transform_coordinates_3d(const(ALLEGRO_TRANSFORM)* trans, float* x, float* y, float* z);
-	
+
 	void al_compose_transform(ALLEGRO_TRANSFORM* trans, const(ALLEGRO_TRANSFORM)* other);
 	const(ALLEGRO_TRANSFORM)* al_get_current_transform();
 	const(ALLEGRO_TRANSFORM)* al_get_current_inverse_transform();
@@ -51,7 +51,7 @@ else {
 		alias pal_copy_transform = void function(ALLEGRO_TRANSFORM* dest, const(ALLEGRO_TRANSFORM)* src);
 		alias pal_identity_transform = void function(ALLEGRO_TRANSFORM* trans);
 		alias pal_build_transform = void function(ALLEGRO_TRANSFORM* trans, float x, float y, float sx, float sy, float theta);
-		alias pal_build_camera_transform = void function(ALLEGRO_TRANSFORM* trans, float position_x, float position_y, float position_z, 
+		alias pal_build_camera_transform = void function(ALLEGRO_TRANSFORM* trans, float position_x, float position_y, float position_z,
 				float look_x, float look_y, float look_z, float up_x, float up_y, float up_z);
 		alias pal_translate_transform = void function(ALLEGRO_TRANSFORM* trans, float x, float y);
 		alias pal_translate_transform_3d = void function(ALLEGRO_TRANSFORM* trans, float x, float y, float z);

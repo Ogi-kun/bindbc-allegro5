@@ -12,7 +12,7 @@ enum {
 	ALLEGRO_DIRECT3D_INTERNAL           = 1 << 3,
 	ALLEGRO_RESIZABLE                   = 1 << 4,
 	ALLEGRO_FRAMELESS                   = 1 << 5,
-	ALLEGRO_NOFRAME                     = ALLEGRO_FRAMELESS, 
+	ALLEGRO_NOFRAME                     = ALLEGRO_FRAMELESS,
 	ALLEGRO_GENERATE_EXPOSE_EVENTS      = 1 << 6,
 	ALLEGRO_OPENGL_3_0                  = 1 << 7,
 	ALLEGRO_OPENGL_FORWARD_COMPATIBLE   = 1 << 8,
@@ -244,7 +244,7 @@ else {
 		alias pal_acknowledge_drawing_halt = void function(ALLEGRO_DISPLAY* display);
 		alias pal_acknowledge_drawing_resume = void function(ALLEGRO_DISPLAY* display);
 	}
-	
+
 	__gshared {
 		pal_set_new_display_refresh_rate al_set_new_display_refresh_rate;
 		pal_set_new_display_flags al_set_new_display_flags;
@@ -316,7 +316,7 @@ else {
 			pal_get_display_adapter al_get_display_adapter;
 		}
 	}
-	
+
 	version (ALLEGRO_UNSTABLE) {
 		static if (allegroSupport >= AllegroSupport.v5_2_1) {
 			extern(C) @nogc nothrow {

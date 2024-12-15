@@ -16,7 +16,7 @@ else {
 	extern(C) @nogc nothrow {
 		alias pal_osx_get_window = NSWindow function(ALLEGRO_DISPLAY* d);
 	}
-	
+
 	__gshared {
 		pal_osx_get_window al_osx_get_window;
 	}

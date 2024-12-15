@@ -94,7 +94,7 @@ else {
 		pal_is_system_installed al_is_system_installed;
 		pal_get_system_driver al_get_system_driver;
 		pal_get_system_config al_get_system_config;
-		
+
 
 		pal_get_standard_path al_get_standard_path;
 		pal_set_exe_name al_set_exe_name;

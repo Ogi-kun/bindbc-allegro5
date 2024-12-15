@@ -21,7 +21,7 @@ void unloadAllegro() {
 }
 
 AllegroSupport loadedAllegroVersion() {
-	return loadedVersion; 
+	return loadedVersion;
 }
 
 bool isAllegroLoaded() {
@@ -71,7 +71,7 @@ AllegroSupport loadAllegro(const(char)* libName) {
 private AllegroSupport bindAllegro(SharedLib lib) {
 	auto lastErrorCount = errorCount();
 	loadedVersion = AllegroSupport.badLibrary;
-	
+
 	version (Android) {
 		lib.bindSymbol(cast(void**)&al_android_set_apk_file_interface, "al_android_set_apk_file_interface");
 		lib.bindSymbol(cast(void**)&al_android_get_os_version, "al_android_get_os_version");
@@ -785,7 +785,7 @@ private AllegroSupport bindAllegro(SharedLib lib) {
 		}
 		loadedVersion = AllegroSupport.v5_2_1;
 	}
-		
+
 	static if (allegroSupport >= AllegroSupport.v5_2_2) {
 		version (ALLEGRO_UNSTABLE) {
 			version (Android) {
@@ -909,7 +909,7 @@ private AllegroSupport bindAllegro(SharedLib lib) {
 		}
 		loadedVersion = AllegroSupport.v5_2_10;
 	}
-	
+
 	version (Allegro_Monolith) {
 		static AllegroSupport min(AllegroSupport lhs, AllegroSupport rhs) {
 			return lhs < rhs ? lhs : rhs;
@@ -917,47 +917,47 @@ private AllegroSupport bindAllegro(SharedLib lib) {
 
 		import bindbc.allegro5.allegro_acodec;
 		auto acodecVersion = bindAllegroACodec(lib);
-		loadedVersion = min(loadedVersion, acodecVersion); 
+		loadedVersion = min(loadedVersion, acodecVersion);
 
 		import bindbc.allegro5.allegro_audio;
 		auto audioVersion = bindAllegroAudio(lib);
-		loadedVersion = min(loadedVersion, audioVersion); 
+		loadedVersion = min(loadedVersion, audioVersion);
 
 		import bindbc.allegro5.allegro_color;
 		auto colorVersion = bindAllegroColor(lib);
-		loadedVersion = min(loadedVersion, colorVersion); 
+		loadedVersion = min(loadedVersion, colorVersion);
 
 		import bindbc.allegro5.allegro_font;
 		auto fontVersion = bindAllegroFont(lib);
-		loadedVersion = min(loadedVersion, fontVersion); 
+		loadedVersion = min(loadedVersion, fontVersion);
 
 		import bindbc.allegro5.allegro_image;
 		auto imageVersion = bindAllegroImage(lib);
-		loadedVersion = min(loadedVersion, imageVersion); 
+		loadedVersion = min(loadedVersion, imageVersion);
 
 		import bindbc.allegro5.allegro_memfile;
 		auto memfileVersion = bindAllegroMemfile(lib);
-		loadedVersion = min(loadedVersion, memfileVersion); 
+		loadedVersion = min(loadedVersion, memfileVersion);
 
 		import bindbc.allegro5.allegro_native_dialog;
 		auto dialogVersion = bindAllegroDialog(lib);
-		loadedVersion = min(loadedVersion, dialogVersion); 
+		loadedVersion = min(loadedVersion, dialogVersion);
 
 		import bindbc.allegro5.allegro_physfs;
 		auto physFSVersion = bindAllegroPhysFS(lib);
-		loadedVersion = min(loadedVersion, physFSVersion); 
+		loadedVersion = min(loadedVersion, physFSVersion);
 
 		import bindbc.allegro5.allegro_primitives;
 		auto primVersion = bindAllegroPrimitives(lib);
-		loadedVersion = min(loadedVersion, primVersion); 
+		loadedVersion = min(loadedVersion, primVersion);
 
 		import bindbc.allegro5.allegro_ttf;
 		auto ttfVersion = bindAllegroTTF(lib);
-		loadedVersion = min(loadedVersion, ttfVersion); 
+		loadedVersion = min(loadedVersion, ttfVersion);
 
 		import bindbc.allegro5.allegro_video;
 		auto videoVersion = bindAllegroVideo(lib);
-		loadedVersion = min(loadedVersion, videoVersion); 
+		loadedVersion = min(loadedVersion, videoVersion);
 
 	}
 

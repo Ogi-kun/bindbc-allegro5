@@ -258,7 +258,7 @@ static if (staticBinding) {
 	bool al_register_sample_loader(const(char)* ext, al_audio_sample_loader loader);
 	bool al_register_sample_saver(const(char)* ext, al_audio_sample_saver saver);
 	bool al_register_audio_stream_loader(const(char)* ext, al_audio_stream_loader stream_loader);
-			 
+
 	bool al_register_sample_loader_f(const(char)* ext, al_audio_sample_loader_f loader);
 	bool al_register_sample_saver_f(const(char)* ext, al_audio_sample_saver_f saver);
 	bool al_register_audio_stream_loader_f(const(char)* ext, al_audio_stream_loader_f stream_loader);
@@ -266,7 +266,7 @@ static if (staticBinding) {
 	ALLEGRO_SAMPLE* al_load_sample(const(char)* filename);
 	bool al_save_sample(const(char)* filename,ALLEGRO_SAMPLE* spl);
 	ALLEGRO_AUDIO_STREAM* al_load_audio_stream(const(char)* filename,size_t buffer_count, uint samples);
-		
+
 	ALLEGRO_SAMPLE* al_load_sample_f(ALLEGRO_FILE* fp, const(char)* ident);
 	bool al_save_sample_f(ALLEGRO_FILE* fp, const(char)* ident,ALLEGRO_SAMPLE* spl);
 	ALLEGRO_AUDIO_STREAM* al_load_audio_stream_f(ALLEGRO_FILE* fp, const(char)* ident,size_t buffer_count, uint samples);
@@ -455,7 +455,7 @@ else {
 		alias pal_register_sample_loader = bool function(const(char)* ext, al_audio_sample_loader loader);
 		alias pal_register_sample_saver = bool function(const(char)* ext, al_audio_sample_saver saver);
 		alias pal_register_audio_stream_loader = bool function(const(char)* ext, al_audio_stream_loader stream_loader);
-				 
+
 		alias pal_register_sample_loader_f = bool function(const(char)* ext, al_audio_sample_loader_f loader);
 		alias pal_register_sample_saver_f = bool function(const(char)* ext, al_audio_sample_saver_f saver);
 		alias pal_register_audio_stream_loader_f = bool function(const(char)* ext, al_audio_stream_loader_f stream_loader);
@@ -463,7 +463,7 @@ else {
 		alias pal_load_sample = ALLEGRO_SAMPLE* function(const(char)* filename);
 		alias pal_save_sample = bool function(const(char)* filename,ALLEGRO_SAMPLE* spl);
 		alias pal_load_audio_stream = ALLEGRO_AUDIO_STREAM* function(const(char)* filename,size_t buffer_count, uint samples);
-			
+
 		alias pal_load_sample_f = ALLEGRO_SAMPLE* function(ALLEGRO_FILE* fp, const(char)* ident);
 		alias pal_save_sample_f = bool function(ALLEGRO_FILE* fp, const(char)* ident,ALLEGRO_SAMPLE* spl);
 		alias pal_load_audio_stream_f = ALLEGRO_AUDIO_STREAM* function(ALLEGRO_FILE* fp, const(char)* ident,size_t buffer_count, uint samples);
@@ -651,7 +651,7 @@ else {
 		pal_register_sample_loader al_register_sample_loader;
 		pal_register_sample_saver al_register_sample_saver;
 		pal_register_audio_stream_loader al_register_audio_stream_loader;
-				 
+
 		pal_register_sample_loader_f al_register_sample_loader_f;
 		pal_register_sample_saver_f al_register_sample_saver_f;
 		pal_register_audio_stream_loader_f al_register_audio_stream_loader_f;
@@ -659,7 +659,7 @@ else {
 		pal_load_sample al_load_sample;
 		pal_save_sample al_save_sample;
 		pal_load_audio_stream al_load_audio_stream;
-			
+
 		pal_load_sample_f al_load_sample_f;
 		pal_save_sample_f al_save_sample_f;
 		pal_load_audio_stream_f al_load_audio_stream_f;
@@ -708,7 +708,7 @@ else {
 
 	@nogc nothrow:
 
-	version (Allegro_Monolith) {} else { 
+	version (Allegro_Monolith) {} else {
 
 		private {
 			__gshared SharedLib lib;
@@ -722,7 +722,7 @@ else {
 		}
 
 		AllegroSupport loadedAllegroAudioVersion() {
-			return loadedVersion; 
+			return loadedVersion;
 		}
 
 		bool isAllegroAudioLoaded() {
@@ -903,7 +903,7 @@ else {
 		lib.bindSymbol(cast(void**)&al_register_sample_loader, "al_register_sample_loader");
 		lib.bindSymbol(cast(void**)&al_register_sample_saver, "al_register_sample_saver");
 		lib.bindSymbol(cast(void**)&al_register_audio_stream_loader, "al_register_audio_stream_loader");
-				 
+
 		lib.bindSymbol(cast(void**)&al_register_sample_loader_f, "al_register_sample_loader_f");
 		lib.bindSymbol(cast(void**)&al_register_sample_saver_f, "al_register_sample_saver_f");
 		lib.bindSymbol(cast(void**)&al_register_audio_stream_loader_f, "al_register_audio_stream_loader_f");
@@ -911,7 +911,7 @@ else {
 		lib.bindSymbol(cast(void**)&al_load_sample, "al_load_sample");
 		lib.bindSymbol(cast(void**)&al_save_sample, "al_save_sample");
 		lib.bindSymbol(cast(void**)&al_load_audio_stream, "al_load_audio_stream");
-			
+
 		lib.bindSymbol(cast(void**)&al_load_sample_f, "al_load_sample_f");
 		lib.bindSymbol(cast(void**)&al_save_sample_f, "al_save_sample_f");
 		lib.bindSymbol(cast(void**)&al_load_audio_stream_f, "al_load_audio_stream_f");

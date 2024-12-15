@@ -8,7 +8,7 @@ enum ALLEGRO_SUB_VERSION = 2;
 
 /* BetterC disallows converting integers to strings at compile time.
 *  The workaround is to define everything as strings and mixin when you need integers
-*/ 
+*/
 
 version (Allegro_5_2_10) {
 	private enum _ALLEGRO_WIP_VERSION_STR = "10";
@@ -73,12 +73,12 @@ enum ALLEGRO_DATE = mixin(_ALLEGRO_DATE_STR);
 enum ALLEGRO_DATE_STR = _ALLEGRO_DATE_STR[0..4];
 
 enum ALLEGRO_VERSION_INT =
-		 (ALLEGRO_VERSION << 24) 
-		| (ALLEGRO_SUB_VERSION << 16) 
-		| (ALLEGRO_WIP_VERSION << 8) 
-		| ALLEGRO_RELEASE_NUMBER 
+		 (ALLEGRO_VERSION << 24)
+		| (ALLEGRO_SUB_VERSION << 16)
+		| (ALLEGRO_WIP_VERSION << 8)
+		| ALLEGRO_RELEASE_NUMBER
 		| ALLEGRO_UNSTABLE_BIT;
-		
+
 enum ALLEGRO_PI = 3.14159265358979323846;
 
 extern(C) uint AL_ID(char a, char b, char c, char d) @nogc nothrow {
@@ -87,7 +87,7 @@ extern(C) uint AL_ID(char a, char b, char c, char d) @nogc nothrow {
 
 extern(C) @nogc nothrow {
 	alias main_t = int function(int, char**);
-}  
+}
 
 static if (staticBinding) {
 	extern(C) @nogc nothrow:

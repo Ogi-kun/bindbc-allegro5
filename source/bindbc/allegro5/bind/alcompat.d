@@ -11,8 +11,8 @@ enum ALLEGRO_INVERSE_DST_COLOR = ALLEGRO_BLEND_MODE.ALLEGRO_INVERSE_DEST_COLOR;
 
 extern(C) @nogc nothrow:
 
-void al_convert_bitmaps() { 
-	al_convert_memory_bitmaps(); 
+void al_convert_bitmaps() {
+	al_convert_memory_bitmaps();
 }
 
 double al_current_time() {
