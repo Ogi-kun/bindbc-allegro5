@@ -3,8 +3,8 @@ module bindbc.allegro5.bind.altime;
 import bindbc.allegro5.config;
 
 struct ALLEGRO_TIMEOUT {
-   ulong __pad1__;
-   ulong __pad2__;
+	ulong __pad1__;
+	ulong __pad2__;
 }
 
 static if (staticBinding) {

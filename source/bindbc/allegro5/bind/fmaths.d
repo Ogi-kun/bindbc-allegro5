@@ -44,7 +44,7 @@ al_fixed al_ftofix(double x) {
 
 
 double al_fixtof(al_fixed x) {
-   return cast(double)x / 65536.0;
+	return cast(double)x / 65536.0;
 }
 
 
@@ -73,7 +73,7 @@ al_fixed al_fixadd(al_fixed x, al_fixed y) {
 
 
 al_fixed al_fixsub(al_fixed x, al_fixed y) {
-   al_fixed result = x - y;
+	al_fixed result = x - y;
 
 	if (result >= 0) {
 		if (x < 0 && y > 0) {

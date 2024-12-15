@@ -3,10 +3,10 @@ module bindbc.allegro5.bind.fullscreen_mode;
 import bindbc.allegro5.config;
 
 struct ALLEGRO_DISPLAY_MODE {
-   int width;
-   int height;
-   int format;
-   int refresh_rate;
+	int width;
+	int height;
+	int format;
+	int refresh_rate;
 }
 
 static if (staticBinding) {

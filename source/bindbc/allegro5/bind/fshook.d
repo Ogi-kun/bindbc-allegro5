@@ -5,16 +5,16 @@ import bindbc.allegro5.bind.file : off_t, ALLEGRO_FILE;
 import core.stdc.time : time_t;
 
 struct ALLEGRO_FS_ENTRY {
-   const(ALLEGRO_FS_INTERFACE)* vtable;
+	const(ALLEGRO_FS_INTERFACE)* vtable;
 }
 
 enum ALLEGRO_FILE_MODE {
-   ALLEGRO_FILEMODE_READ    = 1,
-   ALLEGRO_FILEMODE_WRITE   = 1 << 1,
-   ALLEGRO_FILEMODE_EXECUTE = 1 << 2,
-   ALLEGRO_FILEMODE_HIDDEN  = 1 << 3,
-   ALLEGRO_FILEMODE_ISFILE  = 1 << 4,
-   ALLEGRO_FILEMODE_ISDIR   = 1 << 5
+	ALLEGRO_FILEMODE_READ    = 1,
+	ALLEGRO_FILEMODE_WRITE   = 1 << 1,
+	ALLEGRO_FILEMODE_EXECUTE = 1 << 2,
+	ALLEGRO_FILEMODE_HIDDEN  = 1 << 3,
+	ALLEGRO_FILEMODE_ISFILE  = 1 << 4,
+	ALLEGRO_FILEMODE_ISDIR   = 1 << 5
 }
 
 enum EOF = -1;

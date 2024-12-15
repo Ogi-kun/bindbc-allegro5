@@ -3,7 +3,7 @@ module bindbc.allegro5.bind.transformations;
 import bindbc.allegro5.config;
 
 struct ALLEGRO_TRANSFORM {
-   float[4][4] m;
+	float[4][4] m;
 }
 
 
