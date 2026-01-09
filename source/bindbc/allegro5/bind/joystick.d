@@ -3,8 +3,15 @@ module bindbc.allegro5.bind.joystick;
 import bindbc.allegro5.config;
 import bindbc.allegro5.bind.events : ALLEGRO_EVENT_SOURCE;
 
-enum _AL_MAX_JOYSTICK_AXES	   = 3;
-enum _AL_MAX_JOYSTICK_STICKS   = 16;
+static if (allegroSupport >= AllegroSupport.v5_2_11) {
+	enum _AL_MAX_JOYSTICK_AXES = 6;
+}
+else {
+	enum _AL_MAX_JOYSTICK_AXES = 3;
+}
+
+enum _AL_MAX_JOYSTICK_STICKS = 16;
+
 static if (allegroSupport >= AllegroSupport.v5_2_10) {
 	version (Android) {
 		enum _AL_MAX_JOYSTICK_BUTTONS = 36;
@@ -33,6 +40,42 @@ enum ALLEGRO_JOYFLAGS {
 }
 mixin ExpandEnum!ALLEGRO_JOYFLAGS;
 
+version (ALLEGRO_UNSTABLE) static if (allegroSupport >= AllegroSupport.v5_2_11) {
+	enum ALLEGRO_GAMEPAD_BUTTON {
+		ALLEGRO_GAMEPAD_BUTTON_A,
+		ALLEGRO_GAMEPAD_BUTTON_B,
+		ALLEGRO_GAMEPAD_BUTTON_X,
+		ALLEGRO_GAMEPAD_BUTTON_Y,
+		ALLEGRO_GAMEPAD_BUTTON_LEFT_SHOULDER,
+		ALLEGRO_GAMEPAD_BUTTON_RIGHT_SHOULDER,
+		ALLEGRO_GAMEPAD_BUTTON_BACK,
+		ALLEGRO_GAMEPAD_BUTTON_START,
+		ALLEGRO_GAMEPAD_BUTTON_GUIDE,
+		ALLEGRO_GAMEPAD_BUTTON_LEFT_THUMB,
+		ALLEGRO_GAMEPAD_BUTTON_RIGHT_THUMB,
+	}
+	mixin ExpandEnum!ALLEGRO_GAMEPAD_BUTTON;
+
+	enum ALLEGRO_GAMEPAD_STICK {
+		ALLEGRO_GAMEPAD_STICK_DPAD,
+		ALLEGRO_GAMEPAD_STICK_LEFT_THUMB,
+		ALLEGRO_GAMEPAD_STICK_RIGHT_THUMB,
+		ALLEGRO_GAMEPAD_STICK_LEFT_TRIGGER,
+		ALLEGRO_GAMEPAD_STICK_RIGHT_TRIGGER,
+	}
+	mixin ExpandEnum!ALLEGRO_GAMEPAD_STICK;
+
+	enum ALLEGRO_JOYSTICK_TYPE {
+		ALLEGRO_JOYSTICK_TYPE_UNKNOWN,
+		ALLEGRO_JOYSTICK_TYPE_GAMEPAD,
+	}
+	mixin ExpandEnum!ALLEGRO_JOYSTICK_TYPE;
+
+	struct ALLEGRO_JOYSTICK_GUID {
+		uint8_t[16] val;
+	}
+}
+
 static if (staticBinding) {
 	extern(C) @nogc nothrow:
 	bool al_install_joystick();
@@ -59,6 +102,13 @@ static if (staticBinding) {
 	void al_get_joystick_state(ALLEGRO_JOYSTICK*, ALLEGRO_JOYSTICK_STATE* ret_state);
 
 	ALLEGRO_EVENT_SOURCE* al_get_joystick_event_source();
+
+	version (ALLEGRO_UNSTABLE) static if (allegroSupport >= AllegroSupport.v5_2_11) {
+		ALLEGRO_JOYSTICK_GUID al_get_joystick_guid(ALLEGRO_JOYSTICK*);
+		ALLEGRO_JOYSTICK_TYPE al_get_joystick_type(ALLEGRO_JOYSTICK*);
+		bool al_set_joystick_mappings(const(char)* filename);
+		bool al_set_joystick_mappings_f(ALLEGRO_FILE* file);
+	}
 }
 else {
 	extern(C) @nogc nothrow {
@@ -112,5 +162,20 @@ else {
 		pal_get_joystick_state al_get_joystick_state;
 
 		pal_get_joystick_event_source al_get_joystick_event_source;
+	}
+
+	version (ALLEGRO_UNSTABLE) static if (allegroSupport >= AllegroSupport.v5_2_11) {
+		extern(C) @nogc nothrow {
+			alias pal_get_joystick_guid = ALLEGRO_JOYSTICK_GUID function(ALLEGRO_JOYSTICK*);
+			alias pal_get_joystick_type = ALLEGRO_JOYSTICK_TYPE function(ALLEGRO_JOYSTICK*);
+			alias pal_set_joystick_mappings = bool function(const(char)* filename);
+			alias pal_set_joystick_mappings_f = bool function(ALLEGRO_FILE* file);
+		}
+		__gshared {
+			pal_get_joystick_guid al_get_joystick_guid;
+			pal_get_joystick_type al_get_joystick_type;
+			pal_set_joystick_mappings al_set_joystick_mappings;
+			pal_set_joystick_mappings_f al_set_joystick_mappings_f;
+		}
 	}
 }

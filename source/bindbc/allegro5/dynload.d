@@ -910,6 +910,15 @@ private AllegroSupport bindAllegro(SharedLib lib) {
 		loadedVersion = AllegroSupport.v5_2_10;
 	}
 
+	static if (allegroSupport >= AllegroSupport.v5_2_11) {
+		version (ALLEGRO_UNSTABLE) {
+			lib.bindSymbol(cast(void**)&al_get_joystick_guid, "al_get_joystick_guid");
+			lib.bindSymbol(cast(void**)&al_get_joystick_type, "al_get_joystick_type");
+			lib.bindSymbol(cast(void**)&al_set_joystick_mappings, "al_set_joystick_mappings");
+			lib.bindSymbol(cast(void**)&al_set_joystick_mappings_f, "al_set_joystick_mappings_f");
+		}
+	}
+
 	version (Allegro_Monolith) {
 		static AllegroSupport min(AllegroSupport lhs, AllegroSupport rhs) {
 			return lhs < rhs ? lhs : rhs;

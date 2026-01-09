@@ -56,6 +56,10 @@ static if (staticBinding) {
 		const(char)* al_identify_video_f(ALLEGRO_FILE* fp);
 		const(char)* al_identify_video(const(char)* filename);
 	}
+
+	static if (allegroSupport >= AllegroSupport.v5_2_11) {
+		ALLEGRO_VIDEO* al_open_video_f(ALLEGRO_FILE* fp, const(char)* ident);
+	}
 }
 else {
 	extern(C) @nogc nothrow {
@@ -87,6 +91,10 @@ else {
 			alias pal_identify_video_f = const(char)* function(ALLEGRO_FILE* fp);
 			alias pal_identify_video = const(char)* function(const(char)* filename);
 		}
+
+		static if (allegroSupport >= AllegroSupport.v5_2_11) {
+			alias pal_open_video_f = ALLEGRO_FILE* function(const(char)* filename, const(char)* ident);
+		}
 	}
 	__gshared {
 
@@ -117,6 +125,11 @@ else {
 			pal_identify_video_f al_identify_video_f;
 			pal_identify_video al_identify_video;
 		}
+
+		static if (allegroSupport >= AllegroSupport.v5_2_11) {
+			pal_open_video_f al_open_video_f;
+		}
+
 	}
 
 	import bindbc.loader;
@@ -207,6 +220,14 @@ else {
 		static if (allegroSupport >= AllegroSupport.v5_2_8) {
 			lib.bindSymbol(cast(void**)&al_identify_video_f, "al_identify_video_f");
 			lib.bindSymbol(cast(void**)&al_identify_video, "al_identify_video");
+
+			if (errorCount() != lastErrorCount) {
+				return AllegroSupport.badLibrary;
+			}
+		}
+
+		static if (allegroSupport >= AllegroSupport.v5_2_11) {
+			lib.bindSymbol(cast(void**)&al_open_video_f, "al_open_video_f");
 
 			if (errorCount() != lastErrorCount) {
 				return AllegroSupport.badLibrary;
