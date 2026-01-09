@@ -2,7 +2,7 @@
 	"authors": [
 		"Georgy Markov"
 	],
-	"copyright": "Copyright © 2022...2024, Georgy Markov",
+	"copyright": "Copyright © 2022...2025, Georgy Markov",
 	"description": "Dynamic and static bindings to Allegro and its addons, compatible with -betterC, @nogc, and nothrow.",
 	"license": "Boost",
 	"name": "bindbc-allegro5",
