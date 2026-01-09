@@ -94,6 +94,7 @@ or not compatible. See
 | 5.2.8   | `Allegro_5_2_8`  | `v5_2_8`         |
 | 5.2.9   | `Allegro_5_2_9`  | `v5_2_9`         |
 | 5.2.10  | `Allegro_5_2_10` | `v5_2_10`        |
+| 5.2.11  | `Allegro_5_2_11` | `v5_2_11`        |
 
 __Note__: Parts of Allegro API, including most of the new functions introduced
 in 5.2.x releases, are marked as unstable. If you want to enable unstable API,
