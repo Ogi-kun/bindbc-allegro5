@@ -10,10 +10,6 @@ import bindbc.allegro5.config;
 */
 version (ALLEGRO_UNSTABLE) {
 
-	static if (allegroSupport > AllegroSupport.v5_2_10) {
-		static assert(0, "Unstable OpenGL API is not defined for this version");
-	}
-
 	struct ALLEGRO_OGL_EXT_LIST {
 		/* from gl_ext_list.h */
 		int ALLEGRO_GL_ARB_imaging;
