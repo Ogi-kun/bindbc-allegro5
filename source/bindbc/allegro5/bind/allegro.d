@@ -26,6 +26,7 @@ public {
 	import bindbc.allegro5.bind.haptic;
 	import bindbc.allegro5.bind.joystick;
 	import bindbc.allegro5.bind.keyboard;
+	import bindbc.allegro5.bind.keycodes;
 	import bindbc.allegro5.bind.memory;
 	import bindbc.allegro5.bind.monitor;
 	import bindbc.allegro5.bind.mouse;
