@@ -6,7 +6,6 @@ static if (allegroPrimitives):
 
 import bindbc.allegro5.bind.color : ALLEGRO_COLOR;
 import bindbc.allegro5.bind.bitmap : ALLEGRO_BITMAP;
-import bindbc.allegro5.bind.display : _ALLEGRO_PRIM_MAX_USER_ATTR;
 import core.stdc.stdint : uintptr_t;
 
 public import bindbc.allegro5.bind.internal.aintern_primitives_types;
