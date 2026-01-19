@@ -93,7 +93,7 @@ else {
 		}
 
 		static if (allegroSupport >= AllegroSupport.v5_2_11) {
-			alias pal_open_video_f = ALLEGRO_FILE* function(const(char)* filename, const(char)* ident);
+			alias pal_open_video_f = ALLEGRO_VIDEO* function(ALLEGRO_FILE* fp, const(char)* ident);
 		}
 	}
 	__gshared {
