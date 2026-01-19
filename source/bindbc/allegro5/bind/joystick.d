@@ -1,6 +1,7 @@
 module bindbc.allegro5.bind.joystick;
 
 import bindbc.allegro5.config;
+import bindbc.allegro5.bind.file;
 import bindbc.allegro5.bind.events : ALLEGRO_EVENT_SOURCE;
 
 static if (allegroSupport >= AllegroSupport.v5_2_11) {
@@ -72,7 +73,7 @@ version (ALLEGRO_UNSTABLE) static if (allegroSupport >= AllegroSupport.v5_2_11) 
 	mixin ExpandEnum!ALLEGRO_JOYSTICK_TYPE;
 
 	struct ALLEGRO_JOYSTICK_GUID {
-		uint8_t[16] val;
+		ubyte[16] val;
 	}
 }
 
