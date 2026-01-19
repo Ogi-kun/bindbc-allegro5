@@ -917,6 +917,11 @@ private AllegroSupport bindAllegro(SharedLib lib) {
 			lib.bindSymbol(cast(void**)&al_set_joystick_mappings, "al_set_joystick_mappings");
 			lib.bindSymbol(cast(void**)&al_set_joystick_mappings_f, "al_set_joystick_mappings_f");
 		}
+
+		if (errorCount() != lastErrorCount) {
+			return loadedVersion;
+		}
+		loadedVersion = AllegroSupport.v5_2_11;
 	}
 
 	version (Allegro_Monolith) {
