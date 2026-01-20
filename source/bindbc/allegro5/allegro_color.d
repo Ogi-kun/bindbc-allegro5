@@ -208,7 +208,7 @@ else {
 
 		AllegroSupport loadAllegroColor() {
 			const(char)[][1] libNames = [
-				libName!"color",
+				dynlibFilename!"color",
 			];
 
 			typeof(return) result;

@@ -61,7 +61,7 @@ else {
 		AllegroSupport loadAllegroACodec() {
 
 			const(char)[][1] libNames = [
-				libName!"acodec",
+				dynlibFilename!"acodec",
 			];
 
 			typeof(return) result;

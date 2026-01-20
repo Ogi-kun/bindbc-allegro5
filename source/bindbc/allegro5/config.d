@@ -157,24 +157,20 @@ else {
 	}
 }
 
-package {
+package template dynlibFilename(string addon) {
 	version (Windows) {
 		version (ALLEGRO_DEBUG) {
-			enum libName(string addon) =
-					"allegro" ~(addon != "" ? ("_" ~ addon) : "") ~"-debug-5.2.dll";
+			enum dynlibFilename = "allegro" ~(addon != "" ? ("_" ~ addon) : "") ~"-debug-5.2.dll";
 		}
 		else {
-			enum libName(string addon) =
-					"allegro" ~(addon != "" ? ("_" ~ addon) : "") ~"-5.2.dll";
+			enum dynlibFilename = "allegro" ~(addon != "" ? ("_" ~ addon) : "") ~"-5.2.dll";
 		}
 	}
 	else version (OSX) {
-		enum libName(string addon) =
-				"liballegro"~(addon != "" ? ("_" ~ addon) : "") ~".5.2.dylib";
+		enum dynlibFilename = "liballegro"~(addon != "" ? ("_" ~ addon) : "") ~".5.2.dylib";
 	}
 	else version (Posix) {
-		enum libName(string addon) =
-				"liballegro"~(addon != "" ? ("_" ~ addon) : "") ~".so.5.2";
+		enum dynlibFilename = "liballegro"~(addon != "" ? ("_" ~ addon) : "") ~".so.5.2";
 	}
 	else static assert(0, "No known library names for this platform.");
 }

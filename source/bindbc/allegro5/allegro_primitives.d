@@ -285,7 +285,7 @@ else {
 
 		AllegroSupport loadAllegroPrimitives() {
 			const(char)[][1] libNames = [
-				libName!"primitives",
+				dynlibFilename!"primitives",
 			];
 
 			typeof(return) result;

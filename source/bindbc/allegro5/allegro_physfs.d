@@ -46,7 +46,7 @@ else {
 
 		AllegroSupport loadAllegroPhysFS() {
 			const(char)[][1] libNames = [
-				libName!"physfs",
+				dynlibFilename!"physfs",
 			];
 
 			typeof(return) result;

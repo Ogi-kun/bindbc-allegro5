@@ -86,7 +86,7 @@ else {
 
 		AllegroSupport loadAllegroTTF() {
 			const(char)[][1] libNames = [
-				libName!"ttf",
+				dynlibFilename!"ttf",
 			];
 
 			typeof(return) result;

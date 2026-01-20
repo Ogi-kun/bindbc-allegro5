@@ -49,7 +49,7 @@ else {
 
 		AllegroSupport loadAllegroMemfile() {
 			const(char)[][1] libNames = [
-				libName!"memfile",
+				dynlibFilename!"memfile",
 			];
 
 			typeof(return) result;

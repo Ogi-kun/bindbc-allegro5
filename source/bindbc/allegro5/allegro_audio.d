@@ -732,7 +732,7 @@ else {
 		AllegroSupport loadAllegroAudio() {
 
 			const(char)[][1] libNames = [
-				libName!"audio",
+				dynlibFilename!"audio",
 			];
 
 			typeof(return) result;

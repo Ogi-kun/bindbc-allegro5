@@ -237,7 +237,7 @@ else {
 
 		AllegroSupport loadAllegroFont() {
 			const(char)[][1] libNames = [
-				libName!"font",
+				dynlibFilename!"font",
 			];
 
 			typeof(return) result;

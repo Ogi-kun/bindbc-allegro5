@@ -159,7 +159,7 @@ else {
 
 		AllegroSupport loadAllegroVideo() {
 			const(char)[][1] libNames = [
-				libName!"video",
+				dynlibFilename!"video",
 			];
 
 			typeof(return) result;

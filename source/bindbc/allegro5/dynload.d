@@ -31,19 +31,19 @@ AllegroSupport loadAllegro() {
 	version (Windows) {
 		version (Allegro_Monolith) {
 			const(char)[][1] libNames = [
-				libName!"monolith",
+				dynlibFilename!"monolith",
 			];
 		}
 		else {
 			const(char)[][2] libNames = [
-				libName!"",
-				libName!"monolith",
+				dynlibFilename!"",
+				dynlibFilename!"monolith",
 			];
 		}
 	}
 	else {
 		const(char)[][1] libNames = [
-			libName!"",
+			dynlibFilename!"",
 		];
 	}
 

@@ -266,7 +266,7 @@ else {
 
 		AllegroSupport loadAllegroDialog() {
 			const(char)[][1] libNames = [
-				libName!"dialog",
+				dynlibFilename!"dialog",
 			];
 
 			typeof(return) result;

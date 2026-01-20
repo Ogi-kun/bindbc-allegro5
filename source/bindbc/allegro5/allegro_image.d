@@ -63,7 +63,7 @@ else {
 
 		AllegroSupport loadAllegroImage() {
 			const(char)[][1] libNames = [
-				libName!"image",
+				dynlibFilename!"image",
 			];
 
 			typeof(return) result;
