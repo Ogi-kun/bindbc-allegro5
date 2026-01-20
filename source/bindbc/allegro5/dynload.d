@@ -1,11 +1,10 @@
 module bindbc.allegro5.dynload;
 
-version (BindAllegro_Static) { }
-else:
-
 import bindbc.loader;
 import bindbc.allegro5.config;
 import bindbc.allegro5.bind;
+
+static if (!staticBinding):
 
 private {
 	__gshared SharedLib lib;
