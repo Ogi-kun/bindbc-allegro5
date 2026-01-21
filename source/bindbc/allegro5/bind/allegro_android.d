@@ -27,36 +27,33 @@ static if (staticBinding) {
 	}
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_android_set_apk_file_interface = void function();
-		alias pal_android_get_os_version = const(char)* function();
-		alias pal_android_set_apk_fs_interface = void function();
-		alias p_al_android_set_capture_volume_keys = void function();
-
-		version (ALLEGRO_UNSTABLE) static if (allegroSupport >= AllegroSupport.v5_2_2) {
-			alias pal_android_get_jni_env = JNIEnv* function();
-			alias pal_android_get_activity = jobject function();
-		}
-	}
-
-	__gshared {
-		pal_android_set_apk_file_interface al_android_set_apk_file_interface;
-		pal_android_get_os_version al_android_get_os_version;
-		pal_android_set_apk_fs_interface al_android_set_apk_fs_interface;
-		p_al_android_set_capture_volume_keys _al_android_set_capture_volume_keys;
-
-		version (ALLEGRO_UNSTABLE) static if (allegroSupport >= AllegroSupport.v5_2_2) {
-			pal_android_get_jni_env al_android_get_jni_env;
-			pal_android_get_activity al_android_get_activity;
-		}
-	}
+	pragma(inline, true) extern(C) @nogc nothrow:
+	void al_android_set_apk_file_interface() => ptr_al_android_set_apk_file_interface();
+	const(char)* al_android_get_os_version() => ptr_al_android_get_os_version();
+	void al_android_set_apk_fs_interface() => ptr_al_android_set_apk_fs_interface();
+	void _al_android_set_capture_volume_keys(ALLEGRO_DISPLAY* display, bool onoff) => ptr__al_android_set_capture_volume_keys(display, onoff);
 
 	static if (allegroSupport >= AllegroSupport.v5_2_10) {
-		extern(C) @nogc nothrow {
-			alias pal_android_open_fd = int function(const(char)* uri, const(char)* mode);
+		int al_android_open_fd(const(char)* uri, const(char)* mode) => ptr_al_android_open_fd(uri, mode);
+	}
+
+	version (ALLEGRO_UNSTABLE) static if (allegroSupport >= AllegroSupport.v5_2_2) {
+		JNIEnv* al_android_get_jni_env() => ptr_al_android_get_jni_env();
+		jobject al_android_get_activity() => ptr_al_android_get_activity();
+	}
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_android_set_apk_file_interface) ptr_al_android_set_apk_file_interface;
+		typeof(&al_android_get_os_version) ptr_al_android_get_os_version;
+		typeof(&al_android_set_apk_fs_interface) ptr_al_android_set_apk_fs_interface;
+		typeof(&_al_android_set_capture_volume_keys) ptr__al_android_set_capture_volume_keys;
+
+		static if (allegroSupport >= AllegroSupport.v5_2_10) {
+			typeof(al_android_open_fd) ptr_al_android_open_fd;
 		}
-		__gshared {
-			pal_android_open_fd al_android_open_fd;
+
+		version (ALLEGRO_UNSTABLE) static if (allegroSupport >= AllegroSupport.v5_2_2) {
+			typeof(&al_android_get_jni_env) ptr_al_android_get_jni_env;
+			typeof(&al_android_get_activity) ptr_al_android_get_activity;
 		}
 	}
 }

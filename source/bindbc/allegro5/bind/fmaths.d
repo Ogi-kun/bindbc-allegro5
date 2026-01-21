@@ -14,17 +14,16 @@ static if (staticBinding) {
 	al_fixed al_fixatan2(al_fixed y, al_fixed x);
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_fixsqrt = al_fixed function(al_fixed x);
-		alias pal_fixhypot = al_fixed function(al_fixed x, al_fixed y);
-		alias pal_fixatan = al_fixed function(al_fixed x);
-		alias pal_fixatan2 = al_fixed function(al_fixed y, al_fixed x);
-	}
-	__gshared {
-		pal_fixsqrt al_fixsqrt;
-		pal_fixhypot al_fixhypot;
-		pal_fixatan al_fixatan;
-		pal_fixatan2 al_fixatan2;
+	pragma(inline, true) extern(C) @nogc nothrow:
+	al_fixed al_fixsqrt(al_fixed x) => ptr_al_fixsqrt(x);
+	al_fixed al_fixhypot(al_fixed x, al_fixed y) => ptr_al_fixhypot(x, y);
+	al_fixed al_fixatan(al_fixed x) => ptr_al_fixatan(x);
+	al_fixed al_fixatan2(al_fixed y, al_fixed x) => ptr_al_fixatan2(y, x);
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_fixsqrt) ptr_al_fixsqrt;
+		typeof(&al_fixhypot) ptr_al_fixhypot;
+		typeof(&al_fixatan) ptr_al_fixatan;
+		typeof(&al_fixatan2) ptr_al_fixatan2;
 	}
 }
 

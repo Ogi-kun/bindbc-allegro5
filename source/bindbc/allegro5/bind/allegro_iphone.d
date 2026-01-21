@@ -19,16 +19,13 @@ static if (staticBinding) {
 	float al_iphone_get_battery_level();
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_iphone_set_statusbar_orientation = void function(int orientation);
-		alias pal_iphone_get_last_shake_time = double function();
-		alias pal_iphone_get_battery_level = float function();
-	}
-
-	__gshared {
-		pal_iphone_set_statusbar_orientation al_iphone_set_statusbar_orientation;
-		pal_iphone_get_last_shake_time al_iphone_get_last_shake_time;
-		pal_iphone_get_battery_level al_iphone_get_battery_level;
+	pragma(inline, true) extern(C) @nogc nothrow:
+	void al_iphone_set_statusbar_orientation(int orientation) => ptr_al_iphone_set_statusbar_orientation(orientation);
+	double al_iphone_get_last_shake_time() => ptr_al_iphone_get_last_shake_time();
+	float al_iphone_get_battery_level() => ptr_al_iphone_get_battery_level();
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_iphone_set_statusbar_orientation) ptr_al_iphone_set_statusbar_orientation;
+		typeof(&al_iphone_get_last_shake_time) ptr_al_iphone_get_last_shake_time;
+		typeof(&al_iphone_get_battery_level) ptr_al_iphone_get_battery_level;
 	}
 }
-

@@ -8,12 +8,11 @@ static if (staticBinding) {
 	void al_set_errno(int errnum);
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_get_errno = int function();
-		alias pal_set_errno = void function(int errnum);
-	}
-	__gshared {
-		pal_get_errno al_get_errno;
-		pal_set_errno al_set_errno;
+	pragma(inline, true) extern(C) @nogc nothrow:
+	int al_get_errno() => ptr_al_get_errno();
+	void al_set_errno(int errnum) => ptr_al_set_errno(errnum);
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_get_errno) ptr_al_get_errno;
+		typeof(&al_set_errno) ptr_al_set_errno;
 	}
 }

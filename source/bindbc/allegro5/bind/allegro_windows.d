@@ -5,7 +5,7 @@ import bindbc.allegro5.bind.display : ALLEGRO_DISPLAY;
 
 version (Windows):
 
-import core.sys.windows.windows;
+import core.sys.windows.windef : HWND, UINT, WPARAM, LPARAM, LRESULT;
 
 extern(C) @nogc nothrow {
 	alias al_win_window_callback = bool function(
@@ -34,24 +34,15 @@ static if (staticBinding) {
 			void* userdata);
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_get_win_window_handle = HWND function(ALLEGRO_DISPLAY* display);
-
-		alias pal_win_add_window_callback = bool function(
-				ALLEGRO_DISPLAY* display,
-				al_win_window_callback callback,
-				void* userdata);
-
-		alias pal_win_remove_window_callback = bool function(
-				ALLEGRO_DISPLAY* display,
-				al_win_window_callback callback,
-				void* userdata);
-	}
-
-	__gshared {
-		pal_get_win_window_handle al_get_win_window_handle;
-		pal_win_add_window_callback al_win_add_window_callback;
-		pal_win_remove_window_callback al_win_remove_window_callback;
+	pragma(inline, true) extern(C) @nogc nothrow:
+	HWND al_get_win_window_handle(ALLEGRO_DISPLAY* display) => ptr_al_get_win_window_handle(display);
+	bool al_win_add_window_callback(ALLEGRO_DISPLAY* display, al_win_window_callback callback, void* userdata) =>
+			ptr_al_win_add_window_callback(display, callback, userdata);
+	bool al_win_remove_window_callback(ALLEGRO_DISPLAY* display, al_win_window_callback callback, void* userdata) =>
+			ptr_al_win_remove_window_callback(display, callback, userdata);
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_get_win_window_handle) ptr_al_get_win_window_handle;
+		typeof(&al_win_add_window_callback) ptr_al_win_add_window_callback;
+		typeof(&al_win_remove_window_callback) ptr_al_win_remove_window_callback;
 	}
 }
-

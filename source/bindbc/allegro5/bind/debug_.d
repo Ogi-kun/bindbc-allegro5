@@ -80,16 +80,15 @@ static if (staticBinding) {
 	void al_register_trace_handler(void function(const(char)*) handler);
 }
 else {
-	extern(C) @nogc nothrow {
-		alias p_al_trace_prefix = bool function(const(char)* channel, int level, const(char)* file, int line, const(char)* fun);
-		alias p_al_trace_suffix = void function(const(char)* msg, ...);
-		alias pal_register_assert_handler = void function(void function(const(char)* expr, const(char)* file, int line, const(char)* func) handler);
-		alias pal_register_trace_handler = void function(void function(const(char)*) handler);
-	}
-	__gshared {
-		p_al_trace_prefix _al_trace_prefix;
-		p_al_trace_suffix _al_trace_suffix;
-		pal_register_assert_handler al_register_assert_handler;
-		pal_register_trace_handler al_register_trace_handler;
+	pragma(inline, true) extern(C) @nogc nothrow:
+	bool _al_trace_prefix(const(char)* channel, int level, const(char)* file, int line, const(char)* fun) => ptr__al_trace_prefix(channel, level, file, line, fun);
+	void _al_trace_suffix(const(char)* msg, ...) => ptr__al_trace_suffix(__traits(parameters));
+	void al_register_assert_handler(void function(const(char)* expr, const(char)* file, int line, const(char)* func) handler) => ptr_al_register_assert_handler(handler);
+	void al_register_trace_handler(void function(const(char)*) handler) => ptr_al_register_trace_handler(handler);
+	package(bindbc.allegro5) __gshared {
+		typeof(&_al_trace_prefix) ptr__al_trace_prefix;
+		typeof(&_al_trace_suffix) ptr__al_trace_suffix;
+		typeof(&al_register_assert_handler) ptr_al_register_assert_handler;
+		typeof(&al_register_trace_handler) ptr_al_register_trace_handler;
 	}
 }

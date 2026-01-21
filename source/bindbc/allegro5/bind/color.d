@@ -63,42 +63,43 @@ static if (staticBinding) {
 	int al_get_pixel_block_height(int format);
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_map_rgb = ALLEGRO_COLOR function(ubyte r, ubyte g, ubyte b);
-		alias pal_map_rgba = ALLEGRO_COLOR function(ubyte r, ubyte g, ubyte b, ubyte a);
-		alias pal_map_rgb_f = ALLEGRO_COLOR function(float r, float g, float b);
-		alias pal_map_rgba_f = ALLEGRO_COLOR function(float r, float g, float b, float a);
-		alias pal_premul_rgba = ALLEGRO_COLOR function(ubyte r, ubyte g, ubyte b, ubyte a);
-		alias pal_premul_rgba_f = ALLEGRO_COLOR function(float r, float g, float b, float a);
+	pragma(inline, true) extern(C) @nogc nothrow:
 
-		alias pal_unmap_rgb = void function(ALLEGRO_COLOR color, ubyte* r, ubyte* g, ubyte* b);
-		alias pal_unmap_rgba = void function(ALLEGRO_COLOR color, ubyte* r, ubyte* g, ubyte* b, ubyte* a);
-		alias pal_unmap_rgb_f = void function(ALLEGRO_COLOR color, float* r, float* g, float* b);
-		alias pal_unmap_rgba_f = void function(ALLEGRO_COLOR color, float* r, float* g, float* b, float* a);
+	ALLEGRO_COLOR al_map_rgb(ubyte r, ubyte g, ubyte b) => ptr_al_map_rgb(r, g, b);
+	ALLEGRO_COLOR al_map_rgba(ubyte r, ubyte g, ubyte b, ubyte a) => ptr_al_map_rgba(r, g, b, a);
+	ALLEGRO_COLOR al_map_rgb_f(float r, float g, float b) => ptr_al_map_rgb_f(r, g, b);
+	ALLEGRO_COLOR al_map_rgba_f(float r, float g, float b, float a) => ptr_al_map_rgba_f(r, g, b, a);
+	ALLEGRO_COLOR al_premul_rgba(ubyte r, ubyte g, ubyte b, ubyte a) => ptr_al_premul_rgba(r, g, b, a);
+	ALLEGRO_COLOR al_premul_rgba_f(float r, float g, float b, float a) => ptr_al_premul_rgba_f(r, g, b, a);
 
-		alias pal_get_pixel_size = int function(int format);
-		alias pal_get_pixel_format_bits = int function(int format);
-		alias pal_get_pixel_block_size = int function(int format);
-		alias pal_get_pixel_block_width = int function(int format);
-		alias pal_get_pixel_block_height = int function(int format);
-	}
-	__gshared {
-		pal_map_rgb al_map_rgb;
-		pal_map_rgba al_map_rgba;
-		pal_map_rgb_f al_map_rgb_f;
-		pal_map_rgba_f al_map_rgba_f;
-		pal_premul_rgba al_premul_rgba;
-		pal_premul_rgba_f al_premul_rgba_f;
+	void al_unmap_rgb(ALLEGRO_COLOR color, ubyte* r, ubyte* g, ubyte* b) => ptr_al_unmap_rgb(color, r, g, b);
+	void al_unmap_rgba(ALLEGRO_COLOR color, ubyte* r, ubyte* g, ubyte* b, ubyte* a) => ptr_al_unmap_rgba(color, r, g, b, a);
+	void al_unmap_rgb_f(ALLEGRO_COLOR color, float* r, float* g, float* b) => ptr_al_unmap_rgb_f(color, r, g, b);
+	void al_unmap_rgba_f(ALLEGRO_COLOR color, float* r, float* g, float* b, float* a) => ptr_al_unmap_rgba_f(color, r, g, b, a);
 
-		pal_unmap_rgb al_unmap_rgb;
-		pal_unmap_rgba al_unmap_rgba;
-		pal_unmap_rgb_f al_unmap_rgb_f;
-		pal_unmap_rgba_f al_unmap_rgba_f;
+	int al_get_pixel_size(int format) => ptr_al_get_pixel_size(format);
+	int al_get_pixel_format_bits(int format) => ptr_al_get_pixel_format_bits(format);
+	int al_get_pixel_block_size(int format) => ptr_al_get_pixel_block_size(format);
+	int al_get_pixel_block_width(int format) => ptr_al_get_pixel_block_width(format);
+	int al_get_pixel_block_height(int format) => ptr_al_get_pixel_block_height(format);
 
-		pal_get_pixel_size al_get_pixel_size;
-		pal_get_pixel_format_bits al_get_pixel_format_bits;
-		pal_get_pixel_block_size al_get_pixel_block_size;
-		pal_get_pixel_block_width al_get_pixel_block_width;
-		pal_get_pixel_block_height al_get_pixel_block_height;
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_map_rgb) ptr_al_map_rgb;
+		typeof(&al_map_rgba) ptr_al_map_rgba;
+		typeof(&al_map_rgb_f) ptr_al_map_rgb_f;
+		typeof(&al_map_rgba_f) ptr_al_map_rgba_f;
+		typeof(&al_premul_rgba) ptr_al_premul_rgba;
+		typeof(&al_premul_rgba_f) ptr_al_premul_rgba_f;
+
+		typeof(&al_unmap_rgb) ptr_al_unmap_rgb;
+		typeof(&al_unmap_rgba) ptr_al_unmap_rgba;
+		typeof(&al_unmap_rgb_f) ptr_al_unmap_rgb_f;
+		typeof(&al_unmap_rgba_f) ptr_al_unmap_rgba_f;
+
+		typeof(&al_get_pixel_size) ptr_al_get_pixel_size;
+		typeof(&al_get_pixel_format_bits) ptr_al_get_pixel_format_bits;
+		typeof(&al_get_pixel_block_size) ptr_al_get_pixel_block_size;
+		typeof(&al_get_pixel_block_width) ptr_al_get_pixel_block_width;
+		typeof(&al_get_pixel_block_height) ptr_al_get_pixel_block_height;
 	}
 }

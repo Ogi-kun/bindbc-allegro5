@@ -62,52 +62,53 @@ static if (staticBinding) {
 	}
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_create_shader = ALLEGRO_SHADER* function(ALLEGRO_SHADER_PLATFORM platform);
-		alias pal_attach_shader_source = bool function(ALLEGRO_SHADER* shader, ALLEGRO_SHADER_TYPE type, const(char)* source);
-		alias pal_attach_shader_source_file = bool function(ALLEGRO_SHADER* shader, ALLEGRO_SHADER_TYPE type, const(char)* filename);
-		alias pal_build_shader = bool function(ALLEGRO_SHADER* shader);
-		alias pal_get_shader_log = const(char)* function(ALLEGRO_SHADER* shader);
-		alias pal_get_shader_platform = ALLEGRO_SHADER_PLATFORM function(ALLEGRO_SHADER* shader);
-		alias pal_use_shader = bool function(ALLEGRO_SHADER* shader);
-		alias pal_destroy_shader = void function(ALLEGRO_SHADER* shader);
+	pragma(inline, true) extern(C) @nogc nothrow:
 
-		alias pal_set_shader_sampler = bool function(const(char)* name, ALLEGRO_BITMAP* bitmap, int unit);
-		alias pal_set_shader_matrix = bool function(const(char)* name, const(ALLEGRO_TRANSFORM)* matrix);
-		alias pal_set_shader_int = bool function(const(char)* name, int i);
-		alias pal_set_shader_float = bool function(const(char)* name, float f);
-		alias pal_set_shader_int_vector = bool function(const(char)* name, int num_components, const(int)* i, int num_elems);
-		alias pal_set_shader_float_vector = bool function(const(char)* name, int num_components, const(float)* f, int num_elems);
-		alias pal_set_shader_bool = bool function(const(char)* name, bool b);
+	ALLEGRO_SHADER* al_create_shader(ALLEGRO_SHADER_PLATFORM platform) => ptr_al_create_shader(platform);
+	bool al_attach_shader_source(ALLEGRO_SHADER* shader, ALLEGRO_SHADER_TYPE type, const(char)* source) => ptr_al_attach_shader_source(shader, type, source);
+	bool al_attach_shader_source_file(ALLEGRO_SHADER* shader, ALLEGRO_SHADER_TYPE type, const(char)* filename) => ptr_al_attach_shader_source_file(shader, type, filename);
+	bool al_build_shader(ALLEGRO_SHADER* shader) => ptr_al_build_shader(shader);
+	const(char)* al_get_shader_log(ALLEGRO_SHADER* shader) => ptr_al_get_shader_log(shader);
+	ALLEGRO_SHADER_PLATFORM al_get_shader_platform(ALLEGRO_SHADER* shader) => ptr_al_get_shader_platform(shader);
+	bool al_use_shader(ALLEGRO_SHADER* shader) => ptr_al_use_shader(shader);
+	void al_destroy_shader(ALLEGRO_SHADER* shader) => ptr_al_destroy_shader(shader);
 
-		alias pal_get_default_shader_source = const(char)* function(ALLEGRO_SHADER_PLATFORM platform, ALLEGRO_SHADER_TYPE type);
-	}
-	__gshared {
-		pal_create_shader al_create_shader;
-		pal_attach_shader_source al_attach_shader_source;
-		pal_attach_shader_source_file al_attach_shader_source_file;
-		pal_build_shader al_build_shader;
-		pal_get_shader_log al_get_shader_log;
-		pal_get_shader_platform al_get_shader_platform;
-		pal_use_shader al_use_shader;
-		pal_destroy_shader al_destroy_shader;
+	bool al_set_shader_sampler(const(char)* name, ALLEGRO_BITMAP* bitmap, int unit) => ptr_al_set_shader_sampler(name, bitmap, unit);
+	bool al_set_shader_matrix(const(char)* name, const(ALLEGRO_TRANSFORM)* matrix) => ptr_al_set_shader_matrix(name, matrix);
+	bool al_set_shader_int(const(char)* name, int i) => ptr_al_set_shader_int(name, i);
+	bool al_set_shader_float(const(char)* name, float f) => ptr_al_set_shader_float(name, f);
+	bool al_set_shader_int_vector(const(char)* name, int num_components, const(int)* i, int num_elems) => ptr_al_set_shader_int_vector(name, num_components, i, num_elems);
+	bool al_set_shader_float_vector(const(char)* name, int num_components, const(float)* f, int num_elems) => ptr_al_set_shader_float_vector(name, num_components, f, num_elems);
+	bool al_set_shader_bool(const(char)* name, bool b) => ptr_al_set_shader_bool(name, b);
 
-		pal_set_shader_sampler al_set_shader_sampler;
-		pal_set_shader_matrix al_set_shader_matrix;
-		pal_set_shader_int al_set_shader_int;
-		pal_set_shader_float al_set_shader_float;
-		pal_set_shader_int_vector al_set_shader_int_vector;
-		pal_set_shader_float_vector al_set_shader_float_vector;
-		pal_set_shader_bool al_set_shader_bool;
+	const(char)* al_get_default_shader_source(ALLEGRO_SHADER_PLATFORM platform, ALLEGRO_SHADER_TYPE type) => ptr_al_get_default_shader_source(platform, type);
 
-		pal_get_default_shader_source al_get_default_shader_source;
-	}
 	static if (allegroSupport >= AllegroSupport.v5_2_9) {
-		extern(C) @nogc nothrow {
-			alias pal_get_current_shader = ALLEGRO_SHADER* function();
-		}
-		__gshared {
-			pal_get_current_shader al_get_current_shader;
+		ALLEGRO_SHADER* al_get_current_shader() => ptr_al_get_current_shader();
+	}
+
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_create_shader) ptr_al_create_shader;
+		typeof(&al_attach_shader_source) ptr_al_attach_shader_source;
+		typeof(&al_attach_shader_source_file) ptr_al_attach_shader_source_file;
+		typeof(&al_build_shader) ptr_al_build_shader;
+		typeof(&al_get_shader_log) ptr_al_get_shader_log;
+		typeof(&al_get_shader_platform) ptr_al_get_shader_platform;
+		typeof(&al_use_shader) ptr_al_use_shader;
+		typeof(&al_destroy_shader) ptr_al_destroy_shader;
+
+		typeof(&al_set_shader_sampler) ptr_al_set_shader_sampler;
+		typeof(&al_set_shader_matrix) ptr_al_set_shader_matrix;
+		typeof(&al_set_shader_int) ptr_al_set_shader_int;
+		typeof(&al_set_shader_float) ptr_al_set_shader_float;
+		typeof(&al_set_shader_int_vector) ptr_al_set_shader_int_vector;
+		typeof(&al_set_shader_float_vector) ptr_al_set_shader_float_vector;
+		typeof(&al_set_shader_bool) ptr_al_set_shader_bool;
+
+		typeof(&al_get_default_shader_source) ptr_al_get_default_shader_source;
+
+		static if (allegroSupport >= AllegroSupport.v5_2_9) {
+			typeof(&al_get_current_shader) ptr_al_get_current_shader;
 		}
 	}
 }

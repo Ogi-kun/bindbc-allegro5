@@ -91,69 +91,67 @@ static if (staticBinding) {
 	void al_set_standard_fs_interface();
 }
 else {
+	pragma(inline, true) extern(C) @nogc nothrow:
 
-	extern(C) @nogc nothrow {
-		alias pal_create_fs_entry = ALLEGRO_FS_ENTRY* function(const(char)* path);
-		alias pal_destroy_fs_entry = void function(ALLEGRO_FS_ENTRY* e);
-		alias pal_get_fs_entry_name = const(char)* function(ALLEGRO_FS_ENTRY* e);
-		alias pal_update_fs_entry = bool function(ALLEGRO_FS_ENTRY* e);
-		alias pal_get_fs_entry_mode = uint function(ALLEGRO_FS_ENTRY* e);
-		alias pal_get_fs_entry_atime = time_t function(ALLEGRO_FS_ENTRY* e);
-		alias pal_get_fs_entry_mtime = time_t function(ALLEGRO_FS_ENTRY* e);
-		alias pal_get_fs_entry_ctime = time_t function(ALLEGRO_FS_ENTRY* e);
-		alias pal_get_fs_entry_size = off_t function(ALLEGRO_FS_ENTRY* e);
-		alias pal_fs_entry_exists = bool function(ALLEGRO_FS_ENTRY* e);
-		alias pal_remove_fs_entry = bool function(ALLEGRO_FS_ENTRY* e);
+	ALLEGRO_FS_ENTRY* al_create_fs_entry(const(char)* path) => ptr_al_create_fs_entry(path);
+	void al_destroy_fs_entry(ALLEGRO_FS_ENTRY* e) => ptr_al_destroy_fs_entry(e);
+	const(char)* al_get_fs_entry_name(ALLEGRO_FS_ENTRY* e) => ptr_al_get_fs_entry_name(e);
+	bool al_update_fs_entry(ALLEGRO_FS_ENTRY* e) => ptr_al_update_fs_entry(e);
+	uint al_get_fs_entry_mode(ALLEGRO_FS_ENTRY* e) => ptr_al_get_fs_entry_mode(e);
+	time_t al_get_fs_entry_atime(ALLEGRO_FS_ENTRY* e) => ptr_al_get_fs_entry_atime(e);
+	time_t al_get_fs_entry_mtime(ALLEGRO_FS_ENTRY* e) => ptr_al_get_fs_entry_mtime(e);
+	time_t al_get_fs_entry_ctime(ALLEGRO_FS_ENTRY* e) => ptr_al_get_fs_entry_ctime(e);
+	off_t al_get_fs_entry_size(ALLEGRO_FS_ENTRY* e) => ptr_al_get_fs_entry_size(e);
+	bool al_fs_entry_exists(ALLEGRO_FS_ENTRY* e) => ptr_al_fs_entry_exists(e);
+	bool al_remove_fs_entry(ALLEGRO_FS_ENTRY* e) => ptr_al_remove_fs_entry(e);
 
-		alias pal_open_directory = bool function(ALLEGRO_FS_ENTRY* e);
-		alias pal_read_directory = ALLEGRO_FS_ENTRY* function(ALLEGRO_FS_ENTRY* e);
-		alias pal_close_directory = bool function(ALLEGRO_FS_ENTRY* e);
+	bool al_open_directory(ALLEGRO_FS_ENTRY* e) => ptr_al_open_directory(e);
+	ALLEGRO_FS_ENTRY* al_read_directory(ALLEGRO_FS_ENTRY* e) => ptr_al_read_directory(e);
+	bool al_close_directory(ALLEGRO_FS_ENTRY* e) => ptr_al_close_directory(e);
 
-		alias pal_filename_exists = bool function(const(char)* path);
-		alias pal_remove_filename = bool function(const(char)* path);
-		alias pal_get_current_directory = char* function();
-		alias pal_change_directory = bool function(const(char)* path);
-		alias pal_make_directory = bool function(const(char)* path);
+	bool al_filename_exists(const(char)* path) => ptr_al_filename_exists(path);
+	bool al_remove_filename(const(char)* path) => ptr_al_remove_filename(path);
+	char* al_get_current_directory() => ptr_al_get_current_directory();
+	bool al_change_directory(const(char)* path) => ptr_al_change_directory(path);
+	bool al_make_directory(const(char)* path) => ptr_al_make_directory(path);
 
-		alias pal_open_fs_entry = ALLEGRO_FILE* function(ALLEGRO_FS_ENTRY* e, const(char)* mode);
+	ALLEGRO_FILE* al_open_fs_entry(ALLEGRO_FS_ENTRY* e, const(char)* mode) => ptr_al_open_fs_entry(e,  mode);
 
-		alias pal_for_each_fs_entry = int function(ALLEGRO_FS_ENTRY* dir,
-				al_for_each_fs_entry_callback callback, void* extra);
+	int al_for_each_fs_entry(ALLEGRO_FS_ENTRY* dir, al_for_each_fs_entry_callback callback, void* extra) => ptr_al_for_each_fs_entry(dir, callback, extra);
 
-		alias pal_get_fs_interface = const(ALLEGRO_FS_INTERFACE)* function();
-		alias pal_set_fs_interface = void function(const(ALLEGRO_FS_INTERFACE)* vtable);
-		alias pal_set_standard_fs_interface = void function();
-	}
+	const(ALLEGRO_FS_INTERFACE)* al_get_fs_interface() => ptr_al_get_fs_interface();
+	void al_set_fs_interface(const(ALLEGRO_FS_INTERFACE)* vtable) => ptr_al_set_fs_interface(vtable);
+	void al_set_standard_fs_interface() => ptr_al_set_standard_fs_interface();
 
-	__gshared {
-		pal_create_fs_entry al_create_fs_entry;
-		pal_destroy_fs_entry al_destroy_fs_entry;
-		pal_get_fs_entry_name al_get_fs_entry_name;
-		pal_update_fs_entry al_update_fs_entry;
-		pal_get_fs_entry_mode al_get_fs_entry_mode;
-		pal_get_fs_entry_atime al_get_fs_entry_atime;
-		pal_get_fs_entry_mtime al_get_fs_entry_mtime;
-		pal_get_fs_entry_ctime al_get_fs_entry_ctime;
-		pal_get_fs_entry_size al_get_fs_entry_size;
-		pal_fs_entry_exists al_fs_entry_exists;
-		pal_remove_fs_entry al_remove_fs_entry;
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_create_fs_entry) ptr_al_create_fs_entry;
+		typeof(&al_destroy_fs_entry) ptr_al_destroy_fs_entry;
+		typeof(&al_get_fs_entry_name) ptr_al_get_fs_entry_name;
+		typeof(&al_update_fs_entry) ptr_al_update_fs_entry;
+		typeof(&al_get_fs_entry_mode) ptr_al_get_fs_entry_mode;
+		typeof(&al_get_fs_entry_atime) ptr_al_get_fs_entry_atime;
+		typeof(&al_get_fs_entry_mtime) ptr_al_get_fs_entry_mtime;
+		typeof(&al_get_fs_entry_ctime) ptr_al_get_fs_entry_ctime;
+		typeof(&al_get_fs_entry_size) ptr_al_get_fs_entry_size;
+		typeof(&al_fs_entry_exists) ptr_al_fs_entry_exists;
+		typeof(&al_remove_fs_entry) ptr_al_remove_fs_entry;
 
-		pal_open_directory al_open_directory;
-		pal_read_directory al_read_directory;
-		pal_close_directory al_close_directory;
+		typeof(&al_open_directory) ptr_al_open_directory;
+		typeof(&al_read_directory) ptr_al_read_directory;
+		typeof(&al_close_directory) ptr_al_close_directory;
 
-		pal_filename_exists al_filename_exists;
-		pal_remove_filename al_remove_filename;
-		pal_get_current_directory al_get_current_directory;
-		pal_change_directory al_change_directory;
-		pal_make_directory al_make_directory;
+		typeof(&al_filename_exists) ptr_al_filename_exists;
+		typeof(&al_remove_filename) ptr_al_remove_filename;
+		typeof(&al_get_current_directory) ptr_al_get_current_directory;
+		typeof(&al_change_directory) ptr_al_change_directory;
+		typeof(&al_make_directory) ptr_al_make_directory;
 
-		pal_open_fs_entry al_open_fs_entry;
+		typeof(&al_open_fs_entry) ptr_al_open_fs_entry;
 
-		pal_for_each_fs_entry al_for_each_fs_entry;
+		typeof(&al_for_each_fs_entry) ptr_al_for_each_fs_entry;
 
-		pal_get_fs_interface al_get_fs_interface;
-		pal_set_fs_interface al_set_fs_interface;
-		pal_set_standard_fs_interface al_set_standard_fs_interface;
+		typeof(&al_get_fs_interface) ptr_al_get_fs_interface;
+		typeof(&al_set_fs_interface) ptr_al_set_fs_interface;
+		typeof(&al_set_standard_fs_interface) ptr_al_set_standard_fs_interface;
 	}
 }

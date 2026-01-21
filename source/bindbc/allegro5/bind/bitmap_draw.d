@@ -37,44 +37,44 @@ static if (staticBinding) {
 			float dx, float dy, float xscale, float yscale, float angle, int flags);
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_draw_bitmap = void function(ALLEGRO_BITMAP *bitmap, float dx, float dy, int flags);
-		alias pal_draw_bitmap_region = void function(ALLEGRO_BITMAP *bitmap,
-				float sx, float sy, float sw, float sh, float dx, float dy, int flags);
-		alias pal_draw_scaled_bitmap = void function(ALLEGRO_BITMAP *bitmap,
-				float sx, float sy, float sw, float sh, float dx, float dy, float dw, float dh, int flags);
-		alias pal_draw_rotated_bitmap = void function(ALLEGRO_BITMAP *bitmap,
-				float cx, float cy, float dx, float dy, float angle, int flags);
-		alias pal_draw_scaled_rotated_bitmap = void function(ALLEGRO_BITMAP *bitmap, float cx, float cy,
-				float dx, float dy, float xscale, float yscale, float angle, int flags);
+	pragma(inline, true) extern(C) @nogc nothrow:
 
-		alias pal_draw_tinted_bitmap = void function(ALLEGRO_BITMAP *bitmap, ALLEGRO_COLOR tint,
-				float dx, float dy, int flags);
-		alias pal_draw_tinted_bitmap_region = void function(ALLEGRO_BITMAP *bitmap, ALLEGRO_COLOR tint,
-				float sx, float sy, float sw, float sh, float dx, float dy, int flags);
-		alias pal_draw_tinted_scaled_bitmap = void function(ALLEGRO_BITMAP *bitmap, ALLEGRO_COLOR tint,
-				float sx, float sy, float sw, float sh, float dx, float dy, float dw, float dh, int flags);
-		alias pal_draw_tinted_rotated_bitmap = void function(ALLEGRO_BITMAP *bitmap, ALLEGRO_COLOR tint,
-				float cx, float cy, float dx, float dy, float angle, int flags);
-		alias pal_draw_tinted_scaled_rotated_bitmap = void function(ALLEGRO_BITMAP *bitmap, ALLEGRO_COLOR tint,
-				float cx, float cy, float dx, float dy, float xscale, float yscale, float angle, int flags);
-		alias pal_draw_tinted_scaled_rotated_bitmap_region = void function(ALLEGRO_BITMAP *bitmap,
-				float sx, float sy, float sw, float sh, ALLEGRO_COLOR tint, float cx, float cy,
-				float dx, float dy, float xscale, float yscale, float angle, int flags);
-	}
+	void al_draw_bitmap(ALLEGRO_BITMAP *bitmap, float dx, float dy, int flags) =>
+			ptr_al_draw_bitmap(bitmap, dx, dy, flags);
+	void al_draw_bitmap_region(ALLEGRO_BITMAP *bitmap, float sx, float sy, float sw, float sh, float dx, float dy, int flags) =>
+			ptr_al_draw_bitmap_region(bitmap, sx, sy, sw, sh, dx, dy, flags);
+	void al_draw_scaled_bitmap(ALLEGRO_BITMAP *bitmap, float sx, float sy, float sw, float sh, float dx, float dy, float dw, float dh, int flags) =>
+			ptr_al_draw_scaled_bitmap(bitmap, sx, sy, sw, sh, dx, dy, dw, dh, flags);
+	void al_draw_rotated_bitmap(ALLEGRO_BITMAP *bitmap, float cx, float cy, float dx, float dy, float angle, int flags) =>
+			ptr_al_draw_rotated_bitmap(bitmap, cx, cy, dx, dy, angle, flags);
+	void al_draw_scaled_rotated_bitmap(ALLEGRO_BITMAP *bitmap, float cx, float cy, float dx, float dy, float xscale, float yscale, float angle, int flags) =>
+			ptr_al_draw_scaled_rotated_bitmap(bitmap, cx, cy, dx, dy, xscale, yscale, angle, flags);
 
-	__gshared {
-		pal_draw_bitmap al_draw_bitmap;
-		pal_draw_bitmap_region al_draw_bitmap_region;
-		pal_draw_scaled_bitmap al_draw_scaled_bitmap;
-		pal_draw_rotated_bitmap al_draw_rotated_bitmap;
-		pal_draw_scaled_rotated_bitmap al_draw_scaled_rotated_bitmap;
+	void al_draw_tinted_bitmap(ALLEGRO_BITMAP *bitmap, ALLEGRO_COLOR tint, float dx, float dy, int flags) =>
+			ptr_al_draw_tinted_bitmap(bitmap, tint, dx, dy, flags);
+	void al_draw_tinted_bitmap_region(ALLEGRO_BITMAP *bitmap, ALLEGRO_COLOR tint, float sx, float sy, float sw, float sh, float dx, float dy, int flags) =>
+			ptr_al_draw_tinted_bitmap_region(bitmap, tint, sx, sy, sw, sh, dx, dy, flags);
+	void al_draw_tinted_scaled_bitmap(ALLEGRO_BITMAP *bitmap, ALLEGRO_COLOR tint, float sx, float sy, float sw, float sh, float dx, float dy, float dw, float dh, int flags) =>
+			ptr_al_draw_tinted_scaled_bitmap(bitmap, tint, sx, sy, sw, sh, dx, dy, dw, dh, flags);
+	void al_draw_tinted_rotated_bitmap(ALLEGRO_BITMAP *bitmap, ALLEGRO_COLOR tint, float cx, float cy, float dx, float dy, float angle, int flags) =>
+			ptr_al_draw_tinted_rotated_bitmap(bitmap, tint, cx, cy, dx, dy, angle, flags);
+	void al_draw_tinted_scaled_rotated_bitmap(ALLEGRO_BITMAP *bitmap, ALLEGRO_COLOR tint, float cx, float cy, float dx, float dy, float xscale, float yscale, float angle, int flags) =>
+			ptr_al_draw_tinted_scaled_rotated_bitmap(bitmap, tint, cx, cy, dx, dy, xscale, yscale, angle, flags);
+	void al_draw_tinted_scaled_rotated_bitmap_region(ALLEGRO_BITMAP *bitmap, float sx, float sy, float sw, float sh, ALLEGRO_COLOR tint, float cx, float cy, float dx, float dy, float xscale, float yscale, float angle, int flags) =>
+			ptr_al_draw_tinted_scaled_rotated_bitmap_region(bitmap, sx, sy, sw, sh, tint, cx, cy, dx, dy, xscale, yscale, angle, flags);
 
-		pal_draw_tinted_bitmap al_draw_tinted_bitmap;
-		pal_draw_tinted_bitmap_region al_draw_tinted_bitmap_region;
-		pal_draw_tinted_scaled_bitmap al_draw_tinted_scaled_bitmap;
-		pal_draw_tinted_rotated_bitmap al_draw_tinted_rotated_bitmap;
-		pal_draw_tinted_scaled_rotated_bitmap al_draw_tinted_scaled_rotated_bitmap;
-		pal_draw_tinted_scaled_rotated_bitmap_region al_draw_tinted_scaled_rotated_bitmap_region;
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_draw_bitmap) ptr_al_draw_bitmap;
+		typeof(&al_draw_bitmap_region) ptr_al_draw_bitmap_region;
+		typeof(&al_draw_scaled_bitmap) ptr_al_draw_scaled_bitmap;
+		typeof(&al_draw_rotated_bitmap) ptr_al_draw_rotated_bitmap;
+		typeof(&al_draw_scaled_rotated_bitmap) ptr_al_draw_scaled_rotated_bitmap;
+
+		typeof(&al_draw_tinted_bitmap) ptr_al_draw_tinted_bitmap;
+		typeof(&al_draw_tinted_bitmap_region) ptr_al_draw_tinted_bitmap_region;
+		typeof(&al_draw_tinted_scaled_bitmap) ptr_al_draw_tinted_scaled_bitmap;
+		typeof(&al_draw_tinted_rotated_bitmap) ptr_al_draw_tinted_rotated_bitmap;
+		typeof(&al_draw_tinted_scaled_rotated_bitmap) ptr_al_draw_tinted_scaled_rotated_bitmap;
+		typeof(&al_draw_tinted_scaled_rotated_bitmap_region) ptr_al_draw_tinted_scaled_rotated_bitmap_region;
 	}
 }

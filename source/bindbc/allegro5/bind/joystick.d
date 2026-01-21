@@ -1,8 +1,8 @@
 module bindbc.allegro5.bind.joystick;
 
 import bindbc.allegro5.config;
-import bindbc.allegro5.bind.file;
 import bindbc.allegro5.bind.events : ALLEGRO_EVENT_SOURCE;
+import bindbc.allegro5.bind.file : ALLEGRO_FILE;
 
 static if (allegroSupport >= AllegroSupport.v5_2_11) {
 	enum _AL_MAX_JOYSTICK_AXES = 6;
@@ -86,97 +86,109 @@ static if (staticBinding) {
 
 	int al_get_num_joysticks();
 	ALLEGRO_JOYSTICK* al_get_joystick(int joyn);
-	void al_release_joystick(ALLEGRO_JOYSTICK*);
-	bool al_get_joystick_active(ALLEGRO_JOYSTICK*);
-	const(char)* al_get_joystick_name(ALLEGRO_JOYSTICK*);
+	void al_release_joystick(ALLEGRO_JOYSTICK* joystick);
+	bool al_get_joystick_active(ALLEGRO_JOYSTICK* joystick);
+	const(char)* al_get_joystick_name(ALLEGRO_JOYSTICK* joystick);
 
-	int al_get_joystick_num_sticks(ALLEGRO_JOYSTICK*);
-	int al_get_joystick_stick_flags(ALLEGRO_JOYSTICK*, int stick);
-	const(char)* al_get_joystick_stick_name(ALLEGRO_JOYSTICK*, int stick);
+	int al_get_joystick_num_sticks(ALLEGRO_JOYSTICK* joystick);
+	int al_get_joystick_stick_flags(ALLEGRO_JOYSTICK* joystick, int stick);
+	const(char)* al_get_joystick_stick_name(ALLEGRO_JOYSTICK* joystick, int stick);
 
-	int al_get_joystick_num_axes(ALLEGRO_JOYSTICK*, int stick);
-	const(char)* al_get_joystick_axis_name(ALLEGRO_JOYSTICK*, int stick, int axis);
+	int al_get_joystick_num_axes(ALLEGRO_JOYSTICK* joystick, int stick);
+	const(char)* al_get_joystick_axis_name(ALLEGRO_JOYSTICK* joystick, int stick, int axis);
 
-	int al_get_joystick_num_buttons(ALLEGRO_JOYSTICK*);
-	const(char)* al_get_joystick_button_name(ALLEGRO_JOYSTICK*, int buttonn);
+	int al_get_joystick_num_buttons(ALLEGRO_JOYSTICK* joystick);
+	const(char)* al_get_joystick_button_name(ALLEGRO_JOYSTICK* joystick, int buttonn);
 
-	void al_get_joystick_state(ALLEGRO_JOYSTICK*, ALLEGRO_JOYSTICK_STATE* ret_state);
+	version (ALLEGRO_UNSTABLE) {
+		void al_get_joystick_state(ALLEGRO_JOYSTICK* joystick, ALLEGRO_JOYSTICK_STATE* ret_state);
+	}
+	else {
+		deprecated("`ALLEGRO_JOYSTICK_STATE` layout changes between different Allegro versions. Consider enabling `ALLEGRO_UNSTABLE`.")
+		void al_get_joystick_state(ALLEGRO_JOYSTICK* joystick, ALLEGRO_JOYSTICK_STATE* ret_state);
+	}
 
 	ALLEGRO_EVENT_SOURCE* al_get_joystick_event_source();
 
 	version (ALLEGRO_UNSTABLE) static if (allegroSupport >= AllegroSupport.v5_2_11) {
-		ALLEGRO_JOYSTICK_GUID al_get_joystick_guid(ALLEGRO_JOYSTICK*);
-		ALLEGRO_JOYSTICK_TYPE al_get_joystick_type(ALLEGRO_JOYSTICK*);
+		ALLEGRO_JOYSTICK_GUID al_get_joystick_guid(ALLEGRO_JOYSTICK* joystick);
+		ALLEGRO_JOYSTICK_TYPE al_get_joystick_type(ALLEGRO_JOYSTICK* joystick);
 		bool al_set_joystick_mappings(const(char)* filename);
 		bool al_set_joystick_mappings_f(ALLEGRO_FILE* file);
 	}
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_install_joystick = bool function();
-		alias pal_uninstall_joystick = void function();
-		alias pal_is_joystick_installed = bool function();
-		alias pal_reconfigure_joysticks = bool function();
+	pragma(inline, true) extern(C) @nogc nothrow:
 
-		alias pal_get_num_joysticks = int function();
-		alias pal_get_joystick = ALLEGRO_JOYSTICK* function(int joyn);
-		alias pal_release_joystick = void function(ALLEGRO_JOYSTICK*);
-		alias pal_get_joystick_active = bool function(ALLEGRO_JOYSTICK*);
-		alias pal_get_joystick_name = const(char)* function(ALLEGRO_JOYSTICK*);
+	bool al_install_joystick() => ptr_al_install_joystick();
+	void al_uninstall_joystick() => ptr_al_uninstall_joystick();
+	bool al_is_joystick_installed() => ptr_al_is_joystick_installed();
+	bool al_reconfigure_joysticks() => ptr_al_reconfigure_joysticks();
 
-		alias pal_get_joystick_num_sticks = int function(ALLEGRO_JOYSTICK*);
-		alias pal_get_joystick_stick_flags = int function(ALLEGRO_JOYSTICK*, int stick);
-		alias pal_get_joystick_stick_name = const(char)* function(ALLEGRO_JOYSTICK*, int stick);
+	int al_get_num_joysticks() => ptr_al_get_num_joysticks();
+	ALLEGRO_JOYSTICK* al_get_joystick(int joyn) => ptr_al_get_joystick(joyn);
+	void al_release_joystick(ALLEGRO_JOYSTICK* joystick) => ptr_al_release_joystick(joystick);
+	bool al_get_joystick_active(ALLEGRO_JOYSTICK* joystick) => ptr_al_get_joystick_active(joystick);
+	const(char)* al_get_joystick_name(ALLEGRO_JOYSTICK* joystick) => ptr_al_get_joystick_name(joystick);
 
-		alias pal_get_joystick_num_axes = int function(ALLEGRO_JOYSTICK*, int stick);
-		alias pal_get_joystick_axis_name = const(char)* function(ALLEGRO_JOYSTICK*, int stick, int axis);
+	int al_get_joystick_num_sticks(ALLEGRO_JOYSTICK* joystick) => ptr_al_get_joystick_num_sticks(joystick);
+	int al_get_joystick_stick_flags(ALLEGRO_JOYSTICK* joystick, int stick) => ptr_al_get_joystick_stick_flags(joystick, stick);
+	const(char)* al_get_joystick_stick_name(ALLEGRO_JOYSTICK* joystick, int stick) => ptr_al_get_joystick_stick_name(joystick, stick);
 
-		alias pal_get_joystick_num_buttons = int function(ALLEGRO_JOYSTICK*);
-		alias pal_get_joystick_button_name = const(char)* function(ALLEGRO_JOYSTICK*, int buttonn);
+	int al_get_joystick_num_axes(ALLEGRO_JOYSTICK* joystick, int stick) => ptr_al_get_joystick_num_axes(joystick, stick);
+	const(char)* al_get_joystick_axis_name(ALLEGRO_JOYSTICK* joystick, int stick, int axis) => ptr_al_get_joystick_axis_name(joystick, stick, axis);
 
-		alias pal_get_joystick_state = void function(ALLEGRO_JOYSTICK*, ALLEGRO_JOYSTICK_STATE* ret_state);
+	int al_get_joystick_num_buttons(ALLEGRO_JOYSTICK* joystick) => ptr_al_get_joystick_num_buttons(joystick);
+	const(char)* al_get_joystick_button_name(ALLEGRO_JOYSTICK* joystick, int buttonn) => ptr_al_get_joystick_button_name(joystick, buttonn);
 
-		alias pal_get_joystick_event_source = ALLEGRO_EVENT_SOURCE* function();
+	version (ALLEGRO_UNSTABLE) {
+		void al_get_joystick_state(ALLEGRO_JOYSTICK* joystick, ALLEGRO_JOYSTICK_STATE* ret_state) => ptr_al_get_joystick_state(joystick, ret_state);
 	}
-	__gshared {
-		pal_install_joystick al_install_joystick;
-		pal_uninstall_joystick al_uninstall_joystick;
-		pal_is_joystick_installed al_is_joystick_installed;
-		pal_reconfigure_joysticks al_reconfigure_joysticks;
-
-		pal_get_num_joysticks al_get_num_joysticks;
-		pal_get_joystick al_get_joystick;
-		pal_release_joystick al_release_joystick;
-		pal_get_joystick_active al_get_joystick_active;
-		pal_get_joystick_name al_get_joystick_name;
-
-		pal_get_joystick_num_sticks al_get_joystick_num_sticks;
-		pal_get_joystick_stick_flags al_get_joystick_stick_flags;
-		pal_get_joystick_stick_name al_get_joystick_stick_name;
-
-		pal_get_joystick_num_axes al_get_joystick_num_axes;
-		pal_get_joystick_axis_name al_get_joystick_axis_name;
-
-		pal_get_joystick_num_buttons al_get_joystick_num_buttons;
-		pal_get_joystick_button_name al_get_joystick_button_name;
-
-		pal_get_joystick_state al_get_joystick_state;
-
-		pal_get_joystick_event_source al_get_joystick_event_source;
+	else {
+		deprecated("`ALLEGRO_JOYSTICK_STATE` layout changes between different Allegro versions. Consider enabling `ALLEGRO_UNSTABLE`.")
+		void al_get_joystick_state(ALLEGRO_JOYSTICK* joystick, ALLEGRO_JOYSTICK_STATE* ret_state) => ptr_al_get_joystick_state(joystick, ret_state);
 	}
+
+	ALLEGRO_EVENT_SOURCE* al_get_joystick_event_source() => ptr_al_get_joystick_event_source();
 
 	version (ALLEGRO_UNSTABLE) static if (allegroSupport >= AllegroSupport.v5_2_11) {
-		extern(C) @nogc nothrow {
-			alias pal_get_joystick_guid = ALLEGRO_JOYSTICK_GUID function(ALLEGRO_JOYSTICK*);
-			alias pal_get_joystick_type = ALLEGRO_JOYSTICK_TYPE function(ALLEGRO_JOYSTICK*);
-			alias pal_set_joystick_mappings = bool function(const(char)* filename);
-			alias pal_set_joystick_mappings_f = bool function(ALLEGRO_FILE* file);
-		}
-		__gshared {
-			pal_get_joystick_guid al_get_joystick_guid;
-			pal_get_joystick_type al_get_joystick_type;
-			pal_set_joystick_mappings al_set_joystick_mappings;
-			pal_set_joystick_mappings_f al_set_joystick_mappings_f;
+		ALLEGRO_JOYSTICK_GUID al_get_joystick_guid(ALLEGRO_JOYSTICK* joystick) => ptr_al_get_joystick_guid(joystick);
+		ALLEGRO_JOYSTICK_TYPE al_get_joystick_type(ALLEGRO_JOYSTICK* joystick) => ptr_al_get_joystick_type(joystick);
+		bool al_set_joystick_mappings(const(char)* filename) => ptr_al_set_joystick_mappings(filename);
+		bool al_set_joystick_mappings_f(ALLEGRO_FILE* file) => ptr_al_set_joystick_mappings_f(file);
+	}
+
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_install_joystick) ptr_al_install_joystick;
+		typeof(&al_uninstall_joystick) ptr_al_uninstall_joystick;
+		typeof(&al_is_joystick_installed) ptr_al_is_joystick_installed;
+		typeof(&al_reconfigure_joysticks) ptr_al_reconfigure_joysticks;
+
+		typeof(&al_get_num_joysticks) ptr_al_get_num_joysticks;
+		typeof(&al_get_joystick) ptr_al_get_joystick;
+		typeof(&al_release_joystick) ptr_al_release_joystick;
+		typeof(&al_get_joystick_active) ptr_al_get_joystick_active;
+		typeof(&al_get_joystick_name) ptr_al_get_joystick_name;
+
+		typeof(&al_get_joystick_num_sticks) ptr_al_get_joystick_num_sticks;
+		typeof(&al_get_joystick_stick_flags) ptr_al_get_joystick_stick_flags;
+		typeof(&al_get_joystick_stick_name) ptr_al_get_joystick_stick_name;
+
+		typeof(&al_get_joystick_num_axes) ptr_al_get_joystick_num_axes;
+		typeof(&al_get_joystick_axis_name) ptr_al_get_joystick_axis_name;
+
+		typeof(&al_get_joystick_num_buttons) ptr_al_get_joystick_num_buttons;
+		typeof(&al_get_joystick_button_name) ptr_al_get_joystick_button_name;
+
+		typeof(&al_get_joystick_state) ptr_al_get_joystick_state;
+
+		typeof(&al_get_joystick_event_source) ptr_al_get_joystick_event_source;
+
+		version (ALLEGRO_UNSTABLE) static if (allegroSupport >= AllegroSupport.v5_2_11) {
+			typeof(&al_get_joystick_guid) ptr_al_get_joystick_guid;
+			typeof(&al_get_joystick_type) ptr_al_get_joystick_type;
+			typeof(&al_set_joystick_mappings) ptr_al_set_joystick_mappings;
+			typeof(&al_set_joystick_mappings_f) ptr_al_set_joystick_mappings_f;
 		}
 	}
 }

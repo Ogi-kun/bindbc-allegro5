@@ -10,14 +10,13 @@ static if (staticBinding) {
 	void al_draw_pixel(float x, float y, ALLEGRO_COLOR color);
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_clear_to_color = void function(ALLEGRO_COLOR color);
-		alias pal_clear_depth_buffer = void function(float x);
-		alias pal_draw_pixel = void function(float x, float y, ALLEGRO_COLOR color);
-	}
-	__gshared {
-		pal_clear_to_color al_clear_to_color;
-		pal_clear_depth_buffer al_clear_depth_buffer;
-		pal_draw_pixel al_draw_pixel;
+	pragma(inline, true) extern(C) @nogc nothrow:
+	void al_clear_to_color(ALLEGRO_COLOR color) => ptr_al_clear_to_color(color);
+	void al_clear_depth_buffer(float x) => ptr_al_clear_depth_buffer(x);
+	void al_draw_pixel(float x, float y, ALLEGRO_COLOR color) => ptr_al_draw_pixel(x, y, color);
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_clear_to_color) ptr_al_clear_to_color;
+		typeof(&al_clear_depth_buffer) ptr_al_clear_depth_buffer;
+		typeof(&al_draw_pixel) ptr_al_draw_pixel;
 	}
 }

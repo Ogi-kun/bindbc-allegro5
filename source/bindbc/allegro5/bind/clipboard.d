@@ -10,14 +10,13 @@ static if (staticBinding) {
 	bool al_clipboard_has_text(ALLEGRO_DISPLAY* display);
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_get_clipboard_text = char* function(ALLEGRO_DISPLAY* display);
-		alias pal_set_clipboard_text = bool function(ALLEGRO_DISPLAY* display, const(char)* text);
-		alias pal_clipboard_has_text = bool function(ALLEGRO_DISPLAY* display);
-	}
-	__gshared {
-		pal_get_clipboard_text al_get_clipboard_text;
-		pal_set_clipboard_text al_set_clipboard_text;
-		pal_clipboard_has_text al_clipboard_has_text;
+	pragma(inline, true) extern(C) @nogc nothrow:
+	char* al_get_clipboard_text(ALLEGRO_DISPLAY* display) => ptr_al_get_clipboard_text(display);
+	bool al_set_clipboard_text(ALLEGRO_DISPLAY* display, const(char)* text) => ptr_al_set_clipboard_text(display, text);
+	bool al_clipboard_has_text(ALLEGRO_DISPLAY* display) => ptr_al_clipboard_has_text(display);
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_get_clipboard_text) ptr_al_get_clipboard_text;
+		typeof(&al_set_clipboard_text) ptr_al_set_clipboard_text;
+		typeof(&al_clipboard_has_text) ptr_al_clipboard_has_text;
 	}
 }

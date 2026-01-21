@@ -15,23 +15,20 @@ static if (staticBinding) {
 	}
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_init_acodec_addon = bool function();
-		alias pal_get_allegro_acodec_version = uint function();
-
+	pragma(inline, true) extern(C) @nogc nothrow {
+		bool al_init_acodec_addon() => ptr_al_init_acodec_addon();
+		uint al_get_allegro_acodec_version() => ptr_al_get_allegro_acodec_version();
 		static if (allegroSupport >= AllegroSupport.v5_2_6) {
-			alias pal_is_acodec_addon_initialized = bool function();
+			bool al_is_acodec_addon_initialized() => ptr_al_is_acodec_addon_initialized();
 		}
 	}
-	__gshared {
-		pal_init_acodec_addon al_init_acodec_addon;
-		pal_get_allegro_acodec_version al_get_allegro_acodec_version;
-
+	private __gshared {
+		typeof(&al_init_acodec_addon) ptr_al_init_acodec_addon;
+		typeof(&al_get_allegro_acodec_version) ptr_al_get_allegro_acodec_version;
 		static if (allegroSupport >= AllegroSupport.v5_2_6) {
-			pal_is_acodec_addon_initialized al_is_acodec_addon_initialized;
+			typeof(&al_is_acodec_addon_initialized) ptr_al_is_acodec_addon_initialized;
 		}
 	}
-
 
 	import bindbc.loader;
 
@@ -59,11 +56,9 @@ else {
 		}
 
 		AllegroSupport loadAllegroACodec() {
-
 			const(char)[][1] libNames = [
 				dynlibFilename!"acodec",
 			];
-
 			typeof(return) result;
 			foreach (i; 0..libNames.length) {
 				result = loadAllegroACodec(libNames[i].ptr);
@@ -88,15 +83,15 @@ else {
 
 		auto lastErrorCount = errorCount();
 
-		lib.bindSymbol(cast(void**)&al_init_acodec_addon, "al_init_acodec_addon");
-		lib.bindSymbol(cast(void**)&al_get_allegro_acodec_version, "al_get_allegro_acodec_version");
+		lib.bindSymbol(cast(void**)&ptr_al_init_acodec_addon, "al_init_acodec_addon");
+		lib.bindSymbol(cast(void**)&ptr_al_get_allegro_acodec_version, "al_get_allegro_acodec_version");
 
 		if (errorCount() != lastErrorCount) {
 			return AllegroSupport.badLibrary;
 		}
 
 		static if (allegroSupport >= AllegroSupport.v5_2_6) {
-			lib.bindSymbol(cast(void**)&al_is_acodec_addon_initialized, "al_is_acodec_addon_initialized");
+			lib.bindSymbol(cast(void**)&ptr_al_is_acodec_addon_initialized, "al_is_acodec_addon_initialized");
 			if (errorCount() != lastErrorCount) {
 				return AllegroSupport.v5_2_5;
 			}

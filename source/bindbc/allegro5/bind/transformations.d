@@ -45,73 +45,77 @@ static if (staticBinding) {
 	}
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_use_transform = void function(const(ALLEGRO_TRANSFORM)* trans);
-		alias pal_use_projection_transform = void function(const(ALLEGRO_TRANSFORM)* trans);
-		alias pal_copy_transform = void function(ALLEGRO_TRANSFORM* dest, const(ALLEGRO_TRANSFORM)* src);
-		alias pal_identity_transform = void function(ALLEGRO_TRANSFORM* trans);
-		alias pal_build_transform = void function(ALLEGRO_TRANSFORM* trans, float x, float y, float sx, float sy, float theta);
-		alias pal_build_camera_transform = void function(ALLEGRO_TRANSFORM* trans, float position_x, float position_y, float position_z,
-				float look_x, float look_y, float look_z, float up_x, float up_y, float up_z);
-		alias pal_translate_transform = void function(ALLEGRO_TRANSFORM* trans, float x, float y);
-		alias pal_translate_transform_3d = void function(ALLEGRO_TRANSFORM* trans, float x, float y, float z);
-		alias pal_rotate_transform = void function(ALLEGRO_TRANSFORM* trans, float theta);
-		alias pal_rotate_transform_3d = void function(ALLEGRO_TRANSFORM* trans, float x, float y, float z, float angle);
-		alias pal_scale_transform = void function(ALLEGRO_TRANSFORM* trans, float sx, float sy);
-		alias pal_scale_transform_3d = void function(ALLEGRO_TRANSFORM* trans, float sx, float sy, float sz);
-		alias pal_transform_coordinates = void function(const(ALLEGRO_TRANSFORM)* trans, float* x, float* y);
-		alias pal_transform_coordinates_3d = void function(const(ALLEGRO_TRANSFORM)* trans, float* x, float* y, float* z);
-		alias pal_compose_transform = void function(ALLEGRO_TRANSFORM* trans, const(ALLEGRO_TRANSFORM)* other);
-		alias pal_get_current_transform = const(ALLEGRO_TRANSFORM)* function();
-		alias pal_get_current_inverse_transform = const(ALLEGRO_TRANSFORM)* function();
-		alias pal_get_current_projection_transform = const(ALLEGRO_TRANSFORM)* function();
-		alias pal_invert_transform = void function(ALLEGRO_TRANSFORM* trans);
-		alias pal_check_inverse = int function(const(ALLEGRO_TRANSFORM)* trans, float tol);
-		alias pal_orthographic_transform = void function(ALLEGRO_TRANSFORM* trans, float left, float top, float n, float right, float bottom, float f);
-		alias pal_perspective_transform = void function(ALLEGRO_TRANSFORM* trans, float left, float top, float n, float right, float bottom, float f);
-		alias pal_horizontal_shear_transform = void function(ALLEGRO_TRANSFORM* trans, float theta);
-		alias pal_vertical_shear_transform = void function(ALLEGRO_TRANSFORM* trans, float theta);
+	pragma(inline, true) extern(C) @nogc nothrow:
 
-		static if (allegroSupport >= AllegroSupport.v5_2_5) {
-			alias pal_transform_coordinates_4d = void function(const(ALLEGRO_TRANSFORM)* trans, float* x, float* y, float* z, float* w);
-			alias pal_transform_coordinates_3d_projective = void function(const(ALLEGRO_TRANSFORM)* trans, float* x, float* y, float* z);
-		}
-		static if (allegroSupport >= AllegroSupport.v5_2_5) {
-			alias pal_transpose_transform = void function(ALLEGRO_TRANSFORM* trans);
-		}
+	void al_use_transform(const(ALLEGRO_TRANSFORM)* trans) => ptr_al_use_transform(trans);
+	void al_use_projection_transform(const(ALLEGRO_TRANSFORM)* trans) => ptr_al_use_projection_transform(trans);
+	void al_copy_transform(ALLEGRO_TRANSFORM* dest, const(ALLEGRO_TRANSFORM)* src) => ptr_al_copy_transform(dest, src);
+	void al_identity_transform(ALLEGRO_TRANSFORM* trans) => ptr_al_identity_transform(trans);
+	void al_build_transform(ALLEGRO_TRANSFORM* trans, float x, float y, float sx, float sy, float theta) => ptr_al_build_transform(trans, x, y, sx, sy, theta);
+	void al_build_camera_transform(ALLEGRO_TRANSFORM* trans, float position_x, float position_y, float position_z, float look_x, float look_y, float look_z, 
+			float up_x, float up_y, float up_z) => ptr_al_build_camera_transform(trans, position_x, position_y, position_z, look_x, look_y, look_z, up_x, up_y, up_z);
+	void al_translate_transform(ALLEGRO_TRANSFORM* trans, float x, float y) => ptr_al_translate_transform(trans, x, y);
+	void al_translate_transform_3d(ALLEGRO_TRANSFORM* trans, float x, float y, float z) => ptr_al_translate_transform_3d(trans, x, y, z);
+	void al_rotate_transform(ALLEGRO_TRANSFORM* trans, float theta) => ptr_al_rotate_transform(trans, theta);
+	void al_rotate_transform_3d(ALLEGRO_TRANSFORM* trans, float x, float y, float z, float angle) => ptr_al_rotate_transform_3d(trans, x, y, z, angle);
+	void al_scale_transform(ALLEGRO_TRANSFORM* trans, float sx, float sy) => ptr_al_scale_transform(trans, sx, sy);
+	void al_scale_transform_3d(ALLEGRO_TRANSFORM* trans, float sx, float sy, float sz) => ptr_al_scale_transform_3d(trans, sx, sy, sz);
+	void al_transform_coordinates(const(ALLEGRO_TRANSFORM)* trans, float* x, float* y) => ptr_al_transform_coordinates(trans, x, y);
+	void al_transform_coordinates_3d(const(ALLEGRO_TRANSFORM)* trans, float* x, float* y, float* z) => ptr_al_transform_coordinates_3d(trans, x, y, z);
+
+	void al_compose_transform(ALLEGRO_TRANSFORM* trans, const(ALLEGRO_TRANSFORM)* other) => ptr_al_compose_transform(trans, other);
+	const(ALLEGRO_TRANSFORM)* al_get_current_transform() => ptr_al_get_current_transform();
+	const(ALLEGRO_TRANSFORM)* al_get_current_inverse_transform() => ptr_al_get_current_inverse_transform();
+	const(ALLEGRO_TRANSFORM)* al_get_current_projection_transform() => ptr_al_get_current_projection_transform();
+	void al_invert_transform(ALLEGRO_TRANSFORM* trans) => ptr_al_invert_transform(trans);
+	int al_check_inverse(const(ALLEGRO_TRANSFORM)* trans, float tol) => ptr_al_check_inverse(trans, tol);
+	void al_orthographic_transform(ALLEGRO_TRANSFORM* trans, float left, float top, float n, float right, float bottom, float f) =>
+			ptr_al_orthographic_transform(trans, left, top, n, right, bottom, f);
+	void al_perspective_transform(ALLEGRO_TRANSFORM* trans, float left, float top, float n, float right, float bottom, float f) =>
+			ptr_al_perspective_transform(trans, left, top, n, right, bottom, f);
+	void al_horizontal_shear_transform(ALLEGRO_TRANSFORM* trans, float theta) => ptr_al_horizontal_shear_transform(trans, theta);
+	void al_vertical_shear_transform(ALLEGRO_TRANSFORM* trans, float theta) => ptr_al_vertical_shear_transform(trans, theta);
+
+	static if (allegroSupport >= AllegroSupport.v5_2_4) {
+		void al_transform_coordinates_4d(const(ALLEGRO_TRANSFORM)* trans, float* x, float* y, float* z, float* w) => ptr_al_transform_coordinates_4d(trans, x, y, z, w);
+		void al_transform_coordinates_3d_projective(const(ALLEGRO_TRANSFORM)* trans, float* x, float* y, float* z) => ptr_al_transform_coordinates_3d_projective(trans, x, y, z);
 	}
-	__gshared {
-		pal_use_transform al_use_transform;
-		pal_use_projection_transform al_use_projection_transform;
-		pal_copy_transform al_copy_transform;
-		pal_identity_transform al_identity_transform;
-		pal_build_transform al_build_transform;
-		pal_build_camera_transform al_build_camera_transform;
-		pal_translate_transform al_translate_transform;
-		pal_translate_transform_3d al_translate_transform_3d;
-		pal_rotate_transform al_rotate_transform;
-		pal_rotate_transform_3d al_rotate_transform_3d;
-		pal_scale_transform al_scale_transform;
-		pal_scale_transform_3d al_scale_transform_3d;
-		pal_transform_coordinates al_transform_coordinates;
-		pal_transform_coordinates_3d al_transform_coordinates_3d;
-		pal_compose_transform al_compose_transform;
-		pal_get_current_transform al_get_current_transform;
-		pal_get_current_inverse_transform al_get_current_inverse_transform;
-		pal_get_current_projection_transform al_get_current_projection_transform;
-		pal_invert_transform al_invert_transform;
-		pal_check_inverse al_check_inverse;
-		pal_orthographic_transform al_orthographic_transform;
-		pal_perspective_transform al_perspective_transform;
-		pal_horizontal_shear_transform al_horizontal_shear_transform;
-		pal_vertical_shear_transform al_vertical_shear_transform;
+	static if (allegroSupport >= AllegroSupport.v5_2_5) {
+		void al_transpose_transform(ALLEGRO_TRANSFORM* trans) => ptr_al_transpose_transform(trans);
+	}
+
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_use_transform) ptr_al_use_transform;
+		typeof(&al_use_projection_transform) ptr_al_use_projection_transform;
+		typeof(&al_copy_transform) ptr_al_copy_transform;
+		typeof(&al_identity_transform) ptr_al_identity_transform;
+		typeof(&al_build_transform) ptr_al_build_transform;
+		typeof(&al_build_camera_transform) ptr_al_build_camera_transform;
+		typeof(&al_translate_transform) ptr_al_translate_transform;
+		typeof(&al_translate_transform_3d) ptr_al_translate_transform_3d;
+		typeof(&al_rotate_transform) ptr_al_rotate_transform;
+		typeof(&al_rotate_transform_3d) ptr_al_rotate_transform_3d;
+		typeof(&al_scale_transform) ptr_al_scale_transform;
+		typeof(&al_scale_transform_3d) ptr_al_scale_transform_3d;
+		typeof(&al_transform_coordinates) ptr_al_transform_coordinates;
+		typeof(&al_transform_coordinates_3d) ptr_al_transform_coordinates_3d;
+		typeof(&al_compose_transform) ptr_al_compose_transform;
+		typeof(&al_get_current_transform) ptr_al_get_current_transform;
+		typeof(&al_get_current_inverse_transform) ptr_al_get_current_inverse_transform;
+		typeof(&al_get_current_projection_transform) ptr_al_get_current_projection_transform;
+		typeof(&al_invert_transform) ptr_al_invert_transform;
+		typeof(&al_check_inverse) ptr_al_check_inverse;
+		typeof(&al_orthographic_transform) ptr_al_orthographic_transform;
+		typeof(&al_perspective_transform) ptr_al_perspective_transform;
+		typeof(&al_horizontal_shear_transform) ptr_al_horizontal_shear_transform;
+		typeof(&al_vertical_shear_transform) ptr_al_vertical_shear_transform;
 
 		static if (allegroSupport >= AllegroSupport.v5_2_5) {
-			pal_transform_coordinates_4d al_transform_coordinates_4d;
-			pal_transform_coordinates_3d_projective al_transform_coordinates_3d_projective;
+			typeof(&al_transform_coordinates_4d) ptr_al_transform_coordinates_4d;
+			typeof(&al_transform_coordinates_3d_projective) ptr_al_transform_coordinates_3d_projective;
 		}
 		static if (allegroSupport >= AllegroSupport.v5_2_5) {
-			pal_transpose_transform al_transpose_transform;
+			typeof(&al_transpose_transform) ptr_al_transpose_transform;
 		}
 	}
 }

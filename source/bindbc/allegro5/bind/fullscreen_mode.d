@@ -15,12 +15,11 @@ static if (staticBinding) {
 	ALLEGRO_DISPLAY_MODE* al_get_display_mode(int index,  ALLEGRO_DISPLAY_MODE* mode);
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_get_num_display_modes = int function();
-		alias pal_get_display_mode = ALLEGRO_DISPLAY_MODE* function(int index,  ALLEGRO_DISPLAY_MODE* mode);
-	}
-	__gshared {
-		pal_get_num_display_modes al_get_num_display_modes;
-		pal_get_display_mode al_get_display_mode;
+	pragma(inline, true) extern(C) @nogc nothrow:
+	int al_get_num_display_modes() => ptr_al_get_num_display_modes();
+	ALLEGRO_DISPLAY_MODE* al_get_display_mode(int index,  ALLEGRO_DISPLAY_MODE* mode) => ptr_al_get_display_mode(index, mode);
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_get_num_display_modes) ptr_al_get_num_display_modes;
+		typeof(&al_get_display_mode) ptr_al_get_display_mode;
 	}
 }

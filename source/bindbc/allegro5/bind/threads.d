@@ -41,55 +41,55 @@ static if (staticBinding) {
 	void al_signal_cond(ALLEGRO_COND* cond);
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_create_thread = ALLEGRO_THREAD* function(al_thread_proc proc, void* arg);
-		version (ALLEGRO_UNSTABLE) static if (allegroSupport >= AllegroSupport.v5_2_5) {
-			alias pal_create_thread_with_stacksize = ALLEGRO_THREAD* function(
-					al_thread_proc proc, void* arg, size_t stacksize);
-		}
-		alias pal_start_thread = void function(ALLEGRO_THREAD* outer);
-		alias pal_join_thread = void function(ALLEGRO_THREAD* outer, void** ret_value);
-		alias pal_set_thread_should_stop = void function(ALLEGRO_THREAD* outer);
-		alias pal_get_thread_should_stop = bool function(ALLEGRO_THREAD* outer);
-		alias pal_destroy_thread = void function(ALLEGRO_THREAD* thread);
-		alias pal_run_detached_thread = void function(al_detached_thread_proc proc, void* arg);
+	public pragma(inline, true) extern(C) @nogc nothrow:
 
-		alias pal_create_mutex = ALLEGRO_MUTEX* function();
-		alias pal_create_mutex_recursive = ALLEGRO_MUTEX* function();
-		alias pal_lock_mutex = void function(ALLEGRO_MUTEX* mutex);
-		alias pal_unlock_mutex = void function(ALLEGRO_MUTEX* mutex);
-		alias pal_destroy_mutex = void function(ALLEGRO_MUTEX* mutex);
-
-		alias pal_create_cond = ALLEGRO_COND* function();
-		alias pal_destroy_cond = void function(ALLEGRO_COND* cond);
-		alias pal_wait_cond = void function(ALLEGRO_COND* cond, ALLEGRO_MUTEX* mutex);
-		alias pal_wait_cond_until = int function(ALLEGRO_COND* cond, ALLEGRO_MUTEX* mutex, const(ALLEGRO_TIMEOUT)* timeout);
-		alias pal_broadcast_cond = void function(ALLEGRO_COND* cond);
-		alias pal_signal_cond = void function(ALLEGRO_COND* cond);
+	ALLEGRO_THREAD* al_create_thread(al_thread_proc proc, void* arg) => ptr_al_create_thread(proc, arg);
+	version (ALLEGRO_UNSTABLE) static if (allegroSupport >= AllegroSupport.v5_2_5) {
+		ALLEGRO_THREAD* al_create_thread_with_stacksize(al_thread_proc proc, void* arg, size_t stacksize) => ptr_al_create_thread_with_stacksize(proc, arg, stacksize);
 	}
-	__gshared {
-		pal_create_thread al_create_thread;
+	void al_start_thread(ALLEGRO_THREAD* outer) => ptr_al_start_thread(outer);
+	void al_join_thread(ALLEGRO_THREAD* outer, void** ret_value) => ptr_al_join_thread(outer, ret_value);
+	void al_set_thread_should_stop(ALLEGRO_THREAD* outer) => ptr_al_set_thread_should_stop(outer);
+	bool al_get_thread_should_stop(ALLEGRO_THREAD* outer) => ptr_al_get_thread_should_stop(outer);
+	void al_destroy_thread(ALLEGRO_THREAD* thread) => ptr_al_destroy_thread(thread);
+	void al_run_detached_thread(al_detached_thread_proc proc, void* arg) => ptr_al_run_detached_thread(proc, arg);
+
+	ALLEGRO_MUTEX* al_create_mutex() => ptr_al_create_mutex();
+	ALLEGRO_MUTEX* al_create_mutex_recursive() => ptr_al_create_mutex_recursive();
+	void al_lock_mutex(ALLEGRO_MUTEX* mutex) => ptr_al_lock_mutex(mutex);
+	void al_unlock_mutex(ALLEGRO_MUTEX* mutex) => ptr_al_unlock_mutex(mutex);
+	void al_destroy_mutex(ALLEGRO_MUTEX* mutex) => ptr_al_destroy_mutex(mutex);
+
+	ALLEGRO_COND* al_create_cond() => ptr_al_create_cond();
+	void al_destroy_cond(ALLEGRO_COND* cond) => ptr_al_destroy_cond(cond);
+	void al_wait_cond(ALLEGRO_COND* cond, ALLEGRO_MUTEX* mutex) => ptr_al_wait_cond(cond, mutex);
+	int al_wait_cond_until(ALLEGRO_COND* cond, ALLEGRO_MUTEX* mutex, const(ALLEGRO_TIMEOUT)* timeout) => ptr_al_wait_cond_until(cond, mutex, timeout);
+	void al_broadcast_cond(ALLEGRO_COND* cond) => ptr_al_broadcast_cond(cond);
+	void al_signal_cond(ALLEGRO_COND* cond) => ptr_al_signal_cond(cond);
+
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_create_thread) ptr_al_create_thread;
 		version (ALLEGRO_UNSTABLE) static if (allegroSupport >= AllegroSupport.v5_2_5) {
-			pal_create_thread_with_stacksize al_create_thread_with_stacksize;
+			typeof(&al_create_thread_with_stacksize) ptr_al_create_thread_with_stacksize;
 		}
-		pal_start_thread al_start_thread;
-		pal_join_thread al_join_thread;
-		pal_set_thread_should_stop al_set_thread_should_stop;
-		pal_get_thread_should_stop al_get_thread_should_stop;
-		pal_destroy_thread al_destroy_thread;
-		pal_run_detached_thread al_run_detached_thread;
+		typeof(&al_start_thread) ptr_al_start_thread;
+		typeof(&al_join_thread) ptr_al_join_thread;
+		typeof(&al_set_thread_should_stop) ptr_al_set_thread_should_stop;
+		typeof(&al_get_thread_should_stop) ptr_al_get_thread_should_stop;
+		typeof(&al_destroy_thread) ptr_al_destroy_thread;
+		typeof(&al_run_detached_thread) ptr_al_run_detached_thread;
 
-		pal_create_mutex al_create_mutex;
-		pal_create_mutex_recursive al_create_mutex_recursive;
-		pal_lock_mutex al_lock_mutex;
-		pal_unlock_mutex al_unlock_mutex;
-		pal_destroy_mutex al_destroy_mutex;
+		typeof(&al_create_mutex) ptr_al_create_mutex;
+		typeof(&al_create_mutex_recursive) ptr_al_create_mutex_recursive;
+		typeof(&al_lock_mutex) ptr_al_lock_mutex;
+		typeof(&al_unlock_mutex) ptr_al_unlock_mutex;
+		typeof(&al_destroy_mutex) ptr_al_destroy_mutex;
 
-		pal_create_cond al_create_cond;
-		pal_destroy_cond al_destroy_cond;
-		pal_wait_cond al_wait_cond;
-		pal_wait_cond_until al_wait_cond_until;
-		pal_broadcast_cond al_broadcast_cond;
-		pal_signal_cond al_signal_cond;
+		typeof(&al_create_cond) ptr_al_create_cond;
+		typeof(&al_destroy_cond) ptr_al_destroy_cond;
+		typeof(&al_wait_cond) ptr_al_wait_cond;
+		typeof(&al_wait_cond_until) ptr_al_wait_cond_until;
+		typeof(&al_broadcast_cond) ptr_al_broadcast_cond;
+		typeof(&al_signal_cond) ptr_al_signal_cond;
 	}
 }
