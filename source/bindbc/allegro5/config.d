@@ -157,8 +157,31 @@ else {
 	}
 }
 
+
+version (Windows) {
+	version = SharedPE;
+}
+else version (OSX) {
+	version = SharedMachO;
+}
+else version (iOS) {
+	version = SharedMachO;
+}
+else version (TVOS) {
+	version = SharedMachO;
+}
+else version (WatchOS) {
+	version = SharedMachO;
+}
+else version (VisionOS) {
+	version = SharedMachO;
+}
+else version (Posix) {
+	version = SharedELF;
+}
+
 package template dynlibFilename(string addon) {
-	version (Windows) {
+	version (SharedPE) {
 		version (ALLEGRO_DEBUG) {
 			enum dynlibFilename = "allegro" ~(addon != "" ? ("_" ~ addon) : "") ~"-debug-5.2.dll";
 		}
@@ -166,13 +189,15 @@ package template dynlibFilename(string addon) {
 			enum dynlibFilename = "allegro" ~(addon != "" ? ("_" ~ addon) : "") ~"-5.2.dll";
 		}
 	}
-	else version (OSX) {
+	else version (SharedMachO) {
 		enum dynlibFilename = "liballegro"~(addon != "" ? ("_" ~ addon) : "") ~".5.2.dylib";
 	}
-	else version (Posix) {
+	else version (SharedELF) {
 		enum dynlibFilename = "liballegro"~(addon != "" ? ("_" ~ addon) : "") ~".so.5.2";
 	}
-	else static assert(0, "No known library names for this platform.");
+	else {
+		enum dynlibFilename = "";
+	}
 }
 
 mixin template ExpandEnum(EnumType, string fqnEnumType = EnumType.stringof) {
