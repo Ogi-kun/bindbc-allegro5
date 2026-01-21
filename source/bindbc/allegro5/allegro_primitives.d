@@ -98,7 +98,7 @@ static if (staticBinding) {
 	void al_calculate_spline(float* dest, int stride, float[8]* points, float thickness, int num_segments);
 	void al_draw_spline(float[8]* points, ALLEGRO_COLOR color, float thickness);
 
-	void al_calculate_ribbon(float* dest, int dest_stride, const(float)  points, int points_stride, float thickness, int num_segments);
+	void al_calculate_ribbon(float* dest, int dest_stride, const(float)* points, int points_stride, float thickness, int num_segments);
 	void al_draw_ribbon(const(float)* points, int points_stride, ALLEGRO_COLOR color, float thickness, int num_segments);
 
 	void al_draw_filled_triangle(float x1, float y1, float x2, float y2, float x3, float y3, ALLEGRO_COLOR color);
@@ -171,7 +171,7 @@ else {
 		alias pal_calculate_spline = void function(float* dest, int stride, float[8]* points, float thickness, int num_segments);
 		alias pal_draw_spline = void function(float[8]* points, ALLEGRO_COLOR color, float thickness);
 
-		alias pal_calculate_ribbon = void function(float* dest, int dest_stride, const(float)  points, int points_stride, float thickness, int num_segments);
+		alias pal_calculate_ribbon = void function(float* dest, int dest_stride, const(float)* points, int points_stride, float thickness, int num_segments);
 		alias pal_draw_ribbon = void function(const(float)* points, int points_stride, ALLEGRO_COLOR color, float thickness, int num_segments);
 
 		alias pal_draw_filled_triangle = void function(float x1, float y1, float x2, float y2, float x3, float y3, ALLEGRO_COLOR color);
