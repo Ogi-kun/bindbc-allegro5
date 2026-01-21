@@ -95,8 +95,8 @@ static if (staticBinding) {
 	void al_draw_elliptical_arc(float cx, float cy, float rx, float ry, float start_theta, float delta_theta, ALLEGRO_COLOR color, float thickness);
 	void al_draw_pieslice(float cx, float cy, float r, float start_theta, float delta_theta, ALLEGRO_COLOR color, float thickness);
 
-	void al_calculate_spline(float* dest, int stride, float[8]* points, float thickness, int num_segments);
-	void al_draw_spline(float[8]* points, ALLEGRO_COLOR color, float thickness);
+	void al_calculate_spline(float* dest, int stride, const(float)[8]* points, float thickness, int num_segments);
+	void al_draw_spline(const(float)[8]* points, ALLEGRO_COLOR color, float thickness);
 
 	void al_calculate_ribbon(float* dest, int dest_stride, const(float)* points, int points_stride, float thickness, int num_segments);
 	void al_draw_ribbon(const(float)* points, int points_stride, ALLEGRO_COLOR color, float thickness, int num_segments);
@@ -168,8 +168,8 @@ else {
 		alias pal_draw_elliptical_arc = void function(float cx, float cy, float rx, float ry, float start_theta, float delta_theta, ALLEGRO_COLOR color, float thickness);
 		alias pal_draw_pieslice = void function(float cx, float cy, float r, float start_theta, float delta_theta, ALLEGRO_COLOR color, float thickness);
 
-		alias pal_calculate_spline = void function(float* dest, int stride, float[8]* points, float thickness, int num_segments);
-		alias pal_draw_spline = void function(float[8]* points, ALLEGRO_COLOR color, float thickness);
+		alias pal_calculate_spline = void function(float* dest, int stride, const(float)[8]* points, float thickness, int num_segments);
+		alias pal_draw_spline = void function(const(float)[8]* points, ALLEGRO_COLOR color, float thickness);
 
 		alias pal_calculate_ribbon = void function(float* dest, int dest_stride, const(float)* points, int points_stride, float thickness, int num_segments);
 		alias pal_draw_ribbon = void function(const(float)* points, int points_stride, ALLEGRO_COLOR color, float thickness, int num_segments);
