@@ -27,7 +27,10 @@ bool isAllegroLoaded() {
 	return lib != invalidHandle;
 }
 
-AllegroSupport loadAllegro() {
+AllegroSupport loadAllegro()() {
+	static assert(dynlibFilename!"" != "",
+			"No known shared library filenames for this platform. " ~
+			"Use `loadAllegro(const(char)* libName)` overload, or bind statically");
 	version (Windows) {
 		version (Allegro_Monolith) {
 			const(char)[][1] libNames = [
