@@ -31,33 +31,12 @@ AllegroSupport loadAllegro()() {
 	static assert(dynlibFilename!"" != "",
 			"No known shared library filenames for this platform. " ~
 			"Use `loadAllegro(const(char)* libName)` overload, or bind statically");
-	version (Windows) {
-		version (Allegro_Monolith) {
-			const(char)[][1] libNames = [
-				dynlibFilename!"monolith",
-			];
-		}
-		else {
-			const(char)[][2] libNames = [
-				dynlibFilename!"",
-				dynlibFilename!"monolith",
-			];
-		}
+	version (Allegro_Monolith) {
+		return loadAllegro(dynlibFilename!"monolith");
 	}
 	else {
-		const(char)[][1] libNames = [
-			dynlibFilename!"",
-		];
+		return loadAllegro(dynlibFilename!"");
 	}
-
-	typeof(return) result;
-	foreach (i; 0..libNames.length) {
-		result = loadAllegro(libNames[i].ptr);
-		if (result != AllegroSupport.noLibrary) {
-			break;
-		}
-	}
-	return result;
 }
 
 AllegroSupport loadAllegro(const(char)* libName) {
