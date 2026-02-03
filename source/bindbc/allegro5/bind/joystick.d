@@ -4,12 +4,7 @@ import bindbc.allegro5.config;
 import bindbc.allegro5.bind.file;
 import bindbc.allegro5.bind.events : ALLEGRO_EVENT_SOURCE;
 
-static if (allegroSupport >= AllegroSupport.v5_2_11) {
-	enum _AL_MAX_JOYSTICK_AXES = 6;
-}
-else {
-	enum _AL_MAX_JOYSTICK_AXES = 3;
-}
+enum _AL_MAX_JOYSTICK_AXES = 3;
 
 enum _AL_MAX_JOYSTICK_STICKS = 16;
 
