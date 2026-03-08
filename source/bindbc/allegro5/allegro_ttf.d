@@ -28,34 +28,33 @@ static if (staticBinding) {
 		bool al_is_ttf_addon_initialized();
 	}
 }
-
 else {
-	extern(C) @nogc nothrow {
-		alias pal_init_ttf_addon = bool function();
-		alias pal_shutdown_ttf_addon = void function();
-		alias pal_get_allegro_ttf_version = uint function();
+	pragma(inline, true) extern(C) @nogc nothrow {
+		bool al_init_ttf_addon() => ptr_al_init_ttf_addon();
+		void al_shutdown_ttf_addon() => ptr_al_shutdown_ttf_addon();
+		uint al_get_allegro_ttf_version() => ptr_al_get_allegro_ttf_version();
 
-		alias pal_load_ttf_font = ALLEGRO_FONT* function(const(char)* filename, int size, int flags);
-		alias pal_load_ttf_font_f = ALLEGRO_FONT* function(ALLEGRO_FILE* file, const(char)* filename, int size, int flags);
-		alias pal_load_ttf_font_stretch = ALLEGRO_FONT* function(const(char)* filename, int w, int h, int flags);
-		alias pal_load_ttf_font_stretch_f = ALLEGRO_FONT* function(ALLEGRO_FILE* file, const(char)* filename, int w, int h, int flags);
+		ALLEGRO_FONT* al_load_ttf_font(const(char)* filename, int size, int flags) => ptr_al_load_ttf_font(filename, size, flags);
+		ALLEGRO_FONT* al_load_ttf_font_f(ALLEGRO_FILE* file, const(char)* filename, int size, int flags) => ptr_al_load_ttf_font_f(file, filename, size, flags);
+		ALLEGRO_FONT* al_load_ttf_font_stretch(const(char)* filename, int w, int h, int flags) => ptr_al_load_ttf_font_stretch(filename, w, h, flags);
+		ALLEGRO_FONT* al_load_ttf_font_stretch_f(ALLEGRO_FILE* file, const(char)* filename, int w, int h, int flags) => ptr_al_load_ttf_font_stretch_f(file, filename, w, h, flags);
 
 		static if (allegroSupport >= AllegroSupport.v5_2_6) {
-			alias pal_is_ttf_addon_initialized = bool function();
+			bool al_is_ttf_addon_initialized() => ptr_al_is_ttf_addon_initialized();
 		}
 	}
-	__gshared {
-		pal_init_ttf_addon al_init_ttf_addon;
-		pal_shutdown_ttf_addon al_shutdown_ttf_addon;
-		pal_get_allegro_ttf_version al_get_allegro_ttf_version;
+	private __gshared {
+		typeof(&al_init_ttf_addon) ptr_al_init_ttf_addon;
+		typeof(&al_shutdown_ttf_addon) ptr_al_shutdown_ttf_addon;
+		typeof(&al_get_allegro_ttf_version) ptr_al_get_allegro_ttf_version;
 
-		pal_load_ttf_font al_load_ttf_font;
-		pal_load_ttf_font_f al_load_ttf_font_f;
-		pal_load_ttf_font_stretch al_load_ttf_font_stretch;
-		pal_load_ttf_font_stretch_f al_load_ttf_font_stretch_f;
+		typeof(&al_load_ttf_font) ptr_al_load_ttf_font;
+		typeof(&al_load_ttf_font_f) ptr_al_load_ttf_font_f;
+		typeof(&al_load_ttf_font_stretch) ptr_al_load_ttf_font_stretch;
+		typeof(&al_load_ttf_font_stretch_f) ptr_al_load_ttf_font_stretch_f;
 
 		static if (allegroSupport >= AllegroSupport.v5_2_6) {
-			pal_is_ttf_addon_initialized al_is_ttf_addon_initialized;
+			typeof(&al_is_ttf_addon_initialized) ptr_al_is_ttf_addon_initialized;
 		}
 	}
 
@@ -113,21 +112,21 @@ else {
 
 		auto lastErrorCount = errorCount();
 
-		lib.bindSymbol(cast(void**)&al_init_ttf_addon, "al_init_ttf_addon");
-		lib.bindSymbol(cast(void**)&al_shutdown_ttf_addon, "al_shutdown_ttf_addon");
-		lib.bindSymbol(cast(void**)&al_get_allegro_ttf_version, "al_get_allegro_ttf_version");
+		lib.bindSymbol(cast(void**)&ptr_al_init_ttf_addon, "al_init_ttf_addon");
+		lib.bindSymbol(cast(void**)&ptr_al_shutdown_ttf_addon, "al_shutdown_ttf_addon");
+		lib.bindSymbol(cast(void**)&ptr_al_get_allegro_ttf_version, "al_get_allegro_ttf_version");
 
-		lib.bindSymbol(cast(void**)&al_load_ttf_font, "al_load_ttf_font");
-		lib.bindSymbol(cast(void**)&al_load_ttf_font_f, "al_load_ttf_font_f");
-		lib.bindSymbol(cast(void**)&al_load_ttf_font_stretch, "al_load_ttf_font_stretch");
-		lib.bindSymbol(cast(void**)&al_load_ttf_font_stretch_f, "al_load_ttf_font_stretch_f");
+		lib.bindSymbol(cast(void**)&ptr_al_load_ttf_font, "al_load_ttf_font");
+		lib.bindSymbol(cast(void**)&ptr_al_load_ttf_font_f, "al_load_ttf_font_f");
+		lib.bindSymbol(cast(void**)&ptr_al_load_ttf_font_stretch, "al_load_ttf_font_stretch");
+		lib.bindSymbol(cast(void**)&ptr_al_load_ttf_font_stretch_f, "al_load_ttf_font_stretch_f");
 
 		if (errorCount() != lastErrorCount) {
 			return AllegroSupport.badLibrary;
 		}
 
 		static if (allegroSupport >= AllegroSupport.v5_2_6) {
-			lib.bindSymbol(cast(void**)&al_is_ttf_addon_initialized, "al_is_ttf_addon_initialized");
+			lib.bindSymbol(cast(void**)&ptr_al_is_ttf_addon_initialized, "al_is_ttf_addon_initialized");
 
 			if (errorCount() != lastErrorCount) {
 				return AllegroSupport.v5_2_5;

@@ -34,27 +34,26 @@ mixin ExpandEnum!ALLEGRO_SYSTEM_MOUSE_CURSOR;
 static if (staticBinding) {
 	extern(C) @nogc nothrow:
 	ALLEGRO_MOUSE_CURSOR* al_create_mouse_cursor(ALLEGRO_BITMAP* sprite, int xfocus, int yfocus);
-	void al_destroy_mouse_cursor(ALLEGRO_MOUSE_CURSOR*);
+	void al_destroy_mouse_cursor(ALLEGRO_MOUSE_CURSOR* cursor);
 	bool al_set_mouse_cursor(ALLEGRO_DISPLAY* display, ALLEGRO_MOUSE_CURSOR* cursor);
 	bool al_set_system_mouse_cursor(ALLEGRO_DISPLAY* display, ALLEGRO_SYSTEM_MOUSE_CURSOR cursor_id);
 	bool al_show_mouse_cursor(ALLEGRO_DISPLAY* display);
 	bool al_hide_mouse_cursor(ALLEGRO_DISPLAY* display);
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_create_mouse_cursor = ALLEGRO_MOUSE_CURSOR* function(ALLEGRO_BITMAP* sprite, int xfocus, int yfocus);
-		alias pal_destroy_mouse_cursor = void function(ALLEGRO_MOUSE_CURSOR*);
-		alias pal_set_mouse_cursor = bool function(ALLEGRO_DISPLAY* display, ALLEGRO_MOUSE_CURSOR* cursor);
-		alias pal_set_system_mouse_cursor = bool function(ALLEGRO_DISPLAY* display, ALLEGRO_SYSTEM_MOUSE_CURSOR cursor_id);
-		alias pal_show_mouse_cursor = bool function(ALLEGRO_DISPLAY* display);
-		alias pal_hide_mouse_cursor = bool function(ALLEGRO_DISPLAY* display);
-	}
-	__gshared {
-		pal_create_mouse_cursor al_create_mouse_cursor;
-		pal_destroy_mouse_cursor al_destroy_mouse_cursor;
-		pal_set_mouse_cursor al_set_mouse_cursor;
-		pal_set_system_mouse_cursor al_set_system_mouse_cursor;
-		pal_show_mouse_cursor al_show_mouse_cursor;
-		pal_hide_mouse_cursor al_hide_mouse_cursor;
+	pragma(inline, true) extern(C) @nogc nothrow:
+	ALLEGRO_MOUSE_CURSOR* al_create_mouse_cursor(ALLEGRO_BITMAP* sprite, int xfocus, int yfocus) => ptr_al_create_mouse_cursor(sprite, xfocus, yfocus);
+	void al_destroy_mouse_cursor(ALLEGRO_MOUSE_CURSOR* cursor) => ptr_al_destroy_mouse_cursor(cursor);
+	bool al_set_mouse_cursor(ALLEGRO_DISPLAY* display, ALLEGRO_MOUSE_CURSOR* cursor) => ptr_al_set_mouse_cursor(display, cursor);
+	bool al_set_system_mouse_cursor(ALLEGRO_DISPLAY* display, ALLEGRO_SYSTEM_MOUSE_CURSOR cursor_id) => ptr_al_set_system_mouse_cursor(display, cursor_id);
+	bool al_show_mouse_cursor(ALLEGRO_DISPLAY* display) => ptr_al_show_mouse_cursor(display);
+	bool al_hide_mouse_cursor(ALLEGRO_DISPLAY* display) => ptr_al_hide_mouse_cursor(display);
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_create_mouse_cursor) ptr_al_create_mouse_cursor;
+		typeof(&al_destroy_mouse_cursor) ptr_al_destroy_mouse_cursor;
+		typeof(&al_set_mouse_cursor) ptr_al_set_mouse_cursor;
+		typeof(&al_set_system_mouse_cursor) ptr_al_set_system_mouse_cursor;
+		typeof(&al_show_mouse_cursor) ptr_al_show_mouse_cursor;
+		typeof(&al_hide_mouse_cursor) ptr_al_hide_mouse_cursor;
 	}
 }

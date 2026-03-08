@@ -16,17 +16,15 @@ static if (staticBinding) {
 	}
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_get_x_window_id = XID function(ALLEGRO_DISPLAY* display);
-		version (ALLEGRO_UNSTABLE) static if (allegroSupport >= AllegroSupport.v5_2_3) {
-			alias pal_x_set_initial_icon = bool function(ALLEGRO_BITMAP* bitmap);
-		}
+	pragma(inline, true) extern(C) @nogc nothrow:
+	XID al_get_x_window_id(ALLEGRO_DISPLAY* display) => ptr_al_get_x_window_id(display);
+	version (ALLEGRO_UNSTABLE) static if (allegroSupport >= AllegroSupport.v5_2_3) {
+		bool al_x_set_initial_icon(ALLEGRO_BITMAP* bitmap) => ptr_al_x_set_initial_icon(bitmap);
 	}
-
-	__gshared {
-		pal_get_x_window_id al_get_x_window_id;
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_get_x_window_id) ptr_al_get_x_window_id;
 		version (ALLEGRO_UNSTABLE) static if (allegroSupport >= AllegroSupport.v5_2_3) {
-			pal_x_set_initial_icon al_x_set_initial_icon;
+			typeof(&al_x_set_initial_icon) ptr_al_x_set_initial_icon;
 		}
 	}
 }

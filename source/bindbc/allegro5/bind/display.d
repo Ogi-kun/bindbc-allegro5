@@ -177,156 +177,154 @@ static if (staticBinding) {
 	}
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_set_new_display_refresh_rate = void function(int refresh_rate);
-		alias pal_set_new_display_flags = void function(int flags);
-		alias pal_get_new_display_refresh_rate = int function();
-		alias pal_get_new_display_flags = int function();
+	pragma(inline, true) extern(C) @nogc nothrow:
 
-		alias pal_set_new_window_title = void function(const(char)* title);
-		alias pal_get_new_window_title = const(char)* function();
+	void al_set_new_display_refresh_rate(int refresh_rate) => ptr_al_set_new_display_refresh_rate(refresh_rate);
+	void al_set_new_display_flags(int flags) => ptr_al_set_new_display_flags(flags);
+	int al_get_new_display_refresh_rate() => ptr_al_get_new_display_refresh_rate();
+	int al_get_new_display_flags() => ptr_al_get_new_display_flags();
 
-		alias pal_get_display_width = int function(ALLEGRO_DISPLAY* display);
-		alias pal_get_display_height = int function(ALLEGRO_DISPLAY* display);
-		alias pal_get_display_format = int function(ALLEGRO_DISPLAY* display);
-		alias pal_get_display_refresh_rate = int function(ALLEGRO_DISPLAY* display);
-		alias pal_get_display_flags = int function(ALLEGRO_DISPLAY* display);
-		alias pal_get_display_orientation = int function(ALLEGRO_DISPLAY* display);
-		alias pal_set_display_flag = bool function(ALLEGRO_DISPLAY* display, int flag, bool onoff);
+	void al_set_new_window_title(const(char)* title) => ptr_al_set_new_window_title(title);
+	const(char)* al_get_new_window_title() => ptr_al_get_new_window_title();
 
-		alias pal_create_display = ALLEGRO_DISPLAY* function(int w, int h);
-		alias pal_destroy_display = void function(ALLEGRO_DISPLAY* display);
-		alias pal_get_current_display = ALLEGRO_DISPLAY* function();
-		alias pal_set_target_bitmap = void function(ALLEGRO_BITMAP* bitmap);
-		alias pal_set_target_backbuffer = void function(ALLEGRO_DISPLAY* display);
-		alias pal_get_backbuffer = ALLEGRO_BITMAP* function(ALLEGRO_DISPLAY* display);
-		alias pal_get_target_bitmap = ALLEGRO_BITMAP* function();
+	int al_get_display_width(ALLEGRO_DISPLAY* display) => ptr_al_get_display_width(display);
+	int al_get_display_height(ALLEGRO_DISPLAY* display) => ptr_al_get_display_height(display);
+	int al_get_display_format(ALLEGRO_DISPLAY* display) => ptr_al_get_display_format(display);
+	int al_get_display_refresh_rate(ALLEGRO_DISPLAY* display) => ptr_al_get_display_refresh_rate(display);
+	int al_get_display_flags(ALLEGRO_DISPLAY* display) => ptr_al_get_display_flags(display);
+	int al_get_display_orientation(ALLEGRO_DISPLAY* display) => ptr_al_get_display_orientation(display);
+	bool al_set_display_flag(ALLEGRO_DISPLAY* display, int flag, bool onoff) => ptr_al_set_display_flag(display, flag, onoff);
 
-		alias pal_acknowledge_resize = bool function(ALLEGRO_DISPLAY* display);
-		alias pal_resize_display = bool function(ALLEGRO_DISPLAY* display, int width, int height);
-		alias pal_flip_display = void function();
-		alias pal_update_display_region = void function(int x, int y, int width, int height);
-		alias pal_is_compatible_bitmap = bool function(ALLEGRO_BITMAP* bitmap);
+	ALLEGRO_DISPLAY* al_create_display(int w, int h) => ptr_al_create_display(w, h);
+	void al_destroy_display(ALLEGRO_DISPLAY* display) => ptr_al_destroy_display(display);
+	ALLEGRO_DISPLAY* al_get_current_display() => ptr_al_get_current_display();
+	void al_set_target_bitmap(ALLEGRO_BITMAP* bitmap) => ptr_al_set_target_bitmap(bitmap);
+	void al_set_target_backbuffer(ALLEGRO_DISPLAY* display) => ptr_al_set_target_backbuffer(display);
+	ALLEGRO_BITMAP* al_get_backbuffer(ALLEGRO_DISPLAY* display) => ptr_al_get_backbuffer(display);
+	ALLEGRO_BITMAP* al_get_target_bitmap() => ptr_al_get_target_bitmap();
 
-		alias pal_wait_for_vsync = bool function();
+	bool al_acknowledge_resize(ALLEGRO_DISPLAY* display) => ptr_al_acknowledge_resize(display);
+	bool al_resize_display(ALLEGRO_DISPLAY* display, int width, int height) => ptr_al_resize_display(display, width, height);
+	void al_flip_display() => ptr_al_flip_display();
+	void al_update_display_region(int x, int y, int width, int height) => ptr_al_update_display_region(x, y, width, height);
+	bool al_is_compatible_bitmap(ALLEGRO_BITMAP* bitmap) => ptr_al_is_compatible_bitmap(bitmap);
 
-		alias pal_get_display_event_source = ALLEGRO_EVENT_SOURCE* function(ALLEGRO_DISPLAY* display);
+	bool al_wait_for_vsync() => ptr_al_wait_for_vsync();
 
-		alias pal_set_display_icon = void function(ALLEGRO_DISPLAY* display, ALLEGRO_BITMAP* icon);
-		alias pal_set_display_icons = void function(ALLEGRO_DISPLAY* display, int num_icons, ALLEGRO_BITMAP** icons);
+	ALLEGRO_EVENT_SOURCE* al_get_display_event_source(ALLEGRO_DISPLAY* display) => ptr_al_get_display_event_source(display);
 
-		alias pal_get_new_display_adapter = int function();
-		alias pal_set_new_display_adapter = void function(int adapter);
-		alias pal_set_new_window_position = void function(int x, int y);
-		alias pal_get_new_window_position = void function(int* x, int* y);
-		alias pal_set_window_position = void function(ALLEGRO_DISPLAY* display, int x, int y);
-		alias pal_get_window_position = void function(ALLEGRO_DISPLAY* display, int* x, int* y);
-		alias pal_set_window_constraints = bool function(ALLEGRO_DISPLAY* display, int min_w, int min_h, int max_w, int max_h);
-		alias pal_get_window_constraints = bool function(ALLEGRO_DISPLAY* display, int* min_w, int* min_h, int* max_w, int* max_h);
-		alias pal_apply_window_constraints = void function(ALLEGRO_DISPLAY* display, bool onoff);
+	void al_set_display_icon(ALLEGRO_DISPLAY* display, ALLEGRO_BITMAP* icon) => ptr_al_set_display_icon(display, icon);
+	void al_set_display_icons(ALLEGRO_DISPLAY* display, int num_icons, ALLEGRO_BITMAP** icons) => ptr_al_set_display_icons(display, num_icons, icons);
 
-		alias pal_set_window_title = void function(ALLEGRO_DISPLAY* display, const(char)* title);
+	int al_get_new_display_adapter() => ptr_al_get_new_display_adapter();
+	void al_set_new_display_adapter(int adapter) => ptr_al_set_new_display_adapter(adapter);
+	void al_set_new_window_position(int x, int y) => ptr_al_set_new_window_position(x, y);
+	void al_get_new_window_position(int* x, int* y) => ptr_al_get_new_window_position(x, y);
+	void al_set_window_position(ALLEGRO_DISPLAY* display, int x, int y) => ptr_al_set_window_position(display, x, y);
+	void al_get_window_position(ALLEGRO_DISPLAY* display, int* x, int* y) => ptr_al_get_window_position(display, x, y);
+	bool al_set_window_constraints(ALLEGRO_DISPLAY* display, int min_w, int min_h, int max_w, int max_h) => ptr_al_set_window_constraints(display, min_w, min_h, max_w, max_h);
+	bool al_get_window_constraints(ALLEGRO_DISPLAY* display, int* min_w, int* min_h, int* max_w, int* max_h) => ptr_al_get_window_constraints(display, min_w, min_h, max_w, max_h);
+	void al_apply_window_constraints(ALLEGRO_DISPLAY* display, bool onoff) => ptr_al_apply_window_constraints(display, onoff);
 
-		alias pal_set_new_display_option = void function(int option, int value, int importance);
-		alias pal_get_new_display_option = int function(int option, int* importance);
-		alias pal_reset_new_display_options = void function();
-		alias pal_set_display_option = void function(ALLEGRO_DISPLAY* display, int option, int value);
-		alias pal_get_display_option = int function(ALLEGRO_DISPLAY* display, int option);
+	void al_set_window_title(ALLEGRO_DISPLAY* display, const(char)* title) => ptr_al_set_window_title(display, title);
 
-		alias pal_hold_bitmap_drawing = void function(bool hold);
-		alias pal_is_bitmap_drawing_held = bool function();
+	void al_set_new_display_option(int option, int value, int importance) => ptr_al_set_new_display_option(option, value, importance);
+	int al_get_new_display_option(int option, int* importance) => ptr_al_get_new_display_option(option, importance);
+	void al_reset_new_display_options() => ptr_al_reset_new_display_options();
+	void al_set_display_option(ALLEGRO_DISPLAY* display, int option, int value) => ptr_al_set_display_option(display, option, value);
+	int al_get_display_option(ALLEGRO_DISPLAY* display, int option) => ptr_al_get_display_option(display, option);
 
-		alias pal_acknowledge_drawing_halt = void function(ALLEGRO_DISPLAY* display);
-		alias pal_acknowledge_drawing_resume = void function(ALLEGRO_DISPLAY* display);
-	}
+	void al_hold_bitmap_drawing(bool hold) => ptr_al_hold_bitmap_drawing(hold);
+	bool al_is_bitmap_drawing_held() => ptr_al_is_bitmap_drawing_held();
 
-	__gshared {
-		pal_set_new_display_refresh_rate al_set_new_display_refresh_rate;
-		pal_set_new_display_flags al_set_new_display_flags;
-		pal_get_new_display_refresh_rate al_get_new_display_refresh_rate;
-		pal_get_new_display_flags al_get_new_display_flags;
-
-		pal_set_new_window_title al_set_new_window_title;
-		pal_get_new_window_title al_get_new_window_title;
-
-		pal_get_display_width al_get_display_width;
-		pal_get_display_height al_get_display_height;
-		pal_get_display_format al_get_display_format;
-		pal_get_display_refresh_rate al_get_display_refresh_rate;
-		pal_get_display_flags al_get_display_flags;
-		pal_get_display_orientation al_get_display_orientation;
-		pal_set_display_flag al_set_display_flag;
-
-		pal_create_display al_create_display;
-		pal_destroy_display al_destroy_display;
-		pal_get_current_display al_get_current_display;
-		pal_set_target_bitmap al_set_target_bitmap;
-		pal_set_target_backbuffer al_set_target_backbuffer;
-		pal_get_backbuffer al_get_backbuffer;
-		pal_get_target_bitmap al_get_target_bitmap;
-
-		pal_acknowledge_resize al_acknowledge_resize;
-		pal_resize_display al_resize_display;
-		pal_flip_display al_flip_display;
-		pal_update_display_region al_update_display_region;
-		pal_is_compatible_bitmap al_is_compatible_bitmap;
-
-		pal_wait_for_vsync al_wait_for_vsync;
-
-		pal_get_display_event_source al_get_display_event_source;
-
-		pal_set_display_icon al_set_display_icon;
-		pal_set_display_icons al_set_display_icons;
-
-		pal_get_new_display_adapter al_get_new_display_adapter;
-		pal_set_new_display_adapter al_set_new_display_adapter;
-		pal_set_new_window_position al_set_new_window_position;
-		pal_get_new_window_position al_get_new_window_position;
-		pal_set_window_position al_set_window_position;
-		pal_get_window_position al_get_window_position;
-		pal_set_window_constraints al_set_window_constraints;
-		pal_get_window_constraints al_get_window_constraints;
-		pal_apply_window_constraints al_apply_window_constraints;
-
-		pal_set_window_title al_set_window_title;
-
-		pal_set_new_display_option al_set_new_display_option;
-		pal_get_new_display_option al_get_new_display_option;
-		pal_reset_new_display_options al_reset_new_display_options;
-		pal_set_display_option al_set_display_option;
-		pal_get_display_option al_get_display_option;
-
-		pal_hold_bitmap_drawing al_hold_bitmap_drawing;
-		pal_is_bitmap_drawing_held al_is_bitmap_drawing_held;
-
-		pal_acknowledge_drawing_halt al_acknowledge_drawing_halt;
-		pal_acknowledge_drawing_resume al_acknowledge_drawing_resume;
-	}
+	void al_acknowledge_drawing_halt(ALLEGRO_DISPLAY* display) => ptr_al_acknowledge_drawing_halt(display);
+	void al_acknowledge_drawing_resume(ALLEGRO_DISPLAY* display) => ptr_al_acknowledge_drawing_resume(display);
 
 	static if (allegroSupport >= AllegroSupport.v5_2_10) {
-		extern(C) @nogc nothrow {
-			alias pal_get_display_adapter = int function(ALLEGRO_DISPLAY *display);
-		}
-		__gshared {
-			pal_get_display_adapter al_get_display_adapter;
-		}
+		int al_get_display_adapter(ALLEGRO_DISPLAY *display) => ptr_al_get_display_adapter(display);
 	}
 
 	version (ALLEGRO_UNSTABLE) {
 		static if (allegroSupport >= AllegroSupport.v5_2_1) {
-			extern(C) @nogc nothrow {
-				alias pal_backup_dirty_bitmaps = void function(ALLEGRO_DISPLAY* display);
-			}
-			__gshared {
-				pal_backup_dirty_bitmaps al_backup_dirty_bitmaps;
-			}
+			void al_backup_dirty_bitmaps(ALLEGRO_DISPLAY* display) => ptr_al_backup_dirty_bitmaps(display);
 		}
 		static if (allegroSupport >= AllegroSupport.v5_2_9) {
-			extern(C) @nogc nothrow {
-				alias pal_get_window_borders = bool function(ALLEGRO_DISPLAY *display, int *left, int *top, int *right, int *bottom);
+			bool al_get_window_borders(ALLEGRO_DISPLAY *display, int *left, int *top, int *right, int *bottom) => ptr_al_get_window_borders(display, left, top, right, bottom);
+		}
+	}
+
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_set_new_display_refresh_rate) ptr_al_set_new_display_refresh_rate;
+		typeof(&al_set_new_display_flags) ptr_al_set_new_display_flags;
+		typeof(&al_get_new_display_refresh_rate) ptr_al_get_new_display_refresh_rate;
+		typeof(&al_get_new_display_flags) ptr_al_get_new_display_flags;
+
+		typeof(&al_set_new_window_title) ptr_al_set_new_window_title;
+		typeof(&al_get_new_window_title) ptr_al_get_new_window_title;
+
+		typeof(&al_get_display_width) ptr_al_get_display_width;
+		typeof(&al_get_display_height) ptr_al_get_display_height;
+		typeof(&al_get_display_format) ptr_al_get_display_format;
+		typeof(&al_get_display_refresh_rate) ptr_al_get_display_refresh_rate;
+		typeof(&al_get_display_flags) ptr_al_get_display_flags;
+		typeof(&al_get_display_orientation) ptr_al_get_display_orientation;
+		typeof(&al_set_display_flag) ptr_al_set_display_flag;
+
+		typeof(&al_create_display) ptr_al_create_display;
+		typeof(&al_destroy_display) ptr_al_destroy_display;
+		typeof(&al_get_current_display) ptr_al_get_current_display;
+		typeof(&al_set_target_bitmap) ptr_al_set_target_bitmap;
+		typeof(&al_set_target_backbuffer) ptr_al_set_target_backbuffer;
+		typeof(&al_get_backbuffer) ptr_al_get_backbuffer;
+		typeof(&al_get_target_bitmap) ptr_al_get_target_bitmap;
+
+		typeof(&al_acknowledge_resize) ptr_al_acknowledge_resize;
+		typeof(&al_resize_display) ptr_al_resize_display;
+		typeof(&al_flip_display) ptr_al_flip_display;
+		typeof(&al_update_display_region) ptr_al_update_display_region;
+		typeof(&al_is_compatible_bitmap) ptr_al_is_compatible_bitmap;
+
+		typeof(&al_wait_for_vsync) ptr_al_wait_for_vsync;
+
+		typeof(&al_get_display_event_source) ptr_al_get_display_event_source;
+
+		typeof(&al_set_display_icon) ptr_al_set_display_icon;
+		typeof(&al_set_display_icons) ptr_al_set_display_icons;
+
+		typeof(&al_get_new_display_adapter) ptr_al_get_new_display_adapter;
+		typeof(&al_set_new_display_adapter) ptr_al_set_new_display_adapter;
+		typeof(&al_set_new_window_position) ptr_al_set_new_window_position;
+		typeof(&al_get_new_window_position) ptr_al_get_new_window_position;
+		typeof(&al_set_window_position) ptr_al_set_window_position;
+		typeof(&al_get_window_position) ptr_al_get_window_position;
+		typeof(&al_set_window_constraints) ptr_al_set_window_constraints;
+		typeof(&al_get_window_constraints) ptr_al_get_window_constraints;
+		typeof(&al_apply_window_constraints) ptr_al_apply_window_constraints;
+
+		typeof(&al_set_window_title) ptr_al_set_window_title;
+
+		typeof(&al_set_new_display_option) ptr_al_set_new_display_option;
+		typeof(&al_get_new_display_option) ptr_al_get_new_display_option;
+		typeof(&al_reset_new_display_options) ptr_al_reset_new_display_options;
+		typeof(&al_set_display_option) ptr_al_set_display_option;
+		typeof(&al_get_display_option) ptr_al_get_display_option;
+
+		typeof(&al_hold_bitmap_drawing) ptr_al_hold_bitmap_drawing;
+		typeof(&al_is_bitmap_drawing_held) ptr_al_is_bitmap_drawing_held;
+
+		typeof(&al_acknowledge_drawing_halt) ptr_al_acknowledge_drawing_halt;
+		typeof(&al_acknowledge_drawing_resume) ptr_al_acknowledge_drawing_resume;
+
+		static if (allegroSupport >= AllegroSupport.v5_2_10) {
+			typeof(&al_get_display_adapter) ptr_al_get_display_adapter;
+		}
+
+		version (ALLEGRO_UNSTABLE) {
+			static if (allegroSupport >= AllegroSupport.v5_2_1) {
+				typeof(&al_backup_dirty_bitmaps) ptr_al_backup_dirty_bitmaps;
 			}
-			__gshared {
-				pal_get_window_borders al_get_window_borders;
+			static if (allegroSupport >= AllegroSupport.v5_2_9) {
+				typeof(&al_get_window_borders) ptr_al_get_window_borders;
 			}
 		}
 	}

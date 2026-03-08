@@ -36,27 +36,22 @@ enum ALLEGRO_WRITE_MASK_FLAGS {
 mixin ExpandEnum!ALLEGRO_WRITE_MASK_FLAGS;
 
 static if (staticBinding) {
-	extern(C) @nogc nothrow {
-		void al_set_render_state(ALLEGRO_RENDER_STATE state, int value);
-		static if (allegroSupport >= AllegroSupport.v5_2_10) {
-			int al_get_render_state(ALLEGRO_RENDER_STATE state);
-		}
+	extern(C) @nogc nothrow:
+	void al_set_render_state(ALLEGRO_RENDER_STATE state, int value);
+	static if (allegroSupport >= AllegroSupport.v5_2_10) {
+		int al_get_render_state(ALLEGRO_RENDER_STATE state);
 	}
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_set_render_state = void function(ALLEGRO_RENDER_STATE state, int value);
-	}
-	__gshared {
-		pal_set_render_state al_set_render_state;
-	}
-
+	pragma(inline, true) extern(C) @nogc nothrow:
+	void al_set_render_state(ALLEGRO_RENDER_STATE state, int value) => ptr_al_set_render_state(state, value);
 	static if (allegroSupport >= AllegroSupport.v5_2_10) {
-		extern(C) @nogc nothrow {
-			alias pal_get_render_state = int function(ALLEGRO_RENDER_STATE state);
-		}
-		__gshared {
-			pal_get_render_state al_get_render_state;
+		int al_get_render_state(ALLEGRO_RENDER_STATE state) => ptr_al_get_render_state(state);
+	}
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_set_render_state) ptr_al_set_render_state;
+		static if (allegroSupport >= AllegroSupport.v5_2_10) {
+			typeof(&al_get_render_state) ptr_al_get_render_state;
 		}
 	}
 }

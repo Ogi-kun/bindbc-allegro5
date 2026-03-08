@@ -18,13 +18,11 @@ static if (staticBinding) {
 	UIView al_iphone_get_view(ALLEGRO_DISPLAY *d);
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_iphone_get_window = UIWindow function(ALLEGRO_DISPLAY *d);
-		alias pal_iphone_get_view = UIView function(ALLEGRO_DISPLAY *d);
-	}
-
-	__gshared {
-		pal_iphone_get_window al_iphone_get_window;
-		pal_iphone_get_view al_iphone_get_view;
+	pragma(inline, true) extern(C) @nogc nothrow:
+	UIWindow al_iphone_get_window(ALLEGRO_DISPLAY *d) => ptr_al_iphone_get_window(d);
+	UIView al_iphone_get_view(ALLEGRO_DISPLAY *d) => ptr_al_iphone_get_view(d);
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_iphone_get_window) ptr_al_iphone_get_window;
+		typeof(&al_iphone_get_view) ptr_al_iphone_get_view;
 	}
 }

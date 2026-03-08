@@ -176,76 +176,77 @@ extern(C) @nogc nothrow {
 
 static if (staticBinding) {
 	extern(C) @nogc nothrow:
-	void al_init_user_event_source(ALLEGRO_EVENT_SOURCE*);
-	void al_destroy_user_event_source(ALLEGRO_EVENT_SOURCE*);
-	bool al_emit_user_event(ALLEGRO_EVENT_SOURCE*, ALLEGRO_EVENT*, al_user_event_dtor dtor);
-	void al_unref_user_event(ALLEGRO_USER_EVENT*);
-	void al_set_event_source_data(ALLEGRO_EVENT_SOURCE*, intptr_t data);
-	intptr_t al_get_event_source_data(const(ALLEGRO_EVENT_SOURCE)*);
+	void al_init_user_event_source(ALLEGRO_EVENT_SOURCE* source);
+	void al_destroy_user_event_source(ALLEGRO_EVENT_SOURCE* source);
+	bool al_emit_user_event(ALLEGRO_EVENT_SOURCE* source, ALLEGRO_EVENT* event, al_user_event_dtor dtor);
+	void al_unref_user_event(ALLEGRO_USER_EVENT* event);
+	void al_set_event_source_data(ALLEGRO_EVENT_SOURCE* source, intptr_t data);
+	intptr_t al_get_event_source_data(const(ALLEGRO_EVENT_SOURCE)* source);
 
 	ALLEGRO_EVENT_QUEUE* al_create_event_queue();
-	void al_destroy_event_queue(ALLEGRO_EVENT_QUEUE*);
-	bool al_is_event_source_registered(ALLEGRO_EVENT_QUEUE*, ALLEGRO_EVENT_SOURCE*);
-	void al_register_event_source(ALLEGRO_EVENT_QUEUE*, ALLEGRO_EVENT_SOURCE*);
-	void al_unregister_event_source(ALLEGRO_EVENT_QUEUE*, ALLEGRO_EVENT_SOURCE*);
-	void al_pause_event_queue(ALLEGRO_EVENT_QUEUE*, bool);
-	bool al_is_event_queue_paused(const(ALLEGRO_EVENT_QUEUE)*);
-	bool al_is_event_queue_empty(ALLEGRO_EVENT_QUEUE*);
-	bool al_get_next_event(ALLEGRO_EVENT_QUEUE*, ALLEGRO_EVENT* ret_event);
-	bool al_peek_next_event(ALLEGRO_EVENT_QUEUE*, ALLEGRO_EVENT* ret_event);
-	bool al_drop_next_event(ALLEGRO_EVENT_QUEUE*);
-	void al_flush_event_queue(ALLEGRO_EVENT_QUEUE*);
-	void al_wait_for_event(ALLEGRO_EVENT_QUEUE*, ALLEGRO_EVENT* ret_event);
-	bool al_wait_for_event_timed(ALLEGRO_EVENT_QUEUE*, ALLEGRO_EVENT* ret_event, float secs);
+	void al_destroy_event_queue(ALLEGRO_EVENT_QUEUE* queue);
+	bool al_is_event_source_registered(ALLEGRO_EVENT_QUEUE* queue, ALLEGRO_EVENT_SOURCE* source);
+	void al_register_event_source(ALLEGRO_EVENT_QUEUE* queue, ALLEGRO_EVENT_SOURCE* source);
+	void al_unregister_event_source(ALLEGRO_EVENT_QUEUE* queue, ALLEGRO_EVENT_SOURCE* source);
+	void al_pause_event_queue(ALLEGRO_EVENT_QUEUE* queue, bool pause);
+	bool al_is_event_queue_paused(const(ALLEGRO_EVENT_QUEUE)* queue);
+	bool al_is_event_queue_empty(ALLEGRO_EVENT_QUEUE* queue);
+	bool al_get_next_event(ALLEGRO_EVENT_QUEUE* queue, ALLEGRO_EVENT* ret_event);
+	bool al_peek_next_event(ALLEGRO_EVENT_QUEUE* queue, ALLEGRO_EVENT* ret_event);
+	bool al_drop_next_event(ALLEGRO_EVENT_QUEUE* queue);
+	void al_flush_event_queue(ALLEGRO_EVENT_QUEUE* queue);
+	void al_wait_for_event(ALLEGRO_EVENT_QUEUE* queue, ALLEGRO_EVENT* ret_event);
+	bool al_wait_for_event_timed(ALLEGRO_EVENT_QUEUE* queue, ALLEGRO_EVENT* ret_event, float secs);
 	bool al_wait_for_event_until(ALLEGRO_EVENT_QUEUE* queue, ALLEGRO_EVENT* ret_event, ALLEGRO_TIMEOUT* timeout);
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_init_user_event_source = void function(ALLEGRO_EVENT_SOURCE*);
-		alias pal_destroy_user_event_source = void function(ALLEGRO_EVENT_SOURCE*);
-		alias pal_emit_user_event = bool function(ALLEGRO_EVENT_SOURCE*, ALLEGRO_EVENT*, al_user_event_dtor dtor);
-		alias pal_unref_user_event = void function(ALLEGRO_USER_EVENT*);
-		alias pal_set_event_source_data = void function(ALLEGRO_EVENT_SOURCE*, intptr_t data);
-		alias pal_get_event_source_data = intptr_t function(const(ALLEGRO_EVENT_SOURCE)*);
+	pragma(inline, true) extern(C) @nogc nothrow:
 
-		alias pal_create_event_queue = ALLEGRO_EVENT_QUEUE* function();
-		alias pal_destroy_event_queue = void function(ALLEGRO_EVENT_QUEUE*);
-		alias pal_is_event_source_registered = bool function(ALLEGRO_EVENT_QUEUE* , ALLEGRO_EVENT_SOURCE*);
-		alias pal_register_event_source = void function(ALLEGRO_EVENT_QUEUE*, ALLEGRO_EVENT_SOURCE*);
-		alias pal_unregister_event_source = void function(ALLEGRO_EVENT_QUEUE*, ALLEGRO_EVENT_SOURCE*);
-		alias pal_pause_event_queue = void function(ALLEGRO_EVENT_QUEUE*, bool);
-		alias pal_is_event_queue_paused = bool function(const(ALLEGRO_EVENT_QUEUE)*);
-		alias pal_is_event_queue_empty = bool function(ALLEGRO_EVENT_QUEUE*);
-		alias pal_get_next_event = bool function(ALLEGRO_EVENT_QUEUE*, ALLEGRO_EVENT* ret_event);
-		alias pal_peek_next_event = bool function(ALLEGRO_EVENT_QUEUE*, ALLEGRO_EVENT* ret_event);
-		alias pal_drop_next_event = bool function(ALLEGRO_EVENT_QUEUE*);
-		alias pal_flush_event_queue = void function(ALLEGRO_EVENT_QUEUE*);
-		alias pal_wait_for_event = void function(ALLEGRO_EVENT_QUEUE*, ALLEGRO_EVENT* ret_event);
-		alias pal_wait_for_event_timed = bool function(ALLEGRO_EVENT_QUEUE*, ALLEGRO_EVENT* ret_event, float secs);
-		alias pal_wait_for_event_until = bool function(ALLEGRO_EVENT_QUEUE* queue, ALLEGRO_EVENT* ret_event, ALLEGRO_TIMEOUT* timeout);
-	}
-	__gshared {
-		pal_init_user_event_source al_init_user_event_source;
-		pal_destroy_user_event_source al_destroy_user_event_source;
-		pal_emit_user_event al_emit_user_event;
-		pal_unref_user_event al_unref_user_event;
-		pal_set_event_source_data al_set_event_source_data;
-		pal_get_event_source_data al_get_event_source_data;
+	void al_init_user_event_source(ALLEGRO_EVENT_SOURCE* source) => ptr_al_init_user_event_source(source);
+	void al_destroy_user_event_source(ALLEGRO_EVENT_SOURCE* source) => ptr_al_destroy_user_event_source(source);
+	bool al_emit_user_event(ALLEGRO_EVENT_SOURCE* source, ALLEGRO_EVENT* event, al_user_event_dtor dtor) => ptr_al_emit_user_event(source, event, dtor);
+	void al_unref_user_event(ALLEGRO_USER_EVENT* event) => ptr_al_unref_user_event(event);
+	void al_set_event_source_data(ALLEGRO_EVENT_SOURCE* source, intptr_t data) => ptr_al_set_event_source_data(source, data);
+	intptr_t al_get_event_source_data(const(ALLEGRO_EVENT_SOURCE)* source) => ptr_al_get_event_source_data(source);
 
-		pal_create_event_queue al_create_event_queue;
-		pal_destroy_event_queue al_destroy_event_queue;
-		pal_is_event_source_registered al_is_event_source_registered;
-		pal_register_event_source al_register_event_source;
-		pal_unregister_event_source al_unregister_event_source;
-		pal_pause_event_queue al_pause_event_queue;
-		pal_is_event_queue_paused al_is_event_queue_paused;
-		pal_is_event_queue_empty al_is_event_queue_empty;
-		pal_get_next_event al_get_next_event;
-		pal_peek_next_event al_peek_next_event;
-		pal_drop_next_event al_drop_next_event;
-		pal_flush_event_queue al_flush_event_queue;
-		pal_wait_for_event al_wait_for_event;
-		pal_wait_for_event_timed al_wait_for_event_timed;
-		pal_wait_for_event_until al_wait_for_event_until;
+	ALLEGRO_EVENT_QUEUE* al_create_event_queue() => ptr_al_create_event_queue();
+	void al_destroy_event_queue(ALLEGRO_EVENT_QUEUE* queue) => ptr_al_destroy_event_queue(queue);
+	bool al_is_event_source_registered(ALLEGRO_EVENT_QUEUE* queue, ALLEGRO_EVENT_SOURCE* source) => ptr_al_is_event_source_registered(queue, source);
+	void al_register_event_source(ALLEGRO_EVENT_QUEUE* queue, ALLEGRO_EVENT_SOURCE* source) => ptr_al_register_event_source(queue, source);
+	void al_unregister_event_source(ALLEGRO_EVENT_QUEUE* queue, ALLEGRO_EVENT_SOURCE* source) => ptr_al_unregister_event_source(queue, source);
+	void al_pause_event_queue(ALLEGRO_EVENT_QUEUE* queue, bool pause) => ptr_al_pause_event_queue(queue, pause);
+	bool al_is_event_queue_paused(const(ALLEGRO_EVENT_QUEUE)* queue) => ptr_al_is_event_queue_paused(queue);
+	bool al_is_event_queue_empty(ALLEGRO_EVENT_QUEUE* queue) => ptr_al_is_event_queue_empty(queue);
+	bool al_get_next_event(ALLEGRO_EVENT_QUEUE* queue, ALLEGRO_EVENT* ret_event) => ptr_al_get_next_event(queue, ret_event);
+	bool al_peek_next_event(ALLEGRO_EVENT_QUEUE* queue, ALLEGRO_EVENT* ret_event) => ptr_al_peek_next_event(queue, ret_event);
+	bool al_drop_next_event(ALLEGRO_EVENT_QUEUE* queue) => ptr_al_drop_next_event(queue);
+	void al_flush_event_queue(ALLEGRO_EVENT_QUEUE* queue) => ptr_al_flush_event_queue(queue);
+	void al_wait_for_event(ALLEGRO_EVENT_QUEUE* queue, ALLEGRO_EVENT* ret_event) => ptr_al_wait_for_event(queue, ret_event);
+	bool al_wait_for_event_timed(ALLEGRO_EVENT_QUEUE* queue, ALLEGRO_EVENT* ret_event, float secs) => ptr_al_wait_for_event_timed(queue, ret_event, secs);
+	bool al_wait_for_event_until(ALLEGRO_EVENT_QUEUE* queue, ALLEGRO_EVENT* ret_event, ALLEGRO_TIMEOUT* timeout) => ptr_al_wait_for_event_until(queue, ret_event, timeout);
+
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_init_user_event_source) ptr_al_init_user_event_source;
+		typeof(&al_destroy_user_event_source) ptr_al_destroy_user_event_source;
+		typeof(&al_emit_user_event) ptr_al_emit_user_event;
+		typeof(&al_unref_user_event) ptr_al_unref_user_event;
+		typeof(&al_set_event_source_data) ptr_al_set_event_source_data;
+		typeof(&al_get_event_source_data) ptr_al_get_event_source_data;
+
+		typeof(&al_create_event_queue) ptr_al_create_event_queue;
+		typeof(&al_destroy_event_queue) ptr_al_destroy_event_queue;
+		typeof(&al_is_event_source_registered) ptr_al_is_event_source_registered;
+		typeof(&al_register_event_source) ptr_al_register_event_source;
+		typeof(&al_unregister_event_source) ptr_al_unregister_event_source;
+		typeof(&al_pause_event_queue) ptr_al_pause_event_queue;
+		typeof(&al_is_event_queue_paused) ptr_al_is_event_queue_paused;
+		typeof(&al_is_event_queue_empty) ptr_al_is_event_queue_empty;
+		typeof(&al_get_next_event) ptr_al_get_next_event;
+		typeof(&al_peek_next_event) ptr_al_peek_next_event;
+		typeof(&al_drop_next_event) ptr_al_drop_next_event;
+		typeof(&al_flush_event_queue) ptr_al_flush_event_queue;
+		typeof(&al_wait_for_event) ptr_al_wait_for_event;
+		typeof(&al_wait_for_event_timed) ptr_al_wait_for_event_timed;
+		typeof(&al_wait_for_event_until) ptr_al_wait_for_event_until;
 	}
 }

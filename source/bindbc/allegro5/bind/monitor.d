@@ -25,24 +25,23 @@ static if (staticBinding) {
 	}
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_get_num_video_adapters = int function();
-		alias pal_get_monitor_info = bool function(int adapter, ALLEGRO_MONITOR_INFO* info);
-		static if (allegroSupport >= AllegroSupport.v5_2_5) {
-			alias pal_get_monitor_dpi = int function(int adapter);
-		}
-		version (ALLEGRO_UNSTABLE) static if (allegroSupport >= AllegroSupport.v5_2_6) {
-			alias pal_get_monitor_refresh_rate = int function(int adapter);
-		}
+	pragma(inline, true) extern(C) @nogc nothrow:
+	int al_get_num_video_adapters() => ptr_al_get_num_video_adapters();
+	bool al_get_monitor_info(int adapter, ALLEGRO_MONITOR_INFO *info) => ptr_al_get_monitor_info(adapter, info);
+	static if (allegroSupport >= AllegroSupport.v5_2_5) {
+		int al_get_monitor_dpi(int adapter) => ptr_al_get_monitor_dpi(adapter);
 	}
-	__gshared {
-		pal_get_num_video_adapters al_get_num_video_adapters;
-		pal_get_monitor_info al_get_monitor_info;
+	version (ALLEGRO_UNSTABLE) static if (allegroSupport >= AllegroSupport.v5_2_6) {
+		int al_get_monitor_refresh_rate(int adapter) => ptr_al_get_monitor_refresh_rate(adapter);
+	}
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_get_num_video_adapters) ptr_al_get_num_video_adapters;
+		typeof(&al_get_monitor_info) ptr_al_get_monitor_info;
 		static if (allegroSupport >= AllegroSupport.v5_2_5) {
-			pal_get_monitor_dpi al_get_monitor_dpi;
+			typeof(&al_get_monitor_dpi) ptr_al_get_monitor_dpi;
 		}
 		version (ALLEGRO_UNSTABLE) static if (allegroSupport >= AllegroSupport.v5_2_6) {
-			pal_get_monitor_refresh_rate al_get_monitor_refresh_rate;
+			typeof(&al_get_monitor_refresh_rate) ptr_al_get_monitor_refresh_rate;
 		}
 	}
 }

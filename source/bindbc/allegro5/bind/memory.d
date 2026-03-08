@@ -38,18 +38,17 @@ static if (staticBinding) {
 	void* al_calloc_with_context(size_t count, size_t n, int line, const(char)* file, const(char)* func);
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_set_memory_interface = void function(ALLEGRO_MEMORY_INTERFACE* iface);
-		alias pal_malloc_with_context = void* function(size_t n, int line, const(char)* file, const(char)* func);
-		alias pal_free_with_context = void function(void* ptr, int line, const(char)* file, const(char)* func);
-		alias pal_realloc_with_context = void* function(void* ptr, size_t n, int line, const(char)* file, const(char)* func);
-		alias pal_calloc_with_context = void* function(size_t count, size_t n, int line, const(char)* file, const(char)* func);
-	}
-	__gshared {
-		pal_set_memory_interface al_set_memory_interface;
-		pal_malloc_with_context al_malloc_with_context;
-		pal_free_with_context al_free_with_context;
-		pal_realloc_with_context al_realloc_with_context;
-		pal_calloc_with_context al_calloc_with_context;
+	pragma(inline, true) extern(C) @nogc nothrow:
+	void al_set_memory_interface(ALLEGRO_MEMORY_INTERFACE* iface) => ptr_al_set_memory_interface(iface);
+	void* al_malloc_with_context(size_t n, int line, const(char)* file, const(char)* func) => ptr_al_malloc_with_context(n, line, file, func);
+	void al_free_with_context(void* ptr, int line, const(char)* file, const(char)* func) => ptr_al_free_with_context(ptr, line, file, func);
+	void* al_realloc_with_context(void* ptr, size_t n, int line, const(char)* file, const(char)* func) => ptr_al_realloc_with_context(ptr, n, line, file, func);
+	void* al_calloc_with_context(size_t count, size_t n, int line, const(char)* file, const(char)* func) => ptr_al_calloc_with_context(count, n, line, file, func);
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_set_memory_interface) ptr_al_set_memory_interface;
+		typeof(&al_malloc_with_context) ptr_al_malloc_with_context;
+		typeof(&al_free_with_context) ptr_al_free_with_context;
+		typeof(&al_realloc_with_context) ptr_al_realloc_with_context;
+		typeof(&al_calloc_with_context) ptr_al_calloc_with_context;
 	}
 }

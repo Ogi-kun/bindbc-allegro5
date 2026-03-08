@@ -123,120 +123,121 @@ static if (staticBinding) {
 	void al_uninstall_haptic();
 	bool al_is_haptic_installed();
 
-	bool al_is_mouse_haptic(ALLEGRO_MOUSE*);
-	bool al_is_joystick_haptic(ALLEGRO_JOYSTICK*);
-	bool al_is_keyboard_haptic(ALLEGRO_KEYBOARD*);
-	bool al_is_display_haptic(ALLEGRO_DISPLAY*);
-	bool al_is_touch_input_haptic(ALLEGRO_TOUCH_INPUT*);
+	bool al_is_mouse_haptic(ALLEGRO_MOUSE* mouse);
+	bool al_is_joystick_haptic(ALLEGRO_JOYSTICK* joystick);
+	bool al_is_keyboard_haptic(ALLEGRO_KEYBOARD* keyboard);
+	bool al_is_display_haptic(ALLEGRO_DISPLAY* display);
+	bool al_is_touch_input_haptic(ALLEGRO_TOUCH_INPUT* touch_input);
 
-	ALLEGRO_HAPTIC* al_get_haptic_from_mouse(ALLEGRO_MOUSE*);
-	ALLEGRO_HAPTIC* al_get_haptic_from_joystick(ALLEGRO_JOYSTICK*);
-	ALLEGRO_HAPTIC* al_get_haptic_from_keyboard(ALLEGRO_KEYBOARD*);
-	ALLEGRO_HAPTIC* al_get_haptic_from_display(ALLEGRO_DISPLAY*);
-	ALLEGRO_HAPTIC* al_get_haptic_from_touch_input(ALLEGRO_TOUCH_INPUT*);
+	ALLEGRO_HAPTIC* al_get_haptic_from_mouse(ALLEGRO_MOUSE* mouse);
+	ALLEGRO_HAPTIC* al_get_haptic_from_joystick(ALLEGRO_JOYSTICK* joystick);
+	ALLEGRO_HAPTIC* al_get_haptic_from_keyboard(ALLEGRO_KEYBOARD* keyboard);
+	ALLEGRO_HAPTIC* al_get_haptic_from_display(ALLEGRO_DISPLAY* display);
+	ALLEGRO_HAPTIC* al_get_haptic_from_touch_input(ALLEGRO_TOUCH_INPUT* touch_input);
 
-	bool al_release_haptic(ALLEGRO_HAPTIC*);
+	bool al_release_haptic(ALLEGRO_HAPTIC* haptic);
 
-	bool al_is_haptic_active(ALLEGRO_HAPTIC*);
-	int al_get_haptic_capabilities(ALLEGRO_HAPTIC*);
-	bool al_is_haptic_capable(ALLEGRO_HAPTIC*, int);
+	bool al_is_haptic_active(ALLEGRO_HAPTIC* haptic);
+	int al_get_haptic_capabilities(ALLEGRO_HAPTIC* haptic);
+	bool al_is_haptic_capable(ALLEGRO_HAPTIC* haptic, int query);
 
-	bool al_set_haptic_gain(ALLEGRO_HAPTIC*, double);
-	double al_get_haptic_gain(ALLEGRO_HAPTIC*);
+	bool al_set_haptic_gain(ALLEGRO_HAPTIC* haptic, double gain);
+	double al_get_haptic_gain(ALLEGRO_HAPTIC* haptic);
 
-	bool al_set_haptic_autocenter(ALLEGRO_HAPTIC*, double);
-	double al_get_haptic_autocenter(ALLEGRO_HAPTIC*);
+	bool al_set_haptic_autocenter(ALLEGRO_HAPTIC* haptic, double intensity);
+	double al_get_haptic_autocenter(ALLEGRO_HAPTIC* haptic);
 
-	int al_get_max_haptic_effects(ALLEGRO_HAPTIC*);
-	bool al_is_haptic_effect_ok(ALLEGRO_HAPTIC*, ALLEGRO_HAPTIC_EFFECT*);
-	bool al_upload_haptic_effect(ALLEGRO_HAPTIC*, ALLEGRO_HAPTIC_EFFECT*, ALLEGRO_HAPTIC_EFFECT_ID*);
-	bool al_play_haptic_effect(ALLEGRO_HAPTIC_EFFECT_ID*, int);
-	bool al_upload_and_play_haptic_effect(ALLEGRO_HAPTIC*, ALLEGRO_HAPTIC_EFFECT*, ALLEGRO_HAPTIC_EFFECT_ID*, int);
-	bool al_stop_haptic_effect(ALLEGRO_HAPTIC_EFFECT_ID*);
-	bool al_is_haptic_effect_playing(ALLEGRO_HAPTIC_EFFECT_ID*);
-	bool al_release_haptic_effect(ALLEGRO_HAPTIC_EFFECT_ID*);
-	double al_get_haptic_effect_duration(ALLEGRO_HAPTIC_EFFECT*);
-	bool al_rumble_haptic(ALLEGRO_HAPTIC*, double, double, ALLEGRO_HAPTIC_EFFECT_ID*);
+	int al_get_max_haptic_effects(ALLEGRO_HAPTIC* haptic);
+	bool al_is_haptic_effect_ok(ALLEGRO_HAPTIC* haptic, ALLEGRO_HAPTIC_EFFECT* effect);
+	bool al_upload_haptic_effect(ALLEGRO_HAPTIC* haptic, ALLEGRO_HAPTIC_EFFECT* effect, ALLEGRO_HAPTIC_EFFECT_ID* id);
+	bool al_play_haptic_effect(ALLEGRO_HAPTIC_EFFECT_ID* id, int loop);
+	bool al_upload_and_play_haptic_effect(ALLEGRO_HAPTIC* haptic, ALLEGRO_HAPTIC_EFFECT* effect, ALLEGRO_HAPTIC_EFFECT_ID* id, int loop);
+	bool al_stop_haptic_effect(ALLEGRO_HAPTIC_EFFECT_ID* id);
+	bool al_is_haptic_effect_playing(ALLEGRO_HAPTIC_EFFECT_ID* id);
+	bool al_release_haptic_effect(ALLEGRO_HAPTIC_EFFECT_ID* id);
+	double al_get_haptic_effect_duration(ALLEGRO_HAPTIC_EFFECT* effect);
+	bool al_rumble_haptic(ALLEGRO_HAPTIC* haptic, double intensity, double duration, ALLEGRO_HAPTIC_EFFECT_ID* id);
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_install_haptic = bool function();
-		alias pal_uninstall_haptic = void function();
-		alias pal_is_haptic_installed = bool function();
+	pragma(inline, true) extern(C) @nogc nothrow:
 
-		alias pal_is_mouse_haptic = bool function(ALLEGRO_MOUSE*);
-		alias pal_is_joystick_haptic = bool function(ALLEGRO_JOYSTICK*);
-		alias pal_is_keyboard_haptic = bool function(ALLEGRO_KEYBOARD*);
-		alias pal_is_display_haptic = bool function(ALLEGRO_DISPLAY*);
-		alias pal_is_touch_input_haptic = bool function(ALLEGRO_TOUCH_INPUT*);
+	bool al_install_haptic() => ptr_al_install_haptic();
+	void al_uninstall_haptic() => ptr_al_uninstall_haptic();
+	bool al_is_haptic_installed() => ptr_al_is_haptic_installed();
 
-		alias pal_get_haptic_from_mouse = ALLEGRO_HAPTIC* function(ALLEGRO_MOUSE*);
-		alias pal_get_haptic_from_joystick = ALLEGRO_HAPTIC* function(ALLEGRO_JOYSTICK*);
-		alias pal_get_haptic_from_keyboard = ALLEGRO_HAPTIC* function(ALLEGRO_KEYBOARD*);
-		alias pal_get_haptic_from_display = ALLEGRO_HAPTIC* function(ALLEGRO_DISPLAY*);
-		alias pal_get_haptic_from_touch_input = ALLEGRO_HAPTIC* function(ALLEGRO_TOUCH_INPUT*);
+	bool al_is_mouse_haptic(ALLEGRO_MOUSE* mouse) => ptr_al_is_mouse_haptic(mouse);
+	bool al_is_joystick_haptic(ALLEGRO_JOYSTICK* joystick) => ptr_al_is_joystick_haptic(joystick);
+	bool al_is_keyboard_haptic(ALLEGRO_KEYBOARD* keyboard) => ptr_al_is_keyboard_haptic(keyboard);
+	bool al_is_display_haptic(ALLEGRO_DISPLAY* display) => ptr_al_is_display_haptic(display);
+	bool al_is_touch_input_haptic(ALLEGRO_TOUCH_INPUT* touch_input) => ptr_al_is_touch_input_haptic(touch_input);
 
-		alias pal_release_haptic = bool function(ALLEGRO_HAPTIC*);
+	ALLEGRO_HAPTIC* al_get_haptic_from_mouse(ALLEGRO_MOUSE* mouse) => ptr_al_get_haptic_from_mouse(mouse);
+	ALLEGRO_HAPTIC* al_get_haptic_from_joystick(ALLEGRO_JOYSTICK* joystick) => ptr_al_get_haptic_from_joystick(joystick);
+	ALLEGRO_HAPTIC* al_get_haptic_from_keyboard(ALLEGRO_KEYBOARD* keyboard) => ptr_al_get_haptic_from_keyboard(keyboard);
+	ALLEGRO_HAPTIC* al_get_haptic_from_display(ALLEGRO_DISPLAY* display) => ptr_al_get_haptic_from_display(display);
+	ALLEGRO_HAPTIC* al_get_haptic_from_touch_input(ALLEGRO_TOUCH_INPUT* touch_input) => ptr_al_get_haptic_from_touch_input(touch_input);
 
-		alias pal_is_haptic_active = bool function(ALLEGRO_HAPTIC*);
-		alias pal_get_haptic_capabilities = int function(ALLEGRO_HAPTIC*);
-		alias pal_is_haptic_capable = bool function(ALLEGRO_HAPTIC*, int);
+	bool al_release_haptic(ALLEGRO_HAPTIC* haptic) => ptr_al_release_haptic(haptic);
 
-		alias pal_set_haptic_gain = bool function(ALLEGRO_HAPTIC*, double);
-		alias pal_get_haptic_gain = double function(ALLEGRO_HAPTIC*);
+	bool al_is_haptic_active(ALLEGRO_HAPTIC* haptic) => ptr_al_is_haptic_active(haptic);
+	int al_get_haptic_capabilities(ALLEGRO_HAPTIC* haptic) => ptr_al_get_haptic_capabilities(haptic);
+	bool al_is_haptic_capable(ALLEGRO_HAPTIC* haptic, int query) => ptr_al_is_haptic_capable(haptic, query);
 
-		alias pal_set_haptic_autocenter = bool function(ALLEGRO_HAPTIC*, double);
-		alias pal_get_haptic_autocenter = double function(ALLEGRO_HAPTIC*);
+	bool al_set_haptic_gain(ALLEGRO_HAPTIC* haptic, double gain) => ptr_al_set_haptic_gain(haptic, gain);
+	double al_get_haptic_gain(ALLEGRO_HAPTIC* haptic) => ptr_al_get_haptic_gain(haptic);
 
-		alias pal_get_max_haptic_effects = int function(ALLEGRO_HAPTIC*);
-		alias pal_is_haptic_effect_ok = bool function(ALLEGRO_HAPTIC*, ALLEGRO_HAPTIC_EFFECT*);
-		alias pal_upload_haptic_effect = bool function(ALLEGRO_HAPTIC*, ALLEGRO_HAPTIC_EFFECT*, ALLEGRO_HAPTIC_EFFECT_ID*);
-		alias pal_play_haptic_effect = bool function(ALLEGRO_HAPTIC_EFFECT_ID*, int);
-		alias pal_upload_and_play_haptic_effect = bool function(ALLEGRO_HAPTIC*, ALLEGRO_HAPTIC_EFFECT*, ALLEGRO_HAPTIC_EFFECT_ID*, int);
-		alias pal_stop_haptic_effect = bool function(ALLEGRO_HAPTIC_EFFECT_ID*);
-		alias pal_is_haptic_effect_playing = bool function(ALLEGRO_HAPTIC_EFFECT_ID*);
-		alias pal_release_haptic_effect = bool function(ALLEGRO_HAPTIC_EFFECT_ID*);
-		alias pal_get_haptic_effect_duration = double function(ALLEGRO_HAPTIC_EFFECT*);
-		alias pal_rumble_haptic = bool function(ALLEGRO_HAPTIC*, double, double, ALLEGRO_HAPTIC_EFFECT_ID*);
-	}
-	__gshared {
-		pal_install_haptic al_install_haptic;
-		pal_uninstall_haptic al_uninstall_haptic;
-		pal_is_haptic_installed al_is_haptic_installed;
+	bool al_set_haptic_autocenter(ALLEGRO_HAPTIC* haptic, double intensity) => ptr_al_set_haptic_autocenter(haptic, intensity);
+	double al_get_haptic_autocenter(ALLEGRO_HAPTIC* haptic) => ptr_al_get_haptic_autocenter(haptic);
 
-		pal_is_mouse_haptic al_is_mouse_haptic;
-		pal_is_joystick_haptic al_is_joystick_haptic;
-		pal_is_keyboard_haptic al_is_keyboard_haptic;
-		pal_is_display_haptic al_is_display_haptic;
-		pal_is_touch_input_haptic al_is_touch_input_haptic;
+	int al_get_max_haptic_effects(ALLEGRO_HAPTIC* haptic) => ptr_al_get_max_haptic_effects(haptic);
+	bool al_is_haptic_effect_ok(ALLEGRO_HAPTIC* haptic, ALLEGRO_HAPTIC_EFFECT* effect) => ptr_al_is_haptic_effect_ok(haptic, effect);
+	bool al_upload_haptic_effect(ALLEGRO_HAPTIC* haptic, ALLEGRO_HAPTIC_EFFECT* effect, ALLEGRO_HAPTIC_EFFECT_ID* id) => ptr_al_upload_haptic_effect(haptic, effect, id);
+	bool al_play_haptic_effect(ALLEGRO_HAPTIC_EFFECT_ID* id, int loop) => ptr_al_play_haptic_effect(id, loop);
+	bool al_upload_and_play_haptic_effect(ALLEGRO_HAPTIC* haptic, ALLEGRO_HAPTIC_EFFECT* effect, ALLEGRO_HAPTIC_EFFECT_ID* id, int loop) => ptr_al_upload_and_play_haptic_effect(haptic, effect, id, loop);
+	bool al_stop_haptic_effect(ALLEGRO_HAPTIC_EFFECT_ID* id) => ptr_al_stop_haptic_effect(id);
+	bool al_is_haptic_effect_playing(ALLEGRO_HAPTIC_EFFECT_ID* id) => ptr_al_is_haptic_effect_playing(id);
+	bool al_release_haptic_effect(ALLEGRO_HAPTIC_EFFECT_ID* id) => ptr_al_release_haptic_effect(id);
+	double al_get_haptic_effect_duration(ALLEGRO_HAPTIC_EFFECT* effect) => ptr_al_get_haptic_effect_duration(effect);
+	bool al_rumble_haptic(ALLEGRO_HAPTIC* haptic, double intensity, double duration, ALLEGRO_HAPTIC_EFFECT_ID* id) => ptr_al_rumble_haptic(haptic, intensity, duration, id);
 
-		pal_get_haptic_from_mouse al_get_haptic_from_mouse;
-		pal_get_haptic_from_joystick al_get_haptic_from_joystick;
-		pal_get_haptic_from_keyboard al_get_haptic_from_keyboard;
-		pal_get_haptic_from_display al_get_haptic_from_display;
-		pal_get_haptic_from_touch_input al_get_haptic_from_touch_input;
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_install_haptic) ptr_al_install_haptic;
+		typeof(&al_uninstall_haptic) ptr_al_uninstall_haptic;
+		typeof(&al_is_haptic_installed) ptr_al_is_haptic_installed;
 
-		pal_release_haptic al_release_haptic;
+		typeof(&al_is_mouse_haptic) ptr_al_is_mouse_haptic;
+		typeof(&al_is_joystick_haptic) ptr_al_is_joystick_haptic;
+		typeof(&al_is_keyboard_haptic) ptr_al_is_keyboard_haptic;
+		typeof(&al_is_display_haptic) ptr_al_is_display_haptic;
+		typeof(&al_is_touch_input_haptic) ptr_al_is_touch_input_haptic;
 
-		pal_is_haptic_active al_is_haptic_active;
-		pal_get_haptic_capabilities al_get_haptic_capabilities;
-		pal_is_haptic_capable al_is_haptic_capable;
+		typeof(&al_get_haptic_from_mouse) ptr_al_get_haptic_from_mouse;
+		typeof(&al_get_haptic_from_joystick) ptr_al_get_haptic_from_joystick;
+		typeof(&al_get_haptic_from_keyboard) ptr_al_get_haptic_from_keyboard;
+		typeof(&al_get_haptic_from_display) ptr_al_get_haptic_from_display;
+		typeof(&al_get_haptic_from_touch_input) ptr_al_get_haptic_from_touch_input;
 
-		pal_set_haptic_gain al_set_haptic_gain;
-		pal_get_haptic_gain al_get_haptic_gain;
+		typeof(&al_release_haptic) ptr_al_release_haptic;
 
-		pal_set_haptic_autocenter al_set_haptic_autocenter;
-		pal_get_haptic_autocenter al_get_haptic_autocenter;
+		typeof(&al_is_haptic_active) ptr_al_is_haptic_active;
+		typeof(&al_get_haptic_capabilities) ptr_al_get_haptic_capabilities;
+		typeof(&al_is_haptic_capable) ptr_al_is_haptic_capable;
 
-		pal_get_max_haptic_effects al_get_max_haptic_effects;
-		pal_is_haptic_effect_ok al_is_haptic_effect_ok;
-		pal_upload_haptic_effect al_upload_haptic_effect;
-		pal_play_haptic_effect al_play_haptic_effect;
-		pal_upload_and_play_haptic_effect al_upload_and_play_haptic_effect;
-		pal_stop_haptic_effect al_stop_haptic_effect;
-		pal_is_haptic_effect_playing al_is_haptic_effect_playing;
-		pal_release_haptic_effect al_release_haptic_effect;
-		pal_get_haptic_effect_duration al_get_haptic_effect_duration;
-		pal_rumble_haptic al_rumble_haptic;
+		typeof(&al_set_haptic_gain) ptr_al_set_haptic_gain;
+		typeof(&al_get_haptic_gain) ptr_al_get_haptic_gain;
+
+		typeof(&al_set_haptic_autocenter) ptr_al_set_haptic_autocenter;
+		typeof(&al_get_haptic_autocenter) ptr_al_get_haptic_autocenter;
+
+		typeof(&al_get_max_haptic_effects) ptr_al_get_max_haptic_effects;
+		typeof(&al_is_haptic_effect_ok) ptr_al_is_haptic_effect_ok;
+		typeof(&al_upload_haptic_effect) ptr_al_upload_haptic_effect;
+		typeof(&al_play_haptic_effect) ptr_al_play_haptic_effect;
+		typeof(&al_upload_and_play_haptic_effect) ptr_al_upload_and_play_haptic_effect;
+		typeof(&al_stop_haptic_effect) ptr_al_stop_haptic_effect;
+		typeof(&al_is_haptic_effect_playing) ptr_al_is_haptic_effect_playing;
+		typeof(&al_release_haptic_effect) ptr_al_release_haptic_effect;
+		typeof(&al_get_haptic_effect_duration) ptr_al_get_haptic_effect_duration;
+		typeof(&al_rumble_haptic) ptr_al_rumble_haptic;
 	}
 }

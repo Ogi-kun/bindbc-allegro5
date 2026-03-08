@@ -14,15 +14,13 @@ static if (staticBinding) {
 	void al_init_timeout(ALLEGRO_TIMEOUT* timeout, double seconds);
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_get_time = double function();
-		alias pal_rest = void function(double seconds);
-		alias pal_init_timeout = void function(ALLEGRO_TIMEOUT* timeout, double seconds);
-	}
-
-	__gshared {
-		pal_get_time al_get_time;
-		pal_rest al_rest;
-		pal_init_timeout al_init_timeout;
+	pragma(inline, true) extern(C) @nogc nothrow:
+	double al_get_time() => ptr_al_get_time();
+	void al_rest(double seconds) => ptr_al_rest(seconds);
+	void al_init_timeout(ALLEGRO_TIMEOUT* timeout, double seconds) => ptr_al_init_timeout(timeout, seconds);
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_get_time) ptr_al_get_time;
+		typeof(&al_rest) ptr_al_rest;
+		typeof(&al_init_timeout) ptr_al_init_timeout;
 	}
 }

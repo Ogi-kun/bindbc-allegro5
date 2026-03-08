@@ -30,48 +30,47 @@ static if (staticBinding) {
 	const(char)* al_get_next_config_entry(ALLEGRO_CONFIG_ENTRY** iterator);
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_create_config = ALLEGRO_CONFIG* function();
-		alias pal_add_config_section = void function(ALLEGRO_CONFIG* config, const(char)* name);
-		alias pal_set_config_value = void function(ALLEGRO_CONFIG* config, const(char)* section, const(char)* key, const(char)* value);
-		alias pal_add_config_comment = void function(ALLEGRO_CONFIG* config, const(char)* section, const(char)* comment);
-		alias pal_get_config_value = const(char)* function(const(ALLEGRO_CONFIG)* config, const(char)* section, const(char)* key);
-		alias pal_load_config_file = ALLEGRO_CONFIG* function(const(char)* filename);
-		alias pal_load_config_file_f = ALLEGRO_CONFIG* function(ALLEGRO_FILE* filename);
-		alias pal_save_config_file = bool function(const(char)* filename, const(ALLEGRO_CONFIG)* config);
-		alias pal_save_config_file_f = bool function(ALLEGRO_FILE* file, const(ALLEGRO_CONFIG)* config);
-		alias pal_merge_config_into = void function(ALLEGRO_CONFIG* master, const(ALLEGRO_CONFIG)* add);
-		alias pal_merge_config = ALLEGRO_CONFIG* function(const(ALLEGRO_CONFIG)* cfg1, const(ALLEGRO_CONFIG)* cfg2);
-		alias pal_destroy_config = void function(ALLEGRO_CONFIG* config);
-		alias pal_remove_config_section = bool function(ALLEGRO_CONFIG* config, const(char)* section);
-		alias pal_remove_config_key = bool function(ALLEGRO_CONFIG* config, const(char)* section, const(char)* key);
+	pragma(inline, true) extern(C) @nogc nothrow:
 
-		alias pal_get_first_config_section = const(char)* function(const(ALLEGRO_CONFIG)* config, ALLEGRO_CONFIG_SECTION** iterator);
-		alias pal_get_next_config_section = const(char)* function(ALLEGRO_CONFIG_SECTION** iterator);
-		alias pal_get_first_config_entry = const(char)* function(const(ALLEGRO_CONFIG)* config, const(char)* section, ALLEGRO_CONFIG_ENTRY** iterator);
-		alias pal_get_next_config_entry = const(char)* function(ALLEGRO_CONFIG_ENTRY** iterator);
+	ALLEGRO_CONFIG* al_create_config() => ptr_al_create_config();
+	void al_add_config_section(ALLEGRO_CONFIG* config, const(char)* name) => ptr_al_add_config_section(config, name);
+	void al_set_config_value(ALLEGRO_CONFIG* config, const(char)* section, const(char)* key, const(char)* value) => ptr_al_set_config_value(config, section, key, value);
+	void al_add_config_comment(ALLEGRO_CONFIG* config, const(char)* section, const(char)* comment) => ptr_al_add_config_comment(config, section, comment);
+	const(char)* al_get_config_value(const(ALLEGRO_CONFIG)* config, const(char)* section, const(char)* key) => ptr_al_get_config_value(config, section, key);
+	ALLEGRO_CONFIG* al_load_config_file(const(char)* filename) => ptr_al_load_config_file(filename);
+	ALLEGRO_CONFIG* al_load_config_file_f(ALLEGRO_FILE* filename) => ptr_al_load_config_file_f(filename);
+	bool al_save_config_file(const(char)* filename, const(ALLEGRO_CONFIG)* config) => ptr_al_save_config_file(filename, config);
+	bool al_save_config_file_f(ALLEGRO_FILE* file, const(ALLEGRO_CONFIG)* config) => ptr_al_save_config_file_f(file, config);
+	void al_merge_config_into(ALLEGRO_CONFIG* master, const(ALLEGRO_CONFIG)* add) => ptr_al_merge_config_into(master, add);
+	ALLEGRO_CONFIG* al_merge_config(const(ALLEGRO_CONFIG)* cfg1, const(ALLEGRO_CONFIG)* cfg2) => ptr_al_merge_config(cfg1, cfg2);
+	void al_destroy_config(ALLEGRO_CONFIG* config) => ptr_al_destroy_config(config);
+	bool al_remove_config_section(ALLEGRO_CONFIG* config, const(char)* section) => ptr_al_remove_config_section(config, section);
+	bool al_remove_config_key(ALLEGRO_CONFIG* config, const(char)* section, const(char)* key) => ptr_al_remove_config_key(config, section, key);
+
+	const(char)* al_get_first_config_section(const(ALLEGRO_CONFIG)* config, ALLEGRO_CONFIG_SECTION** iterator) => ptr_al_get_first_config_section(config, iterator);
+	const(char)* al_get_next_config_section(ALLEGRO_CONFIG_SECTION** iterator) => ptr_al_get_next_config_section(iterator);
+	const(char)* al_get_first_config_entry(const(ALLEGRO_CONFIG)* config, const(char)* section, ALLEGRO_CONFIG_ENTRY** iterator) => ptr_al_get_first_config_entry(config, section, iterator);
+	const(char)* al_get_next_config_entry(ALLEGRO_CONFIG_ENTRY** iterator) => ptr_al_get_next_config_entry(iterator);
+
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_create_config) ptr_al_create_config;
+		typeof(&al_add_config_section) ptr_al_add_config_section;
+		typeof(&al_set_config_value) ptr_al_set_config_value;
+		typeof(&al_add_config_comment) ptr_al_add_config_comment;
+		typeof(&al_get_config_value) ptr_al_get_config_value;
+		typeof(&al_load_config_file) ptr_al_load_config_file;
+		typeof(&al_load_config_file_f) ptr_al_load_config_file_f;
+		typeof(&al_save_config_file) ptr_al_save_config_file;
+		typeof(&al_save_config_file_f) ptr_al_save_config_file_f;
+		typeof(&al_merge_config_into) ptr_al_merge_config_into;
+		typeof(&al_merge_config) ptr_al_merge_config;
+		typeof(&al_destroy_config) ptr_al_destroy_config;
+		typeof(&al_remove_config_section) ptr_al_remove_config_section;
+		typeof(&al_remove_config_key) ptr_al_remove_config_key;
+
+		typeof(&al_get_first_config_section) ptr_al_get_first_config_section;
+		typeof(&al_get_next_config_section) ptr_al_get_next_config_section;
+		typeof(&al_get_first_config_entry) ptr_al_get_first_config_entry;
+		typeof(&al_get_next_config_entry) ptr_al_get_next_config_entry;
 	}
-
-	__gshared {
-		pal_create_config al_create_config;
-		pal_add_config_section al_add_config_section;
-		pal_set_config_value al_set_config_value;
-		pal_add_config_comment al_add_config_comment;
-		pal_get_config_value al_get_config_value;
-		pal_load_config_file al_load_config_file;
-		pal_load_config_file_f al_load_config_file_f;
-		pal_save_config_file al_save_config_file;
-		pal_save_config_file_f al_save_config_file_f;
-		pal_merge_config_into al_merge_config_into;
-		pal_merge_config al_merge_config;
-		pal_destroy_config al_destroy_config;
-		pal_remove_config_section al_remove_config_section;
-		pal_remove_config_key al_remove_config_key;
-
-		pal_get_first_config_section al_get_first_config_section;
-		pal_get_next_config_section al_get_next_config_section;
-		pal_get_first_config_entry al_get_first_config_entry;
-		pal_get_next_config_entry al_get_next_config_entry;
-	}
-
 }

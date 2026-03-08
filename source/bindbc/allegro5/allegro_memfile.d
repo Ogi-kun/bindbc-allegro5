@@ -8,18 +8,18 @@ import bindbc.allegro5.bind.file : ALLEGRO_FILE;
 
 static if (staticBinding) {
 	extern(C) @nogc nothrow:
-
 	ALLEGRO_FILE* al_open_memfile(void* mem, long size, const(char)* mode);
 	uint al_get_allegro_memfile_version();
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_open_memfile = ALLEGRO_FILE* function(void* mem, long size, const(char)* mode);
-		alias pal_get_allegro_memfile_version = uint function();
+
+	pragma(inline, true) extern(C) @nogc nothrow {
+		ALLEGRO_FILE* al_open_memfile(void* mem, long size, const(char)* mode) => ptr_al_open_memfile(mem, size, mode);
+		uint al_get_allegro_memfile_version() => ptr_al_get_allegro_memfile_version();
 	}
-	__gshared {
-		pal_open_memfile al_open_memfile;
-		pal_get_allegro_memfile_version al_get_allegro_memfile_version;
+	private __gshared {
+		typeof(&al_open_memfile) ptr_al_open_memfile;
+		typeof(&al_get_allegro_memfile_version) ptr_al_get_allegro_memfile_version;
 	}
 
 	import bindbc.loader;
@@ -76,8 +76,8 @@ else {
 
 		auto lastErrorCount = errorCount();
 
-		lib.bindSymbol(cast(void**)&al_open_memfile, "al_open_memfile");
-		lib.bindSymbol(cast(void**)&al_get_allegro_memfile_version, "al_get_allegro_memfile_version");
+		lib.bindSymbol(cast(void**)&ptr_al_open_memfile, "al_open_memfile");
+		lib.bindSymbol(cast(void**)&ptr_al_get_allegro_memfile_version, "al_get_allegro_memfile_version");
 
 		if (errorCount() != lastErrorCount) {
 			return AllegroSupport.badLibrary;

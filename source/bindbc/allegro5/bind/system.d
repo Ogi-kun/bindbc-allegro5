@@ -64,50 +64,49 @@ static if (staticBinding) {
 	static if (allegroSupport >= AllegroSupport.v5_2_5) {
 		ALLEGRO_SYSTEM_ID al_get_system_id();
 	}
-
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_install_system = bool function(int version_, al_atexit_callback atexit_ptr);
-		alias pal_uninstall_system = void function();
-		alias pal_is_system_installed = bool function();
-		alias pal_get_system_driver = ALLEGRO_SYSTEM* function();
-		alias pal_get_system_config = ALLEGRO_CONFIG* function();
+	pragma(inline, true) extern(C) @nogc nothrow:
 
-		alias pal_get_standard_path = ALLEGRO_PATH* function(int id);
-		alias pal_set_exe_name = void function(const(char)* path);
+	bool al_install_system(int version_, al_atexit_callback atexit_ptr) => ptr_al_install_system(version_, atexit_ptr);
+	void al_uninstall_system() => ptr_al_uninstall_system();
+	bool al_is_system_installed() => ptr_al_is_system_installed();
+	ALLEGRO_SYSTEM* al_get_system_driver() => ptr_al_get_system_driver();
+	ALLEGRO_CONFIG* al_get_system_config() => ptr_al_get_system_config();
 
-		alias pal_set_org_name = void function(const(char)* org_name);
-		alias pal_set_app_name = void function(const(char)* app_name);
-		alias pal_get_org_name = const(char)* function();
-		alias pal_get_app_name = const(char)* function();
+	ALLEGRO_PATH* al_get_standard_path(int id) => ptr_al_get_standard_path(id);
+	void al_set_exe_name(const(char)* path) => ptr_al_set_exe_name(path);
 
-		alias pal_inhibit_screensaver = bool function(bool inhibit);
+	void al_set_org_name(const(char)* org_name) => ptr_al_set_org_name(org_name);
+	void al_set_app_name(const(char)* app_name) => ptr_al_set_app_name(app_name);
+	const(char)* al_get_org_name() => ptr_al_get_org_name();
+	const(char)* al_get_app_name() => ptr_al_get_app_name();
 
-		static if (allegroSupport >= AllegroSupport.v5_2_5) {
-			alias pal_get_system_id = ALLEGRO_SYSTEM_ID function();
-		}
+	bool al_inhibit_screensaver(bool inhibit) => ptr_al_inhibit_screensaver(inhibit);
+
+	static if (allegroSupport >= AllegroSupport.v5_2_5) {
+		ALLEGRO_SYSTEM_ID al_get_system_id() => ptr_al_get_system_id();
 	}
-	__gshared {
-		pal_install_system al_install_system;
-		pal_uninstall_system al_uninstall_system;
-		pal_is_system_installed al_is_system_installed;
-		pal_get_system_driver al_get_system_driver;
-		pal_get_system_config al_get_system_config;
 
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_install_system) ptr_al_install_system;
+		typeof(&al_uninstall_system) ptr_al_uninstall_system;
+		typeof(&al_is_system_installed) ptr_al_is_system_installed;
+		typeof(&al_get_system_driver) ptr_al_get_system_driver;
+		typeof(&al_get_system_config) ptr_al_get_system_config;
 
-		pal_get_standard_path al_get_standard_path;
-		pal_set_exe_name al_set_exe_name;
+		typeof(&al_get_standard_path) ptr_al_get_standard_path;
+		typeof(&al_set_exe_name) ptr_al_set_exe_name;
 
-		pal_set_org_name al_set_org_name;
-		pal_set_app_name al_set_app_name;
-		pal_get_org_name al_get_org_name;
-		pal_get_app_name al_get_app_name;
+		typeof(&al_set_org_name) ptr_al_set_org_name;
+		typeof(&al_set_app_name) ptr_al_set_app_name;
+		typeof(&al_get_org_name) ptr_al_get_org_name;
+		typeof(&al_get_app_name) ptr_al_get_app_name;
 
-		pal_inhibit_screensaver al_inhibit_screensaver;
+		typeof(&al_inhibit_screensaver) ptr_al_inhibit_screensaver;
 
 		static if (allegroSupport >= AllegroSupport.v5_2_5) {
-			pal_get_system_id al_get_system_id;
+			typeof(&al_get_system_id) ptr_al_get_system_id;
 		}
 	}
 }

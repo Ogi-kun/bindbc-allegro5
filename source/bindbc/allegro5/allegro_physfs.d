@@ -10,13 +10,13 @@ static if (staticBinding) {
 	uint al_get_allegro_physfs_version();
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_set_physfs_file_interface = void function();
-		alias pal_get_allegro_physfs_version = uint function();
+	pragma(inline, true) extern(C) @nogc nothrow {
+		void al_set_physfs_file_interface() => ptr_al_set_physfs_file_interface();
+		uint al_get_allegro_physfs_version() => ptr_al_get_allegro_physfs_version();
 	}
-	__gshared {
-		pal_set_physfs_file_interface al_set_physfs_file_interface;
-		pal_get_allegro_physfs_version al_get_allegro_physfs_version;
+	private __gshared {
+		typeof(&al_set_physfs_file_interface) ptr_al_set_physfs_file_interface;
+		typeof(&al_get_allegro_physfs_version) ptr_al_get_allegro_physfs_version;
 	}
 
 	import bindbc.loader;
@@ -73,8 +73,8 @@ else {
 		auto lastErrorCount = errorCount();
 		auto loadedVersion = AllegroSupport.badLibrary;
 
-		lib.bindSymbol(cast(void**)&al_set_physfs_file_interface, "al_set_physfs_file_interface");
-		lib.bindSymbol(cast(void**)&al_get_allegro_physfs_version, "al_get_allegro_physfs_version");
+		lib.bindSymbol(cast(void**)&ptr_al_set_physfs_file_interface, "al_set_physfs_file_interface");
+		lib.bindSymbol(cast(void**)&ptr_al_get_allegro_physfs_version, "al_get_allegro_physfs_version");
 
 		if (errorCount() != lastErrorCount) {
 			return AllegroSupport.badLibrary;

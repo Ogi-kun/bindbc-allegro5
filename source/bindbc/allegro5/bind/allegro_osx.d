@@ -13,12 +13,9 @@ static if (staticBinding) {
 	NSWindow al_osx_get_window(ALLEGRO_DISPLAY* d);
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_osx_get_window = NSWindow function(ALLEGRO_DISPLAY* d);
-	}
-
-	__gshared {
-		pal_osx_get_window al_osx_get_window;
+	pragma(inline, true) extern(C) @nogc nothrow:
+	NSWindow al_osx_get_window(ALLEGRO_DISPLAY* d) => ptr_al_osx_get_window(d);
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_osx_get_window) ptr_al_osx_get_window;
 	}
 }
-

@@ -26,12 +26,11 @@ static if (staticBinding) {
 	void al_restore_state(const(ALLEGRO_STATE)* state);
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_store_state = void function(ALLEGRO_STATE* state, int flags);
-		alias pal_restore_state = void function(const(ALLEGRO_STATE)* state);
-	}
-	__gshared {
-		pal_store_state al_store_state;
-		pal_restore_state al_restore_state;
+	pragma(inline, true) extern(C) @nogc nothrow:
+	void al_store_state(ALLEGRO_STATE* state, int flags) => ptr_al_store_state(state, flags);
+	void al_restore_state(const(ALLEGRO_STATE)* state) => ptr_al_restore_state(state);
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_store_state) ptr_al_store_state;
+		typeof(&al_restore_state) ptr_al_restore_state;
 	}
 }

@@ -6,33 +6,28 @@ static if (allegroImage):
 
 static if (staticBinding) {
 	extern(C) @nogc nothrow:
-
 	bool al_init_image_addon();
 	void al_shutdown_image_addon();
 	uint al_get_allegro_image_version();
-
 	static if (allegroSupport >= AllegroSupport.v5_2_6) {
 		bool al_is_image_addon_initialized();
 	}
-
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_init_image_addon = bool function();
-		alias pal_shutdown_image_addon = void function();
-		alias pal_get_allegro_image_version = uint function();
-
+	pragma(inline, true) extern(C) @nogc nothrow {
+		bool al_init_image_addon() => ptr_al_init_image_addon();
+		void al_shutdown_image_addon() => ptr_al_shutdown_image_addon();
+		uint al_get_allegro_image_version() => ptr_al_get_allegro_image_version();
 		static if (allegroSupport >= AllegroSupport.v5_2_6) {
-			alias pal_is_image_addon_initialized = bool function();
+			bool al_is_image_addon_initialized() => ptr_al_is_image_addon_initialized();
 		}
 	}
-	__gshared {
-		pal_init_image_addon al_init_image_addon;
-		pal_shutdown_image_addon al_shutdown_image_addon;
-		pal_get_allegro_image_version al_get_allegro_image_version;
-
+	private __gshared {
+		typeof(&al_init_image_addon) ptr_al_init_image_addon;
+		typeof(&al_shutdown_image_addon) ptr_al_shutdown_image_addon;
+		typeof(&al_get_allegro_image_version) ptr_al_get_allegro_image_version;
 		static if (allegroSupport >= AllegroSupport.v5_2_6) {
-			pal_is_image_addon_initialized al_is_image_addon_initialized;
+			typeof(&al_is_image_addon_initialized) ptr_al_is_image_addon_initialized;
 		}
 	}
 
@@ -91,16 +86,16 @@ else {
 
 		auto lastErrorCount = errorCount();
 
-		lib.bindSymbol(cast(void**)&al_init_image_addon, "al_init_image_addon");
-		lib.bindSymbol(cast(void**)&al_shutdown_image_addon, "al_shutdown_image_addon");
-		lib.bindSymbol(cast(void**)&al_get_allegro_image_version, "al_get_allegro_image_version");
+		lib.bindSymbol(cast(void**)&ptr_al_init_image_addon, "al_init_image_addon");
+		lib.bindSymbol(cast(void**)&ptr_al_shutdown_image_addon, "al_shutdown_image_addon");
+		lib.bindSymbol(cast(void**)&ptr_al_get_allegro_image_version, "al_get_allegro_image_version");
 
 		if (errorCount() != lastErrorCount) {
 			return AllegroSupport.badLibrary;
 		}
 
 		static if (allegroSupport >= AllegroSupport.v5_2_6) {
-			lib.bindSymbol(cast(void**)&al_is_image_addon_initialized, "al_is_image_addon_initialized");
+			lib.bindSymbol(cast(void**)&ptr_al_is_image_addon_initialized, "al_is_image_addon_initialized");
 
 			if (errorCount() != lastErrorCount) {
 				return AllegroSupport.v5_2_5;

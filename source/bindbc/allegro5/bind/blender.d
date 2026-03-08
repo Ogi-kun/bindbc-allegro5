@@ -38,22 +38,21 @@ static if (staticBinding) {
 			int* alpha_src, int* alpha_dest);
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_set_blender = void function(int op, int source, int dest);
-		alias pal_set_blend_color = void function(ALLEGRO_COLOR color);
-		alias pal_get_blender = void function(int* op, int* source, int* dest);
-		alias pal_get_blend_color = ALLEGRO_COLOR function();
-		alias pal_set_separate_blender = void function(int op, int source,
-				int dest, int alpha_op, int alpha_source, int alpha_dest);
-		alias pal_get_separate_blender = void function(int* op, int* source,
-				int* dest, int* alpha_op, int* alpha_src, int* alpha_dest);
-	}
-	__gshared {
-		pal_set_blender al_set_blender;
-		pal_set_blend_color al_set_blend_color;
-		pal_get_blender al_get_blender;
-		pal_get_blend_color al_get_blend_color;
-		pal_set_separate_blender al_set_separate_blender;
-		pal_get_separate_blender al_get_separate_blender;
+	pragma(inline, true) extern(C) @nogc nothrow:
+	void al_set_blender(int op, int source, int dest) => ptr_al_set_blender(op, source, dest);
+	void al_set_blend_color(ALLEGRO_COLOR color) => ptr_al_set_blend_color(color);
+	void al_get_blender(int* op, int* source, int* dest) => ptr_al_get_blender(op, source, dest);
+	ALLEGRO_COLOR al_get_blend_color() => ptr_al_get_blend_color();
+	void al_set_separate_blender(int op, int source, int dest, int alpha_op, int alpha_source, int alpha_dest) =>
+			ptr_al_set_separate_blender(op, source, dest, alpha_op, alpha_source, alpha_dest);
+	void al_get_separate_blender(int* op, int* source, int* dest, int* alpha_op, int* alpha_src, int* alpha_dest) =>
+			ptr_al_get_separate_blender(op, source, dest, alpha_op, alpha_src, alpha_dest);
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_set_blender) ptr_al_set_blender;
+		typeof(&al_set_blend_color) ptr_al_set_blend_color;
+		typeof(&al_get_blender) ptr_al_get_blender;
+		typeof(&al_get_blend_color) ptr_al_get_blend_color;
+		typeof(&al_set_separate_blender) ptr_al_set_separate_blender;
+		typeof(&al_get_separate_blender) ptr_al_get_separate_blender;
 	}
 }

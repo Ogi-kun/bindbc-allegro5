@@ -51,7 +51,7 @@ static if (staticBinding) {
 	bool al_fseek(ALLEGRO_FILE* f, long offset, int whence);
 	bool al_feof(ALLEGRO_FILE* f);
 	int al_ferror(ALLEGRO_FILE* f);
-	const(char)*  al_ferrmsg(ALLEGRO_FILE* f);
+	const(char)* al_ferrmsg(ALLEGRO_FILE* f);
 	void al_fclearerr(ALLEGRO_FILE* f);
 	int al_fungetc(ALLEGRO_FILE* f, int c);
 	long al_fsize(ALLEGRO_FILE* f);
@@ -73,7 +73,7 @@ static if (staticBinding) {
 	int al_vfprintf(ALLEGRO_FILE* f, const(char)* format, va_list args);
 
 	ALLEGRO_FILE* al_fopen_fd(int fd, const(char)* mode);
-	ALLEGRO_FILE* al_make_temp_file(const(char)* tmpl, ALLEGRO_PATH* *ret_path);
+	ALLEGRO_FILE* al_make_temp_file(const(char)* tmpl, ALLEGRO_PATH** ret_path);
 
 	ALLEGRO_FILE* al_fopen_slice(ALLEGRO_FILE* fp, size_t initial_size, const(char)* mode);
 
@@ -84,92 +84,93 @@ static if (staticBinding) {
 	void* al_get_file_userdata(ALLEGRO_FILE* f);
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_fopen = ALLEGRO_FILE* function(const(char)* path, const(char)* mode);
-		alias pal_fopen_interface = ALLEGRO_FILE* function(const(ALLEGRO_FILE_INTERFACE)* vt, const(char)* path, const(char)* mode);
-		alias pal_create_file_handle = ALLEGRO_FILE* function(const(ALLEGRO_FILE_INTERFACE)* vt, void* userdata);
-		alias pal_fclose = bool function(ALLEGRO_FILE* f);
-		alias pal_fread = size_t function(ALLEGRO_FILE* f, void* ptr, size_t size);
-		alias pal_fwrite = size_t function(ALLEGRO_FILE* f, const(void)* ptr, size_t size);
-		alias pal_fflush = bool function(ALLEGRO_FILE* f);
-		alias pal_ftell = long function(ALLEGRO_FILE* f);
-		alias pal_fseek = bool function(ALLEGRO_FILE* f, long offset, int whence);
-		alias pal_feof = bool function(ALLEGRO_FILE* f);
-		alias pal_ferror = int function(ALLEGRO_FILE* f);
-		alias pal_ferrmsg = const(char)* function(ALLEGRO_FILE* f);
-		alias pal_fclearerr = void function(ALLEGRO_FILE* f);
-		alias pal_fungetc = int function(ALLEGRO_FILE* f, int c);
-		alias pal_fsize = long function(ALLEGRO_FILE* f);
+	pragma(inline, true) extern(C) @nogc nothrow:
 
-		alias pal_fgetc = int function(ALLEGRO_FILE* f);
-		alias pal_fputc = int function(ALLEGRO_FILE* f, int c);
-		alias pal_fread16le = short function(ALLEGRO_FILE* f);
-		alias pal_fread16be = short function(ALLEGRO_FILE* f);
-		alias pal_fwrite16le = size_t function(ALLEGRO_FILE* f, short w);
-		alias pal_fwrite16be = size_t function(ALLEGRO_FILE* f, short w);
-		alias pal_fread32le = int function(ALLEGRO_FILE* f);
-		alias pal_fread32be = int function(ALLEGRO_FILE* f);
-		alias pal_fwrite32le = size_t function(ALLEGRO_FILE* f, int l);
-		alias pal_fwrite32be = size_t function(ALLEGRO_FILE* f, int l);
-		alias pal_fgets = char* function(ALLEGRO_FILE* f, const(char)* p, size_t max);
-		alias pal_fget_ustr = ALLEGRO_USTR* function(ALLEGRO_FILE* f);
-		alias pal_fputs = int function(ALLEGRO_FILE* f, const(char)* p);
-		alias pal_fprintf = int function(ALLEGRO_FILE* f, const(char)* format, ...);
-		alias pal_vfprintf = int function(ALLEGRO_FILE* f, const(char)* format, va_list args);
+	ALLEGRO_FILE* al_fopen(const(char)* path, const(char)* mode) => ptr_al_fopen(path, mode);
+	ALLEGRO_FILE* al_fopen_interface(const(ALLEGRO_FILE_INTERFACE)* vt, const(char)* path, const(char)* mode) => ptr_al_fopen_interface(vt, path, mode);
+	ALLEGRO_FILE* al_create_file_handle(const(ALLEGRO_FILE_INTERFACE)* vt, void* userdata) => ptr_al_create_file_handle(vt, userdata);
+	bool al_fclose(ALLEGRO_FILE* f) => ptr_al_fclose(f);
+	size_t al_fread(ALLEGRO_FILE* f, void* ptr, size_t size) => ptr_al_fread(f, ptr, size);
+	size_t al_fwrite(ALLEGRO_FILE* f, const(void)* ptr, size_t size) => ptr_al_fwrite(f,  ptr, size);
+	bool al_fflush(ALLEGRO_FILE* f) => ptr_al_fflush(f);
+	long al_ftell(ALLEGRO_FILE* f) => ptr_al_ftell(f);
+	bool al_fseek(ALLEGRO_FILE* f, long offset, int whence) => ptr_al_fseek(f, offset, whence);
+	bool al_feof(ALLEGRO_FILE* f) => ptr_al_feof(f);
+	int al_ferror(ALLEGRO_FILE* f) => ptr_al_ferror(f);
+	const(char)* al_ferrmsg(ALLEGRO_FILE* f) => ptr_al_ferrmsg(f);
+	void al_fclearerr(ALLEGRO_FILE* f) => ptr_al_fclearerr(f);
+	int al_fungetc(ALLEGRO_FILE* f, int c) => ptr_al_fungetc(f, c);
+	long al_fsize(ALLEGRO_FILE* f) => ptr_al_fsize(f);
 
-		alias pal_fopen_fd = ALLEGRO_FILE* function(int fd, const(char)* mode);
-		alias pal_make_temp_file = ALLEGRO_FILE* function(const(char)* tmpl, ALLEGRO_PATH* *ret_path);
+	int al_fgetc(ALLEGRO_FILE* f) => ptr_al_fgetc(f);
+	int al_fputc(ALLEGRO_FILE* f, int c) => ptr_al_fputc(f, c);
+	short al_fread16le(ALLEGRO_FILE* f) => ptr_al_fread16le(f);
+	short al_fread16be(ALLEGRO_FILE* f) => ptr_al_fread16be(f);
+	size_t al_fwrite16le(ALLEGRO_FILE* f, short w) => ptr_al_fwrite16le(f, w);
+	size_t al_fwrite16be(ALLEGRO_FILE* f, short w) => ptr_al_fwrite16be(f, w);
+	int al_fread32le(ALLEGRO_FILE* f) => ptr_al_fread32le(f);
+	int al_fread32be(ALLEGRO_FILE* f) => ptr_al_fread32be(f);
+	size_t al_fwrite32le(ALLEGRO_FILE* f, int l) => ptr_al_fwrite32le(f, l);
+	size_t al_fwrite32be(ALLEGRO_FILE* f, int l) => ptr_al_fwrite32be(f, l);
+	char* al_fgets(ALLEGRO_FILE* f, const(char)* p, size_t max) => ptr_al_fgets(f, p, max);
+	ALLEGRO_USTR* al_fget_ustr(ALLEGRO_FILE* f) => ptr_al_fget_ustr(f);
+	int al_fputs(ALLEGRO_FILE* f, const(char)* p) => ptr_al_fputs(f, p);
+	int al_fprintf(ALLEGRO_FILE* f, const(char)* format, ...) => ptr_al_fprintf(__traits(parameters));
+	int al_vfprintf(ALLEGRO_FILE* f, const(char)* format, va_list args) => ptr_al_vfprintf(f, format, args);
 
-		alias pal_fopen_slice = ALLEGRO_FILE* function(ALLEGRO_FILE* fp, size_t initial_size, const(char)* mode);
+	ALLEGRO_FILE* al_fopen_fd(int fd, const(char)* mode) => ptr_al_fopen_fd(fd, mode);
+	ALLEGRO_FILE* al_make_temp_file(const(char)* tmpl, ALLEGRO_PATH** ret_path) => ptr_al_make_temp_file(tmpl, ret_path);
 
-		alias pal_get_new_file_interface = const(ALLEGRO_FILE_INTERFACE)* function();
-		alias pal_set_new_file_interface = void function(const(ALLEGRO_FILE_INTERFACE)* file_interface);
-		alias pal_set_standard_file_interface = void function();
+	ALLEGRO_FILE* al_fopen_slice(ALLEGRO_FILE* fp, size_t initial_size, const(char)* mode) => ptr_al_fopen_slice(fp, initial_size, mode);
 
-		alias pal_get_file_userdata = void* function(ALLEGRO_FILE* f);
-	}
-	__gshared {
-		pal_fopen al_fopen;
-		pal_fopen_interface al_fopen_interface;
-		pal_create_file_handle al_create_file_handle;
-		pal_fclose al_fclose;
-		pal_fread al_fread;
-		pal_fwrite al_fwrite;
-		pal_fflush al_fflush;
-		pal_ftell al_ftell;
-		pal_fseek al_fseek;
-		pal_feof al_feof;
-		pal_ferror al_ferror;
-		pal_ferrmsg al_ferrmsg;
-		pal_fclearerr al_fclearerr;
-		pal_fungetc al_fungetc;
-		pal_fsize al_fsize;
+	const(ALLEGRO_FILE_INTERFACE)* al_get_new_file_interface() => ptr_al_get_new_file_interface();
+	void al_set_new_file_interface(const(ALLEGRO_FILE_INTERFACE)* file_interface) => ptr_al_set_new_file_interface(file_interface);
+	void al_set_standard_file_interface() => ptr_al_set_standard_file_interface();
 
-		pal_fgetc al_fgetc;
-		pal_fputc al_fputc;
-		pal_fread16le al_fread16le;
-		pal_fread16be al_fread16be;
-		pal_fwrite16le al_fwrite16le;
-		pal_fwrite16be al_fwrite16be;
-		pal_fread32le al_fread32le;
-		pal_fread32be al_fread32be;
-		pal_fwrite32le al_fwrite32le;
-		pal_fwrite32be al_fwrite32be;
-		pal_fgets al_fgets;
-		pal_fget_ustr al_fget_ustr;
-		pal_fputs al_fputs;
-		pal_fprintf al_fprintf;
-		pal_vfprintf al_vfprintf;
+	void* al_get_file_userdata(ALLEGRO_FILE* f) => ptr_al_get_file_userdata(f);
 
-		pal_fopen_fd al_fopen_fd;
-		pal_make_temp_file al_make_temp_file;
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_fopen) ptr_al_fopen;
+		typeof(&al_fopen_interface) ptr_al_fopen_interface;
+		typeof(&al_create_file_handle) ptr_al_create_file_handle;
+		typeof(&al_fclose) ptr_al_fclose;
+		typeof(&al_fread) ptr_al_fread;
+		typeof(&al_fwrite) ptr_al_fwrite;
+		typeof(&al_fflush) ptr_al_fflush;
+		typeof(&al_ftell) ptr_al_ftell;
+		typeof(&al_fseek) ptr_al_fseek;
+		typeof(&al_feof) ptr_al_feof;
+		typeof(&al_ferror) ptr_al_ferror;
+		typeof(&al_ferrmsg) ptr_al_ferrmsg;
+		typeof(&al_fclearerr) ptr_al_fclearerr;
+		typeof(&al_fungetc) ptr_al_fungetc;
+		typeof(&al_fsize) ptr_al_fsize;
 
-		pal_fopen_slice al_fopen_slice;
+		typeof(&al_fgetc) ptr_al_fgetc;
+		typeof(&al_fputc) ptr_al_fputc;
+		typeof(&al_fread16le) ptr_al_fread16le;
+		typeof(&al_fread16be) ptr_al_fread16be;
+		typeof(&al_fwrite16le) ptr_al_fwrite16le;
+		typeof(&al_fwrite16be) ptr_al_fwrite16be;
+		typeof(&al_fread32le) ptr_al_fread32le;
+		typeof(&al_fread32be) ptr_al_fread32be;
+		typeof(&al_fwrite32le) ptr_al_fwrite32le;
+		typeof(&al_fwrite32be) ptr_al_fwrite32be;
+		typeof(&al_fgets) ptr_al_fgets;
+		typeof(&al_fget_ustr) ptr_al_fget_ustr;
+		typeof(&al_fputs) ptr_al_fputs;
+		typeof(&al_fprintf) ptr_al_fprintf;
+		typeof(&al_vfprintf) ptr_al_vfprintf;
 
-		pal_get_new_file_interface al_get_new_file_interface;
-		pal_set_new_file_interface al_set_new_file_interface;
-		pal_set_standard_file_interface al_set_standard_file_interface;
+		typeof(&al_fopen_fd) ptr_al_fopen_fd;
+		typeof(&al_make_temp_file) ptr_al_make_temp_file;
 
-		pal_get_file_userdata al_get_file_userdata;
+		typeof(&al_fopen_slice) ptr_al_fopen_slice;
+
+		typeof(&al_get_new_file_interface) ptr_al_get_new_file_interface;
+		typeof(&al_set_new_file_interface) ptr_al_set_new_file_interface;
+		typeof(&al_set_standard_file_interface) ptr_al_set_standard_file_interface;
+
+		typeof(&al_get_file_userdata) ptr_al_get_file_userdata;
 	}
 }

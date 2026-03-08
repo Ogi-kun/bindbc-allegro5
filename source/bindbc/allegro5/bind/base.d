@@ -99,12 +99,11 @@ static if (staticBinding) {
 	int al_run_main(int argc, char** argv, main_t user_main);
 }
 else {
-	extern(C) @nogc nothrow {
-		alias pal_get_allegro_version = uint function();
-		alias pal_run_main = int function(int argc, char** argv, main_t user_main);
-	}
-	__gshared {
-		pal_get_allegro_version al_get_allegro_version;
-		pal_run_main al_run_main;
+	pragma(inline, true) extern(C) @nogc nothrow:
+	uint al_get_allegro_version() => ptr_al_get_allegro_version();
+	int al_run_main(int argc, char** argv, main_t user_main) => ptr_al_run_main(argc, argv, user_main);
+	package(bindbc.allegro5) __gshared {
+		typeof(&al_get_allegro_version) ptr_al_get_allegro_version;
+		typeof(&al_run_main) ptr_al_run_main;
 	}
 }

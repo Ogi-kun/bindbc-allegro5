@@ -62,74 +62,74 @@ static if (staticBinding) {
 	}
 }
 else {
-	extern(C) @nogc nothrow {
+	pragma(inline, true) extern(C) @nogc nothrow {
 
-		alias pal_init_video_addon = bool function();
-		alias pal_shutdown_video_addon = void function();
-		alias pal_get_allegro_video_version = uint function();
+		bool al_init_video_addon() => ptr_al_init_video_addon();
+		void al_shutdown_video_addon() => ptr_al_shutdown_video_addon();
+		uint al_get_allegro_video_version() => ptr_al_get_allegro_video_version();
 
-		alias pal_open_video = ALLEGRO_VIDEO* function(const(char)* filename);
-		alias pal_close_video = void function(ALLEGRO_VIDEO* video);
-		alias pal_start_video = void function(ALLEGRO_VIDEO* video, ALLEGRO_MIXER* mixer);
-		alias pal_start_video_with_voice = void function(ALLEGRO_VIDEO* video, ALLEGRO_VOICE* voice);
-		alias pal_get_video_event_source = ALLEGRO_EVENT_SOURCE* function(ALLEGRO_VIDEO* video);
-		alias pal_set_video_playing = void function(ALLEGRO_VIDEO* video, bool playing);
-		alias pal_is_video_playing = bool function(ALLEGRO_VIDEO* video);
-		alias pal_get_video_audio_rate = double function(ALLEGRO_VIDEO* video);
-		alias pal_get_video_fps = double function(ALLEGRO_VIDEO* video);
-		alias pal_get_video_scaled_width = float function(ALLEGRO_VIDEO* video);
-		alias pal_get_video_scaled_height = float function(ALLEGRO_VIDEO* video);
-		alias pal_get_video_frame = ALLEGRO_BITMAP* function(ALLEGRO_VIDEO* video);
-		alias pal_get_video_position = double function(ALLEGRO_VIDEO* video, ALLEGRO_VIDEO_POSITION_TYPE which);
-		alias pal_seek_video = bool function(ALLEGRO_VIDEO* video, double pos_in_seconds);
+		ALLEGRO_VIDEO* al_open_video(const(char)* filename) => ptr_al_open_video(filename);
+		void al_close_video(ALLEGRO_VIDEO* video) => ptr_al_close_video(video);
+		void al_start_video(ALLEGRO_VIDEO* video, ALLEGRO_MIXER* mixer) => ptr_al_start_video(video, mixer);
+		void al_start_video_with_voice(ALLEGRO_VIDEO* video, ALLEGRO_VOICE* voice) => ptr_al_start_video_with_voice(video, voice);
+		ALLEGRO_EVENT_SOURCE* al_get_video_event_source(ALLEGRO_VIDEO* video) => ptr_al_get_video_event_source(video);
+		void al_set_video_playing(ALLEGRO_VIDEO* video, bool playing) => ptr_al_set_video_playing(video, playing);
+		bool al_is_video_playing(ALLEGRO_VIDEO* video) => ptr_al_is_video_playing(video);
+		double al_get_video_audio_rate(ALLEGRO_VIDEO* video) => ptr_al_get_video_audio_rate(video);
+		double al_get_video_fps(ALLEGRO_VIDEO* video) => ptr_al_get_video_fps(video);
+		float al_get_video_scaled_width(ALLEGRO_VIDEO* video) => ptr_al_get_video_scaled_width(video);
+		float al_get_video_scaled_height(ALLEGRO_VIDEO* video) => ptr_al_get_video_scaled_height(video);
+		ALLEGRO_BITMAP* al_get_video_frame(ALLEGRO_VIDEO* video) => ptr_al_get_video_frame(video);
+		double al_get_video_position(ALLEGRO_VIDEO* video, ALLEGRO_VIDEO_POSITION_TYPE which) => ptr_al_get_video_position(video, which);
+		bool al_seek_video(ALLEGRO_VIDEO* video, double pos_in_seconds) => ptr_al_seek_video(video, pos_in_seconds);
 
 		static if (allegroSupport >= AllegroSupport.v5_2_6) {
-			alias pal_is_video_addon_initialized = bool function();
+			bool al_is_video_addon_initialized() => ptr_al_is_video_addon_initialized();
 		}
 
 		static if (allegroSupport >= AllegroSupport.v5_2_8) {
-			alias pal_identify_video_f = const(char)* function(ALLEGRO_FILE* fp);
-			alias pal_identify_video = const(char)* function(const(char)* filename);
+			const(char)* al_identify_video_f(ALLEGRO_FILE* fp) => ptr_al_identify_video_f(fp);
+			const(char)* al_identify_video(const(char)* filename) => ptr_al_identify_video(filename);
 		}
 
 		static if (allegroSupport >= AllegroSupport.v5_2_11) {
-			alias pal_open_video_f = ALLEGRO_VIDEO* function(ALLEGRO_FILE* fp, const(char)* ident);
+			ALLEGRO_VIDEO* al_open_video_f(ALLEGRO_FILE* fp, const(char)* ident) => ptr_al_open_video_f(fp, ident);
 		}
 	}
-	__gshared {
 
-		pal_init_video_addon al_init_video_addon;
-		pal_shutdown_video_addon al_shutdown_video_addon;
-		pal_get_allegro_video_version al_get_allegro_video_version;
+	private __gshared {
 
-		pal_open_video al_open_video;
-		pal_close_video al_close_video;
-		pal_start_video al_start_video;
-		pal_start_video_with_voice al_start_video_with_voice;
-		pal_get_video_event_source al_get_video_event_source;
-		pal_set_video_playing al_set_video_playing;
-		pal_is_video_playing al_is_video_playing;
-		pal_get_video_audio_rate al_get_video_audio_rate;
-		pal_get_video_fps al_get_video_fps;
-		pal_get_video_scaled_width al_get_video_scaled_width;
-		pal_get_video_scaled_height al_get_video_scaled_height;
-		pal_get_video_frame al_get_video_frame;
-		pal_get_video_position al_get_video_position;
-		pal_seek_video al_seek_video;
+		typeof(&al_init_video_addon) ptr_al_init_video_addon;
+		typeof(&al_shutdown_video_addon) ptr_al_shutdown_video_addon;
+		typeof(&al_get_allegro_video_version) ptr_al_get_allegro_video_version;
+
+		typeof(&al_open_video) ptr_al_open_video;
+		typeof(&al_close_video) ptr_al_close_video;
+		typeof(&al_start_video) ptr_al_start_video;
+		typeof(&al_start_video_with_voice) ptr_al_start_video_with_voice;
+		typeof(&al_get_video_event_source) ptr_al_get_video_event_source;
+		typeof(&al_set_video_playing) ptr_al_set_video_playing;
+		typeof(&al_is_video_playing) ptr_al_is_video_playing;
+		typeof(&al_get_video_audio_rate) ptr_al_get_video_audio_rate;
+		typeof(&al_get_video_fps) ptr_al_get_video_fps;
+		typeof(&al_get_video_scaled_width) ptr_al_get_video_scaled_width;
+		typeof(&al_get_video_scaled_height) ptr_al_get_video_scaled_height;
+		typeof(&al_get_video_frame) ptr_al_get_video_frame;
+		typeof(&al_get_video_position) ptr_al_get_video_position;
+		typeof(&al_seek_video) ptr_al_seek_video;
 
 		static if (allegroSupport >= AllegroSupport.v5_2_6) {
-			pal_is_video_addon_initialized al_is_video_addon_initialized;
+			typeof(&al_is_video_addon_initialized) ptr_al_is_video_addon_initialized;
 		}
 
 		static if (allegroSupport >= AllegroSupport.v5_2_8) {
-			pal_identify_video_f al_identify_video_f;
-			pal_identify_video al_identify_video;
+			typeof(&al_identify_video_f) ptr_al_identify_video_f;
+			typeof(&al_identify_video) ptr_al_identify_video;
 		}
 
 		static if (allegroSupport >= AllegroSupport.v5_2_11) {
-			pal_open_video_f al_open_video_f;
+			typeof(&al_open_video_f) ptr_al_open_video_f;
 		}
-
 	}
 
 	import bindbc.loader;
@@ -186,31 +186,31 @@ else {
 
 		auto lastErrorCount = errorCount();
 
-		lib.bindSymbol(cast(void**)&al_init_video_addon, "al_init_video_addon");
-		lib.bindSymbol(cast(void**)&al_shutdown_video_addon, "al_shutdown_video_addon");
-		lib.bindSymbol(cast(void**)&al_get_allegro_video_version, "al_get_allegro_video_version");
+		lib.bindSymbol(cast(void**)&ptr_al_init_video_addon, "al_init_video_addon");
+		lib.bindSymbol(cast(void**)&ptr_al_shutdown_video_addon, "al_shutdown_video_addon");
+		lib.bindSymbol(cast(void**)&ptr_al_get_allegro_video_version, "al_get_allegro_video_version");
 
-		lib.bindSymbol(cast(void**)&al_open_video, "al_open_video");
-		lib.bindSymbol(cast(void**)&al_close_video, "al_close_video");
-		lib.bindSymbol(cast(void**)&al_start_video, "al_start_video");
-		lib.bindSymbol(cast(void**)&al_start_video_with_voice, "al_start_video_with_voice");
-		lib.bindSymbol(cast(void**)&al_get_video_event_source, "al_get_video_event_source");
-		lib.bindSymbol(cast(void**)&al_set_video_playing, "al_set_video_playing");
-		lib.bindSymbol(cast(void**)&al_is_video_playing, "al_is_video_playing");
-		lib.bindSymbol(cast(void**)&al_get_video_audio_rate, "al_get_video_audio_rate");
-		lib.bindSymbol(cast(void**)&al_get_video_fps, "al_get_video_fps");
-		lib.bindSymbol(cast(void**)&al_get_video_scaled_width, "al_get_video_scaled_width");
-		lib.bindSymbol(cast(void**)&al_get_video_scaled_height, "al_get_video_scaled_height");
-		lib.bindSymbol(cast(void**)&al_get_video_frame, "al_get_video_frame");
-		lib.bindSymbol(cast(void**)&al_get_video_position, "al_get_video_position");
-		lib.bindSymbol(cast(void**)&al_seek_video, "al_seek_video");
+		lib.bindSymbol(cast(void**)&ptr_al_open_video, "al_open_video");
+		lib.bindSymbol(cast(void**)&ptr_al_close_video, "al_close_video");
+		lib.bindSymbol(cast(void**)&ptr_al_start_video, "al_start_video");
+		lib.bindSymbol(cast(void**)&ptr_al_start_video_with_voice, "al_start_video_with_voice");
+		lib.bindSymbol(cast(void**)&ptr_al_get_video_event_source, "al_get_video_event_source");
+		lib.bindSymbol(cast(void**)&ptr_al_set_video_playing, "al_set_video_playing");
+		lib.bindSymbol(cast(void**)&ptr_al_is_video_playing, "al_is_video_playing");
+		lib.bindSymbol(cast(void**)&ptr_al_get_video_audio_rate, "al_get_video_audio_rate");
+		lib.bindSymbol(cast(void**)&ptr_al_get_video_fps, "al_get_video_fps");
+		lib.bindSymbol(cast(void**)&ptr_al_get_video_scaled_width, "al_get_video_scaled_width");
+		lib.bindSymbol(cast(void**)&ptr_al_get_video_scaled_height, "al_get_video_scaled_height");
+		lib.bindSymbol(cast(void**)&ptr_al_get_video_frame, "al_get_video_frame");
+		lib.bindSymbol(cast(void**)&ptr_al_get_video_position, "al_get_video_position");
+		lib.bindSymbol(cast(void**)&ptr_al_seek_video, "al_seek_video");
 
 		if (errorCount() != lastErrorCount) {
 			return AllegroSupport.badLibrary;
 		}
 
 		static if (allegroSupport >= AllegroSupport.v5_2_6) {
-			lib.bindSymbol(cast(void**)&al_is_video_addon_initialized, "al_is_video_addon_initialized");
+			lib.bindSymbol(cast(void**)&ptr_al_is_video_addon_initialized, "al_is_video_addon_initialized");
 
 			if (errorCount() != lastErrorCount) {
 				return AllegroSupport.badLibrary;
@@ -218,8 +218,8 @@ else {
 		}
 
 		static if (allegroSupport >= AllegroSupport.v5_2_8) {
-			lib.bindSymbol(cast(void**)&al_identify_video_f, "al_identify_video_f");
-			lib.bindSymbol(cast(void**)&al_identify_video, "al_identify_video");
+			lib.bindSymbol(cast(void**)&ptr_al_identify_video_f, "al_identify_video_f");
+			lib.bindSymbol(cast(void**)&ptr_al_identify_video, "al_identify_video");
 
 			if (errorCount() != lastErrorCount) {
 				return AllegroSupport.badLibrary;
@@ -227,7 +227,7 @@ else {
 		}
 
 		static if (allegroSupport >= AllegroSupport.v5_2_11) {
-			lib.bindSymbol(cast(void**)&al_open_video_f, "al_open_video_f");
+			lib.bindSymbol(cast(void**)&ptr_al_open_video_f, "al_open_video_f");
 
 			if (errorCount() != lastErrorCount) {
 				return AllegroSupport.badLibrary;
